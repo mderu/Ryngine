@@ -1,0 +1,1 @@
+﻿global using UndoRecordId = System.Int64;

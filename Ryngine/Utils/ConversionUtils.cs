@@ -1,11 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Ryngine.Utils
 {
@@ -47,6 +42,11 @@ namespace Ryngine.Utils
         public static JObject ToJObject(this object obj)
         {
             return JObject.FromObject(obj, JsonSerializer);
+        }
+
+        public static string ToJsonString(this object obj)
+        {
+            return JsonConvert.SerializeObject(obj, Formatting.None);
         }
     }
 }

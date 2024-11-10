@@ -5,13 +5,20 @@
 
 // Declare the external C# function
 extern "C" __declspec(dllimport) int Add(int a, int b);
+extern "C" __declspec(dllimport) char* Reverse(char* input);
 
 int main()
 {
-    std::cout << "Hello World!\n";
 
     int result = Add(3, 5);
+    
+    char arr[7];
+    strcpy_s(arr, "dlroW");
+    char* result2 = Reverse(arr);
+
     std::cout << "Result: " << result << std::endl;
+    std::cout << "Hello " << result2 << "!\n";
+
     return 0;
 }
 

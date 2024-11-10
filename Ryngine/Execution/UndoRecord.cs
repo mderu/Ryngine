@@ -1,24 +1,16 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-
-namespace Ryngine.Execution
+﻿namespace Ryngine.Execution
 {
     public class UndoRecord(
-        ProgramCounter programCounter,
-        Int128 previousUndoRecordId,
-        Int128 currentUndoRecordId,
-        JObject undoPacket)
+        UndoRecordId previousUndoRecordId,
+        UndoRecordId currentUndoRecordId,
+        UndoPacket undoPacket)
     {
-        public static UndoRecord RootRecord => new("", 0, 0, []);
-
-        public ProgramCounter ProgramCounter { get; } = programCounter;
+        public static UndoRecord RootRecord => new(0, 0, []);
 
         // TODO: We can probably get away with using 64 bit hashes instead.
         //       For 64 bits, birthday paradox puts 50% chance at ~2^32.
-        public Int128 PreviousUndoRecordId { get; } = previousUndoRecordId;
-        public Int128 Hash { get; } = currentUndoRecordId;
-        public JObject UndoPacket { get; set; } = undoPacket;
+        public UndoRecordId PreviousUndoRecordId { get; } = previousUndoRecordId;
+        public UndoRecordId Hash { get; } = currentUndoRecordId;
+        public UndoPacket UndoPacket { get; set; } = undoPacket;
     }
 }
