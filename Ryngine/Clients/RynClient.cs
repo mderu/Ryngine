@@ -7,9 +7,9 @@ using System;
 
 namespace Ryngine.Clients
 {
-    public class RynClient(Multiverse multiverse) : IRynClient
+    public class RynClient(IMultiverse multiverse) : IRynClient
     {
-        private Multiverse Multiverse { get; init; } = multiverse;
+        private IMultiverse Multiverse { get; init; } = multiverse;
 
         public string GetState(string saveName)
         {
@@ -25,6 +25,11 @@ namespace Ryngine.Clients
 
         public void PostDelta(string saveName, string delta)
         {
+            if (!Multiverse.AllSaves.ContainsKey(saveName))
+            {
+                Multiverse.AllSaves[saveName] = new Snapshot(UndoRecord.RootRecord);
+            }
+
             new SetKeys().Do(
                 JsonConvert.DeserializeObject<Delta>(delta)
                     ?? throw new Exception("not valid JSON"),

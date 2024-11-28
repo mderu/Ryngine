@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
 using Ryngine.Execution;
-using Ryngine.Utils;
 using System;
 using System.IO.Hashing;
 using System.Text;
@@ -9,7 +8,7 @@ namespace Ryngine.Instructions
 {
     public class SetKeys()
     {
-        public void Do(Delta delta, Multiverse multiverse, Snapshot snapshot)
+        public void Do(Delta delta, IMultiverse multiverse, Snapshot snapshot)
         {
             UndoPacket oldValues = [];
             foreach (var kvp in delta)
@@ -20,7 +19,14 @@ namespace Ryngine.Instructions
 
                 // Write new value.
                 JObject dataStore = Reference.GetDataStore(kvp.Key, multiverse, snapshot);
+                bool isPersistentData = dataStore == multiverse.PersistentData;
                 dataStore[kvp.Key] = kvp.Value;
+
+                // Save the persistent data back immediately if needed.
+                if (isPersistentData)
+                {
+                    multiverse.PersistentData = dataStore;
+                }
             }
 
             // TODO: Use a 64-bit width to match UndoRecordId size.
@@ -44,7 +50,7 @@ namespace Ryngine.Instructions
             snapshot.UndoRecord = newUndoRecord;
         }
 
-        public void Undo(UndoPacket undoPacket, Multiverse multiverse, Snapshot snapshot)
+        public void Undo(UndoPacket undoPacket, IMultiverse multiverse, Snapshot snapshot)
         {
             foreach (var kvp in undoPacket)
             {
@@ -65,6 +71,7 @@ namespace Ryngine.Instructions
                 {
                     snapshot.RunData[refPath] = kvp.Value;
                 }
+                snapshot.UndoRecord = multiverse.UndoRecords[snapshot.UndoRecord.PreviousUndoRecordId];
             }
         }
     }
