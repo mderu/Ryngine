@@ -1,21 +1,46 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Ryngine.Clients
+﻿namespace Ryngine.Clients
 {
     public interface IRynClient
     {
-        string GetState(string saveName);
-        string SaveSnapshot(string currentSaveName, string savePrefix);
+        /// <summary>
+        /// Returns the memory state of the current run.
+        /// </summary>
+        string GetState();
 
-        string ApplyDelta(string saveName, string delta);
-        void PostDelta(string saveName, string delta);
-        string RequestUndo(string saveName);
+        /// <summary>
+        /// Loads the memory state from the associated <paramref name="saveName"/>.
+        /// </summary>
+        void LoadState(string saveName);
 
-        void LoadMultiverseFile(string filepath);
-        void SaveMultiverseFile(string filepath);
+        /// <summary>
+        /// Saves the current memory state to a save named <paramref name="saveName"/>.
+        /// </summary>
+        void SaveState(string saveName);
+
+        /// <summary>
+        /// Applies the given <paramref name="delta"/> to the current state.
+        /// </summary>
+        /// <returns>The memory state after the delta has been applied.</returns>
+        string ApplyDelta(string delta);
+        /// <summary>
+        /// Like <see cref="ApplyDelta(string)"/>, but does not return the state.
+        /// </summary>
+        void PostDelta(string delta);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        string RequestUndo();
+
+        /// <summary>
+        /// Loads the underlying Multiverse from the given <paramref name="path"/>.
+        /// </summary>
+        void LoadMultiverse(string path);
+
+        /// <summary>
+        /// Saves the underlying Multiverse using the given <paramref name="path"/>.
+        /// </summary>
+        void SaveMultiverse(string path);
     }
 }

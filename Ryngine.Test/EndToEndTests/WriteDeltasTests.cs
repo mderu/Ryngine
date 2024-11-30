@@ -27,7 +27,6 @@ namespace Ryngine.Test.EndToEndTests
         public void WriteDeltas_DoesWhatItShould()
         {
             int totalNumberOfIterations = 2000;
-            string saveName = "newSave";
             string connectionString = $"Data Source=\"{TempDirectory}/test.db\"";
 
             using SqliteConnection connection = new(connectionString);
@@ -35,7 +34,7 @@ namespace Ryngine.Test.EndToEndTests
             IMultiverse multiverse = new SqliteMultiverse(connection);
             RynClient rynClient = new(multiverse);
 
-            var result = rynClient.ApplyDelta(saveName, """
+            var result = rynClient.ApplyDelta("""
                 {
                     "dialogueTitle": "Narrator", 
                     "textBox": "First Message!",
@@ -48,10 +47,10 @@ namespace Ryngine.Test.EndToEndTests
 
             for (int i = 0; i < totalNumberOfIterations; i++)
             {
-                rynClient.PostDelta(saveName, $$"""{"textBox": "{{i}}"}""");
+                rynClient.PostDelta($$"""{"textBox": "{{i}}"}""");
             }
 
-            result = rynClient.GetState(saveName);
+            result = rynClient.GetState();
 
             Assert.Equal(
                 $$$"""{"Persistent":{},"RunData":{"dialogueTitle":"Narrator","textBox":"{{{totalNumberOfIterations - 1}}}"}}""",
@@ -59,7 +58,7 @@ namespace Ryngine.Test.EndToEndTests
 
             for (int i = 0; i < totalNumberOfIterations; i++)
             {
-                result = rynClient.RequestUndo(saveName);
+                result = rynClient.RequestUndo();
             }
 
             Assert.Equal(

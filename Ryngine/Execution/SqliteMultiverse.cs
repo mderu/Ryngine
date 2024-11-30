@@ -1,7 +1,6 @@
 ﻿using Microsoft.Data.Sqlite;
 using Newtonsoft.Json.Linq;
 using Ryngine.DataStructures;
-using System;
 
 namespace Ryngine.Execution
 {
@@ -68,6 +67,8 @@ namespace Ryngine.Execution
                 return undoRecordsDbCache;
             }
         }
+
+        public Snapshot CurrentSave { get; set; } = new(UndoRecord.RootRecord);
 
         private void EnsureInitialized()
         {

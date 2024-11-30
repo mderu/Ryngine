@@ -7,6 +7,7 @@ namespace Ryngine.Execution
     {
         IDict<string, Snapshot> AllSaves { get; }
         JObject PersistentData { get; set; }
+        Snapshot CurrentSave { get; set; }
         IDict<UndoRecordId, UndoRecord> UndoRecords { get; }
     }
 }

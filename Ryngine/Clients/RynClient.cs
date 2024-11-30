@@ -11,75 +11,64 @@ namespace Ryngine.Clients
     {
         private IMultiverse Multiverse { get; init; } = multiverse;
 
-        public string GetState(string saveName)
+        public string GetState()
         {
-            return GetMemoryState(saveName);
+            return GetCurrentMemoryState();
         }
 
-        public string ApplyDelta(string saveName, string delta)
+        public void LoadState(string saveName)
         {
-            PostDelta(saveName, delta);
-
-            return GetMemoryState(saveName);
+            Multiverse.CurrentSave = Multiverse.AllSaves[saveName];
         }
 
-        public void PostDelta(string saveName, string delta)
+        public void SaveState(string saveName) 
         {
-            if (!Multiverse.AllSaves.ContainsKey(saveName))
-            {
-                Multiverse.AllSaves[saveName] = new Snapshot(UndoRecord.RootRecord);
-            }
+            Multiverse.AllSaves[saveName] = Multiverse.CurrentSave;
+        }
 
+        public string ApplyDelta(string delta)
+        {
+            PostDelta(delta);
+
+            return GetCurrentMemoryState();
+        }
+
+        public void PostDelta(string delta)
+        {
             new SetKeys().Do(
                 JsonConvert.DeserializeObject<Delta>(delta)
                     ?? throw new Exception("not valid JSON"),
                 Multiverse,
-                Multiverse.AllSaves[saveName]);
+                Multiverse.CurrentSave);
         }
 
-        public string RequestUndo(string saveName)
+        public string RequestUndo()
         {
             new SetKeys().Undo(
-                Multiverse.AllSaves[saveName].UndoRecord.UndoPacket,
+                Multiverse.CurrentSave.UndoRecord.UndoPacket,
                 Multiverse,
-                Multiverse.AllSaves[saveName]
+                Multiverse.CurrentSave
             );
 
-            return GetMemoryState(saveName);
-        }
-
-        public string SaveSnapshot(string currentSaveName, string savePrefix)
-        {
-            string newSaveName = savePrefix;
-            while (Multiverse.AllSaves.ContainsKey(newSaveName))
-            {
-                newSaveName = savePrefix + Guid.NewGuid().ToString()[0..8];
-            }
-
-            Snapshot currentSnapshot = Multiverse.AllSaves[currentSaveName];
-            Multiverse.AllSaves[newSaveName] = new Snapshot(
-                currentSnapshot.UndoRecord,
-                new JObject(currentSnapshot.RunData));
-
-            return newSaveName;
+            return GetCurrentMemoryState();
         }
         
-        public void LoadMultiverseFile(string filepath)
+        public void LoadMultiverse(string filepath)
         {
             throw new System.NotImplementedException();
         }
 
-        public void SaveMultiverseFile(string filepath)
+        public void SaveMultiverse(string filepath)
         {
             throw new System.NotImplementedException();
         }
 
-        private string GetMemoryState(string saveName)
+        private string GetCurrentMemoryState()
         {
             return new JObject()
             {
                 ["Persistent"] = Multiverse.PersistentData,
-                ["RunData"] = Multiverse.AllSaves[saveName].RunData,
+                ["RunData"] = Multiverse.CurrentSave.RunData,
             }.ToJsonString();
         }
     }

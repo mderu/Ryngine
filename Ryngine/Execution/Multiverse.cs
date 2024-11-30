@@ -10,6 +10,8 @@ namespace Ryngine.Execution
     {
         public JObject PersistentData { get; set; } = [];
 
+        public Snapshot CurrentSave { get; set; } = new(UndoRecord.RootRecord);
+
         /// <summary>
         /// A dictionary of UndoRecord.Hash to its value.
         /// </summary>
