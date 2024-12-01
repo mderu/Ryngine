@@ -6,7 +6,6 @@ using Antlr4.Runtime.Tree;
 using AntlrRenpy;
 using AntlrRenpy.Program.Instructions;
 using Assert = Xunit.Assert;
-using Xunit.Sdk;
 
 public class ParseTreeTests
 {
@@ -153,11 +152,52 @@ public class ParseTreeTests
         Assert.Empty(labels);
 
         var instructions = renpyListener.Script.Instructions;
-        Assert.Single(instructions);
 
-        Assert.Equal(typeof(Say), instructions[0].GetType());
-        Say instruction = (Say)instructions[0];
-        Assert.Equal("Some words in the text box.", instruction.Text);
-        Assert.Equal("Narrator", instruction.Speaker);
+        Assert.Collection(instructions,
+            (item) =>
+            {
+                Assert.True(item is Say);
+                Say say = (Say)item;
+                Assert.Equal("Some words in the text box.", say.Text);
+                Assert.Equal("Narrator", say.Speaker);
+            },
+            (item) =>
+            {
+                Assert.True(item is Say);
+                Say say = (Say)item;
+                Assert.Equal("No speaker here, but it's implied that it is also the narrator.", say.Text);
+                Assert.Equal("", say.Speaker);
+            }
+        );
+    }
+
+    //[Fact]
+    public void Test005__menu()
+    {
+        (RenpyListener renpyListener, ParserErrorListener errorListener) = Parse("test005__menu.rpy");
+
+        Assert.Empty(errorListener.Errors);
+
+        var labels = renpyListener.Script.Labels;
+        Assert.Empty(labels);
+
+        var instructions = renpyListener.Script.Instructions;
+
+        Assert.Collection(instructions,
+            (item) =>
+            {
+                Assert.True(item is Say);
+                Say say = (Say)item;
+                Assert.Equal("Some words in the text box.", say.Text);
+                Assert.Equal("Narrator", say.Speaker);
+            },
+            (item) =>
+            {
+                Assert.True(item is Say);
+                Say say = (Say)item;
+                Assert.Equal("No speaker here, but it's implied that it is also the narrator.", say.Text);
+                Assert.Equal("", say.Speaker);
+            }
+        );
     }
 }

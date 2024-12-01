@@ -71,4 +71,5 @@ return_simple
 
 say
     : NAME STRING
+    | STRING
     ;

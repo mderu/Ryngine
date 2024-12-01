@@ -6,7 +6,7 @@ namespace AntlrRenpy
 {
     public class PrintingRenpyParserListener : IRenpyParserListener
     {
-        public List<string> Stack = new List<string>();
+        public List<string> Stack = [];
         public void EnterBlock([NotNull] RenpyParser.BlockContext context)
         {
             Stack.Add(nameof(EnterBlock));

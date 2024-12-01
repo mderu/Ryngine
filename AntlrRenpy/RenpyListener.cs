@@ -1,3 +1,4 @@
+using Antlr4.Runtime;
 using Antlr4.Runtime.Misc;
 using AntlrRenpy.Program;
 using AntlrRenpy.Program.Instructions;
@@ -52,7 +53,7 @@ namespace AntlrRenpy
         public override void EnterSay([NotNull] SayContext context)
         {
             string text = StringParser.Parse(context.STRING().GetText());
-            string speaker = context.NAME().GetText();
+            string speaker = context.NAME() is null ? "" : context.NAME().GetText();
 
             Script.AppendInstruction(
                 new Say(text)
