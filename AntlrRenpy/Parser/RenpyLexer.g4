@@ -50,8 +50,8 @@ COMMENT : '#' ~[\r\n]*               -> channel(HIDDEN);
 //              Switched to skip, but should come back and fix this. 
 //              Someone else hit the same problem on SO:
 //              https://stackoverflow.com/questions/34852332/switch-commontokenstream-to-ignore-or-enable-whitespace
-WS : [ \t\f]+                        -> skip;
-//WS : [ \t\f]+                        -> channel(HIDDEN);
+//WS : [ \t\f]+                        -> skip;
+WS : [ \t\f]+                        -> channel(HIDDEN);
 
 // https://docs.python.org/3.12/reference/lexical_analysis.html#explicit-line-joining
 EXPLICIT_LINE_JOINING : '\\' NEWLINE -> channel(HIDDEN);

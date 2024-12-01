@@ -7,25 +7,40 @@ options {
 entire_tree: statements? NEWLINE* EOF;
 
 statements
-    : statement (NEWLINE+ statement)*
+    : statement+
     ;
 
 statement
-    : simple_statements
+    : simple_statements NEWLINE
+    | block_statements
     ;
 
-block
-    : NEWLINE INDENT statements DEDENT
-    | simple_statements
+// These don't have a required trailing newline.
+block_statements
+    : menu
+    | label COLON block
     ;
 
 simple_statements
     : pass_statement
+    | menu
     | jump
     | label
     | call
     | return
     | say
+    ;
+
+block
+    : NEWLINE INDENT statements DEDENT
+    ;
+
+menu
+    : MENU label_name? COLON NEWLINE INDENT (say NEWLINE)? (menu_item)+ DEDENT
+    ;
+
+menu_item
+    : STRING COLON block
     ;
 
 pass_statement
@@ -38,7 +53,7 @@ label
     ;
 
 label_constant
-    : LABEL label_name (COLON | COLON block)? // Yes, blocks aren't actually required.
+    : LABEL label_name COLON? // blocks aren't actually required.
     ;
 
 label_name

@@ -50,17 +50,35 @@ public interface IRenpyParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitStatement([NotNull] RenpyParser.StatementContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="RenpyParser.block"/>.
+	/// Visit a parse tree produced by <see cref="RenpyParser.block_statements"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitBlock([NotNull] RenpyParser.BlockContext context);
+	Result VisitBlock_statements([NotNull] RenpyParser.Block_statementsContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="RenpyParser.simple_statements"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitSimple_statements([NotNull] RenpyParser.Simple_statementsContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="RenpyParser.block"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitBlock([NotNull] RenpyParser.BlockContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="RenpyParser.menu"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitMenu([NotNull] RenpyParser.MenuContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="RenpyParser.menu_item"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitMenu_item([NotNull] RenpyParser.Menu_itemContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="RenpyParser.pass_statement"/>.
 	/// </summary>

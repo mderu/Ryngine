@@ -6,6 +6,7 @@ using Antlr4.Runtime.Tree;
 using AntlrRenpy;
 using AntlrRenpy.Program.Instructions;
 using Assert = Xunit.Assert;
+using System.Diagnostics;
 
 public class ParseTreeTests
 {
@@ -40,8 +41,36 @@ public class ParseTreeTests
         }
     }
 
+    [Conditional("DEBUG")]
+    private static void PrintParseTree(string testFile)
+    {
+        string renpyFileName = Path.Combine(
+            ".",
+            "TestScripts",
+            testFile
+        );
+
+        string text = File.ReadAllText(renpyFileName);
+
+        AntlrInputStream inputStream = new(text);
+        RenpyLexer speakLexer = new(inputStream);
+        CommonTokenStream commonTokenStream = new(speakLexer);
+        RenpyParser parser = new(commonTokenStream);
+
+        PrintingRenpyParserListener renpyListener = new();
+        ParserErrorListener errorListener = new();
+        parser.AddErrorListener(errorListener);
+        ParseTreeWalker.Default.Walk(renpyListener, parser.entire_tree());
+        return;
+    }
+
     public (RenpyListener, ParserErrorListener) Parse(string testFile)
     {
+        if (Debugger.IsAttached)
+        {
+            PrintParseTree(testFile);
+        }
+
         string renpyFileName = Path.Combine(
             ".",
             "TestScripts",
@@ -171,7 +200,7 @@ public class ParseTreeTests
         );
     }
 
-    //[Fact]
+    [Fact]
     public void Test005__menu()
     {
         (RenpyListener renpyListener, ParserErrorListener errorListener) = Parse("test005__menu.rpy");
@@ -179,23 +208,63 @@ public class ParseTreeTests
         Assert.Empty(errorListener.Errors);
 
         var labels = renpyListener.Script.Labels;
-        Assert.Empty(labels);
+        Assert.Collection(labels,
+            (item) => { Assert.Equal("expectedMenuLabel", item.Key); Assert.Equal(0, item.Value); }
+        );
 
         var instructions = renpyListener.Script.Instructions;
 
         Assert.Collection(instructions,
             (item) =>
             {
+                Assert.True(item is Menu);
+                Menu menu = (Menu)item;
+                Assert.Equal(1, menu.SayInstructionIndex);
+                Assert.Collection(menu.MenuItems,
+                    (item) =>
+                    {
+                        Assert.Equal("This is a menu choice, it ends in a colon. Menu must contain at least one menu choice", item.Caption);
+                        Assert.Equal(2, item.StartInstructionIndex);
+                        Assert.Equal(3, item.EndInstructionIndex);
+                    },
+                    (item) =>
+                    {
+                        Assert.Equal("When the choice is selected, the block of statements is run", item.Caption);
+                        Assert.Equal(3, item.StartInstructionIndex);
+                        Assert.Equal(5, item.EndInstructionIndex);
+                    }
+                );
+            },
+            (item) =>
+            {
                 Assert.True(item is Say);
                 Say say = (Say)item;
-                Assert.Equal("Some words in the text box.", say.Text);
+                Assert.Equal("There's a single optional say statement here.", say.Text);
                 Assert.Equal("Narrator", say.Speaker);
             },
             (item) =>
             {
                 Assert.True(item is Say);
                 Say say = (Say)item;
-                Assert.Equal("No speaker here, but it's implied that it is also the narrator.", say.Text);
+                Assert.Equal("Menu choices must be followed by a block of Ren'Py statements.", say.Text);
+                Assert.Equal("", say.Speaker);
+            },
+            (item) =>
+            {
+                Assert.True(item is Say);
+                Say say = (Say)item;
+                Assert.Equal("Message that only appears in the second choice.", say.Text);
+                Assert.Equal("", say.Speaker);
+            },
+            (item) =>
+            {
+                Assert.Equal(typeof(Pass), item.GetType());
+            },
+            (item) =>
+            {
+                Assert.True(item is Say);
+                Say say = (Say)item;
+                Assert.Equal("This instruction is then jumped to.", say.Text);
                 Assert.Equal("", say.Speaker);
             }
         );

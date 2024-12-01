@@ -61,15 +61,15 @@ public interface IRenpyParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitStatement([NotNull] RenpyParser.StatementContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="RenpyParser.block"/>.
+	/// Enter a parse tree produced by <see cref="RenpyParser.block_statements"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterBlock([NotNull] RenpyParser.BlockContext context);
+	void EnterBlock_statements([NotNull] RenpyParser.Block_statementsContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="RenpyParser.block"/>.
+	/// Exit a parse tree produced by <see cref="RenpyParser.block_statements"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitBlock([NotNull] RenpyParser.BlockContext context);
+	void ExitBlock_statements([NotNull] RenpyParser.Block_statementsContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="RenpyParser.simple_statements"/>.
 	/// </summary>
@@ -80,6 +80,36 @@ public interface IRenpyParserListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitSimple_statements([NotNull] RenpyParser.Simple_statementsContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="RenpyParser.block"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterBlock([NotNull] RenpyParser.BlockContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RenpyParser.block"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitBlock([NotNull] RenpyParser.BlockContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="RenpyParser.menu"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterMenu([NotNull] RenpyParser.MenuContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RenpyParser.menu"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitMenu([NotNull] RenpyParser.MenuContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="RenpyParser.menu_item"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterMenu_item([NotNull] RenpyParser.Menu_itemContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RenpyParser.menu_item"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitMenu_item([NotNull] RenpyParser.Menu_itemContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="RenpyParser.pass_statement"/>.
 	/// </summary>
