@@ -38,16 +38,16 @@ public partial class RenpyParser : RenpyParserBase {
 	public const int
 		INDENT=1, DEDENT=2, LABEL=3, JUMP=4, CALL=5, PASS=6, RETURN=7, WITH=8, 
 		MENU=9, LPAR=10, LSQB=11, LBRACE=12, RPAR=13, RSQB=14, RBRACE=15, DOT=16, 
-		COLON=17, LABEL_NAME=18, NAME=19, STRING=20, NEWLINE=21, COMMENT=22, WS=23, 
-		EXPLICIT_LINE_JOINING=24, ERRORTOKEN=25;
+		COLON=17, NAME=18, STRING=19, NEWLINE=20, COMMENT=21, WS=22, EXPLICIT_LINE_JOINING=23, 
+		ERRORTOKEN=24;
 	public const int
 		RULE_entire_tree = 0, RULE_statements = 1, RULE_statement = 2, RULE_block = 3, 
 		RULE_simple_statements = 4, RULE_pass_statement = 5, RULE_label = 6, RULE_label_constant = 7, 
-		RULE_jump = 8, RULE_jump_constant = 9, RULE_call = 10, RULE_call_constant = 11, 
-		RULE_return = 12, RULE_return_simple = 13, RULE_say = 14;
+		RULE_label_name = 8, RULE_jump = 9, RULE_jump_constant = 10, RULE_call = 11, 
+		RULE_call_constant = 12, RULE_return = 13, RULE_return_simple = 14, RULE_say = 15;
 	public static readonly string[] ruleNames = {
 		"entire_tree", "statements", "statement", "block", "simple_statements", 
-		"pass_statement", "label", "label_constant", "jump", "jump_constant", 
+		"pass_statement", "label", "label_constant", "label_name", "jump", "jump_constant", 
 		"call", "call_constant", "return", "return_simple", "say"
 	};
 
@@ -58,7 +58,7 @@ public partial class RenpyParser : RenpyParserBase {
 	private static readonly string[] _SymbolicNames = {
 		null, "INDENT", "DEDENT", "LABEL", "JUMP", "CALL", "PASS", "RETURN", "WITH", 
 		"MENU", "LPAR", "LSQB", "LBRACE", "RPAR", "RSQB", "RBRACE", "DOT", "COLON", 
-		"LABEL_NAME", "NAME", "STRING", "NEWLINE", "COMMENT", "WS", "EXPLICIT_LINE_JOINING", 
+		"NAME", "STRING", "NEWLINE", "COMMENT", "WS", "EXPLICIT_LINE_JOINING", 
 		"ERRORTOKEN"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
@@ -133,31 +133,31 @@ public partial class RenpyParser : RenpyParserBase {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 31;
+			State = 33;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 248L) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 262392L) != 0)) {
 				{
-				State = 30;
+				State = 32;
 				statements();
 				}
 			}
 
-			State = 36;
+			State = 38;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			while (_la==NEWLINE) {
 				{
 				{
-				State = 33;
+				State = 35;
 				Match(NEWLINE);
 				}
 				}
-				State = 38;
+				State = 40;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
-			State = 39;
+			State = 41;
 			Match(Eof);
 			}
 		}
@@ -215,35 +215,35 @@ public partial class RenpyParser : RenpyParserBase {
 			int _alt;
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 41;
+			State = 43;
 			statement();
-			State = 50;
+			State = 52;
 			ErrorHandler.Sync(this);
 			_alt = Interpreter.AdaptivePredict(TokenStream,3,Context);
 			while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					{
 					{
-					State = 43;
+					State = 45;
 					ErrorHandler.Sync(this);
 					_la = TokenStream.LA(1);
 					do {
 						{
 						{
-						State = 42;
+						State = 44;
 						Match(NEWLINE);
 						}
 						}
-						State = 45;
+						State = 47;
 						ErrorHandler.Sync(this);
 						_la = TokenStream.LA(1);
 					} while ( _la==NEWLINE );
-					State = 47;
+					State = 49;
 					statement();
 					}
 					} 
 				}
-				State = 52;
+				State = 54;
 				ErrorHandler.Sync(this);
 				_alt = Interpreter.AdaptivePredict(TokenStream,3,Context);
 			}
@@ -294,7 +294,7 @@ public partial class RenpyParser : RenpyParserBase {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 53;
+			State = 55;
 			simple_statements();
 			}
 		}
@@ -347,19 +347,19 @@ public partial class RenpyParser : RenpyParserBase {
 		BlockContext _localctx = new BlockContext(Context, State);
 		EnterRule(_localctx, 6, RULE_block);
 		try {
-			State = 61;
+			State = 63;
 			ErrorHandler.Sync(this);
 			switch (TokenStream.LA(1)) {
 			case NEWLINE:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 55;
-				Match(NEWLINE);
-				State = 56;
-				Match(INDENT);
 				State = 57;
-				statements();
+				Match(NEWLINE);
 				State = 58;
+				Match(INDENT);
+				State = 59;
+				statements();
+				State = 60;
 				Match(DEDENT);
 				}
 				break;
@@ -368,9 +368,10 @@ public partial class RenpyParser : RenpyParserBase {
 			case CALL:
 			case PASS:
 			case RETURN:
+			case NAME:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 60;
+				State = 62;
 				simple_statements();
 				}
 				break;
@@ -405,6 +406,9 @@ public partial class RenpyParser : RenpyParserBase {
 		[System.Diagnostics.DebuggerNonUserCode] public ReturnContext @return() {
 			return GetRuleContext<ReturnContext>(0);
 		}
+		[System.Diagnostics.DebuggerNonUserCode] public SayContext say() {
+			return GetRuleContext<SayContext>(0);
+		}
 		public Simple_statementsContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
@@ -433,42 +437,49 @@ public partial class RenpyParser : RenpyParserBase {
 		Simple_statementsContext _localctx = new Simple_statementsContext(Context, State);
 		EnterRule(_localctx, 8, RULE_simple_statements);
 		try {
-			State = 68;
+			State = 71;
 			ErrorHandler.Sync(this);
 			switch (TokenStream.LA(1)) {
 			case PASS:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 63;
+				State = 65;
 				pass_statement();
 				}
 				break;
 			case JUMP:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 64;
+				State = 66;
 				jump();
 				}
 				break;
 			case LABEL:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 65;
+				State = 67;
 				label();
 				}
 				break;
 			case CALL:
 				EnterOuterAlt(_localctx, 4);
 				{
-				State = 66;
+				State = 68;
 				call();
 				}
 				break;
 			case RETURN:
 				EnterOuterAlt(_localctx, 5);
 				{
-				State = 67;
+				State = 69;
 				@return();
+				}
+				break;
+			case NAME:
+				EnterOuterAlt(_localctx, 6);
+				{
+				State = 70;
+				say();
 				}
 				break;
 			default:
@@ -518,7 +529,7 @@ public partial class RenpyParser : RenpyParserBase {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 70;
+			State = 73;
 			Match(PASS);
 			}
 		}
@@ -567,7 +578,7 @@ public partial class RenpyParser : RenpyParserBase {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 72;
+			State = 75;
 			label_constant();
 			}
 		}
@@ -584,7 +595,9 @@ public partial class RenpyParser : RenpyParserBase {
 
 	public partial class Label_constantContext : ParserRuleContext {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode LABEL() { return GetToken(RenpyParser.LABEL, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode LABEL_NAME() { return GetToken(RenpyParser.LABEL_NAME, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public Label_nameContext label_name() {
+			return GetRuleContext<Label_nameContext>(0);
+		}
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode COLON() { return GetToken(RenpyParser.COLON, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public BlockContext block() {
 			return GetRuleContext<BlockContext>(0);
@@ -619,28 +632,87 @@ public partial class RenpyParser : RenpyParserBase {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 74;
+			State = 77;
 			Match(LABEL);
-			State = 75;
-			Match(LABEL_NAME);
-			State = 79;
+			State = 78;
+			label_name();
+			State = 82;
 			ErrorHandler.Sync(this);
 			switch ( Interpreter.AdaptivePredict(TokenStream,6,Context) ) {
 			case 1:
 				{
-				State = 76;
+				State = 79;
 				Match(COLON);
 				}
 				break;
 			case 2:
 				{
-				State = 77;
+				State = 80;
 				Match(COLON);
-				State = 78;
+				State = 81;
 				block();
 				}
 				break;
 			}
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class Label_nameContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode NAME() { return GetToken(RenpyParser.NAME, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode DOT() { return GetToken(RenpyParser.DOT, 0); }
+		public Label_nameContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_label_name; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			IRenpyParserListener typedListener = listener as IRenpyParserListener;
+			if (typedListener != null) typedListener.EnterLabel_name(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			IRenpyParserListener typedListener = listener as IRenpyParserListener;
+			if (typedListener != null) typedListener.ExitLabel_name(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IRenpyParserVisitor<TResult> typedVisitor = visitor as IRenpyParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitLabel_name(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public Label_nameContext label_name() {
+		Label_nameContext _localctx = new Label_nameContext(Context, State);
+		EnterRule(_localctx, 16, RULE_label_name);
+		int _la;
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 85;
+			ErrorHandler.Sync(this);
+			_la = TokenStream.LA(1);
+			if (_la==DOT) {
+				{
+				State = 84;
+				Match(DOT);
+				}
+			}
+
+			State = 87;
+			Match(NAME);
 			}
 		}
 		catch (RecognitionException re) {
@@ -684,11 +756,11 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public JumpContext jump() {
 		JumpContext _localctx = new JumpContext(Context, State);
-		EnterRule(_localctx, 16, RULE_jump);
+		EnterRule(_localctx, 18, RULE_jump);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 81;
+			State = 89;
 			jump_constant();
 			}
 		}
@@ -705,7 +777,9 @@ public partial class RenpyParser : RenpyParserBase {
 
 	public partial class Jump_constantContext : ParserRuleContext {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode JUMP() { return GetToken(RenpyParser.JUMP, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode LABEL_NAME() { return GetToken(RenpyParser.LABEL_NAME, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public Label_nameContext label_name() {
+			return GetRuleContext<Label_nameContext>(0);
+		}
 		public Jump_constantContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
@@ -732,14 +806,14 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public Jump_constantContext jump_constant() {
 		Jump_constantContext _localctx = new Jump_constantContext(Context, State);
-		EnterRule(_localctx, 18, RULE_jump_constant);
+		EnterRule(_localctx, 20, RULE_jump_constant);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 83;
+			State = 91;
 			Match(JUMP);
-			State = 84;
-			Match(LABEL_NAME);
+			State = 92;
+			label_name();
 			}
 		}
 		catch (RecognitionException re) {
@@ -783,11 +857,11 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public CallContext call() {
 		CallContext _localctx = new CallContext(Context, State);
-		EnterRule(_localctx, 20, RULE_call);
+		EnterRule(_localctx, 22, RULE_call);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 86;
+			State = 94;
 			call_constant();
 			}
 		}
@@ -804,7 +878,9 @@ public partial class RenpyParser : RenpyParserBase {
 
 	public partial class Call_constantContext : ParserRuleContext {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode CALL() { return GetToken(RenpyParser.CALL, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode LABEL_NAME() { return GetToken(RenpyParser.LABEL_NAME, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public Label_nameContext label_name() {
+			return GetRuleContext<Label_nameContext>(0);
+		}
 		public Call_constantContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
@@ -831,14 +907,14 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public Call_constantContext call_constant() {
 		Call_constantContext _localctx = new Call_constantContext(Context, State);
-		EnterRule(_localctx, 22, RULE_call_constant);
+		EnterRule(_localctx, 24, RULE_call_constant);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 88;
+			State = 96;
 			Match(CALL);
-			State = 89;
-			Match(LABEL_NAME);
+			State = 97;
+			label_name();
 			}
 		}
 		catch (RecognitionException re) {
@@ -882,11 +958,11 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public ReturnContext @return() {
 		ReturnContext _localctx = new ReturnContext(Context, State);
-		EnterRule(_localctx, 24, RULE_return);
+		EnterRule(_localctx, 26, RULE_return);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 91;
+			State = 99;
 			return_simple();
 			}
 		}
@@ -929,11 +1005,11 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public Return_simpleContext return_simple() {
 		Return_simpleContext _localctx = new Return_simpleContext(Context, State);
-		EnterRule(_localctx, 26, RULE_return_simple);
+		EnterRule(_localctx, 28, RULE_return_simple);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 93;
+			State = 101;
 			Match(RETURN);
 			}
 		}
@@ -977,13 +1053,13 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public SayContext say() {
 		SayContext _localctx = new SayContext(Context, State);
-		EnterRule(_localctx, 28, RULE_say);
+		EnterRule(_localctx, 30, RULE_say);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 95;
+			State = 103;
 			Match(NAME);
-			State = 96;
+			State = 104;
 			Match(STRING);
 			}
 		}
@@ -999,33 +1075,36 @@ public partial class RenpyParser : RenpyParserBase {
 	}
 
 	private static int[] _serializedATN = {
-		4,1,25,99,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
+		4,1,24,107,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
 		7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,2,13,7,13,2,14,7,14,
-		1,0,3,0,32,8,0,1,0,5,0,35,8,0,10,0,12,0,38,9,0,1,0,1,0,1,1,1,1,4,1,44,
-		8,1,11,1,12,1,45,1,1,5,1,49,8,1,10,1,12,1,52,9,1,1,2,1,2,1,3,1,3,1,3,1,
-		3,1,3,1,3,3,3,62,8,3,1,4,1,4,1,4,1,4,1,4,3,4,69,8,4,1,5,1,5,1,6,1,6,1,
-		7,1,7,1,7,1,7,1,7,3,7,80,8,7,1,8,1,8,1,9,1,9,1,9,1,10,1,10,1,11,1,11,1,
-		11,1,12,1,12,1,13,1,13,1,14,1,14,1,14,1,14,0,0,15,0,2,4,6,8,10,12,14,16,
-		18,20,22,24,26,28,0,0,94,0,31,1,0,0,0,2,41,1,0,0,0,4,53,1,0,0,0,6,61,1,
-		0,0,0,8,68,1,0,0,0,10,70,1,0,0,0,12,72,1,0,0,0,14,74,1,0,0,0,16,81,1,0,
-		0,0,18,83,1,0,0,0,20,86,1,0,0,0,22,88,1,0,0,0,24,91,1,0,0,0,26,93,1,0,
-		0,0,28,95,1,0,0,0,30,32,3,2,1,0,31,30,1,0,0,0,31,32,1,0,0,0,32,36,1,0,
-		0,0,33,35,5,21,0,0,34,33,1,0,0,0,35,38,1,0,0,0,36,34,1,0,0,0,36,37,1,0,
-		0,0,37,39,1,0,0,0,38,36,1,0,0,0,39,40,5,0,0,1,40,1,1,0,0,0,41,50,3,4,2,
-		0,42,44,5,21,0,0,43,42,1,0,0,0,44,45,1,0,0,0,45,43,1,0,0,0,45,46,1,0,0,
-		0,46,47,1,0,0,0,47,49,3,4,2,0,48,43,1,0,0,0,49,52,1,0,0,0,50,48,1,0,0,
-		0,50,51,1,0,0,0,51,3,1,0,0,0,52,50,1,0,0,0,53,54,3,8,4,0,54,5,1,0,0,0,
-		55,56,5,21,0,0,56,57,5,1,0,0,57,58,3,2,1,0,58,59,5,2,0,0,59,62,1,0,0,0,
-		60,62,3,8,4,0,61,55,1,0,0,0,61,60,1,0,0,0,62,7,1,0,0,0,63,69,3,10,5,0,
-		64,69,3,16,8,0,65,69,3,12,6,0,66,69,3,20,10,0,67,69,3,24,12,0,68,63,1,
-		0,0,0,68,64,1,0,0,0,68,65,1,0,0,0,68,66,1,0,0,0,68,67,1,0,0,0,69,9,1,0,
-		0,0,70,71,5,6,0,0,71,11,1,0,0,0,72,73,3,14,7,0,73,13,1,0,0,0,74,75,5,3,
-		0,0,75,79,5,18,0,0,76,80,5,17,0,0,77,78,5,17,0,0,78,80,3,6,3,0,79,76,1,
-		0,0,0,79,77,1,0,0,0,79,80,1,0,0,0,80,15,1,0,0,0,81,82,3,18,9,0,82,17,1,
-		0,0,0,83,84,5,4,0,0,84,85,5,18,0,0,85,19,1,0,0,0,86,87,3,22,11,0,87,21,
-		1,0,0,0,88,89,5,5,0,0,89,90,5,18,0,0,90,23,1,0,0,0,91,92,3,26,13,0,92,
-		25,1,0,0,0,93,94,5,7,0,0,94,27,1,0,0,0,95,96,5,19,0,0,96,97,5,20,0,0,97,
-		29,1,0,0,0,7,31,36,45,50,61,68,79
+		2,15,7,15,1,0,3,0,34,8,0,1,0,5,0,37,8,0,10,0,12,0,40,9,0,1,0,1,0,1,1,1,
+		1,4,1,46,8,1,11,1,12,1,47,1,1,5,1,51,8,1,10,1,12,1,54,9,1,1,2,1,2,1,3,
+		1,3,1,3,1,3,1,3,1,3,3,3,64,8,3,1,4,1,4,1,4,1,4,1,4,1,4,3,4,72,8,4,1,5,
+		1,5,1,6,1,6,1,7,1,7,1,7,1,7,1,7,3,7,83,8,7,1,8,3,8,86,8,8,1,8,1,8,1,9,
+		1,9,1,10,1,10,1,10,1,11,1,11,1,12,1,12,1,12,1,13,1,13,1,14,1,14,1,15,1,
+		15,1,15,1,15,0,0,16,0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,0,0,103,
+		0,33,1,0,0,0,2,43,1,0,0,0,4,55,1,0,0,0,6,63,1,0,0,0,8,71,1,0,0,0,10,73,
+		1,0,0,0,12,75,1,0,0,0,14,77,1,0,0,0,16,85,1,0,0,0,18,89,1,0,0,0,20,91,
+		1,0,0,0,22,94,1,0,0,0,24,96,1,0,0,0,26,99,1,0,0,0,28,101,1,0,0,0,30,103,
+		1,0,0,0,32,34,3,2,1,0,33,32,1,0,0,0,33,34,1,0,0,0,34,38,1,0,0,0,35,37,
+		5,20,0,0,36,35,1,0,0,0,37,40,1,0,0,0,38,36,1,0,0,0,38,39,1,0,0,0,39,41,
+		1,0,0,0,40,38,1,0,0,0,41,42,5,0,0,1,42,1,1,0,0,0,43,52,3,4,2,0,44,46,5,
+		20,0,0,45,44,1,0,0,0,46,47,1,0,0,0,47,45,1,0,0,0,47,48,1,0,0,0,48,49,1,
+		0,0,0,49,51,3,4,2,0,50,45,1,0,0,0,51,54,1,0,0,0,52,50,1,0,0,0,52,53,1,
+		0,0,0,53,3,1,0,0,0,54,52,1,0,0,0,55,56,3,8,4,0,56,5,1,0,0,0,57,58,5,20,
+		0,0,58,59,5,1,0,0,59,60,3,2,1,0,60,61,5,2,0,0,61,64,1,0,0,0,62,64,3,8,
+		4,0,63,57,1,0,0,0,63,62,1,0,0,0,64,7,1,0,0,0,65,72,3,10,5,0,66,72,3,18,
+		9,0,67,72,3,12,6,0,68,72,3,22,11,0,69,72,3,26,13,0,70,72,3,30,15,0,71,
+		65,1,0,0,0,71,66,1,0,0,0,71,67,1,0,0,0,71,68,1,0,0,0,71,69,1,0,0,0,71,
+		70,1,0,0,0,72,9,1,0,0,0,73,74,5,6,0,0,74,11,1,0,0,0,75,76,3,14,7,0,76,
+		13,1,0,0,0,77,78,5,3,0,0,78,82,3,16,8,0,79,83,5,17,0,0,80,81,5,17,0,0,
+		81,83,3,6,3,0,82,79,1,0,0,0,82,80,1,0,0,0,82,83,1,0,0,0,83,15,1,0,0,0,
+		84,86,5,16,0,0,85,84,1,0,0,0,85,86,1,0,0,0,86,87,1,0,0,0,87,88,5,18,0,
+		0,88,17,1,0,0,0,89,90,3,20,10,0,90,19,1,0,0,0,91,92,5,4,0,0,92,93,3,16,
+		8,0,93,21,1,0,0,0,94,95,3,24,12,0,95,23,1,0,0,0,96,97,5,5,0,0,97,98,3,
+		16,8,0,98,25,1,0,0,0,99,100,3,28,14,0,100,27,1,0,0,0,101,102,5,7,0,0,102,
+		29,1,0,0,0,103,104,5,18,0,0,104,105,5,19,0,0,105,31,1,0,0,0,8,33,38,47,
+		52,63,71,82,85
 	};
 
 	public static readonly ATN _ATN =

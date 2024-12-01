@@ -25,7 +25,7 @@ simple_statements
     | label
     | call
     | return
-    //| say
+    | say
     ;
 
 pass_statement
@@ -38,7 +38,11 @@ label
     ;
 
 label_constant
-    : LABEL LABEL_NAME (COLON | COLON block)? // Yes, blocks aren't actually required.
+    : LABEL label_name (COLON | COLON block)? // Yes, blocks aren't actually required.
+    ;
+
+label_name
+    : DOT? NAME
     ;
 
 jump
@@ -46,7 +50,7 @@ jump
     ;
 
 jump_constant
-    : JUMP LABEL_NAME
+    : JUMP label_name
     ;
 
 call
@@ -54,7 +58,7 @@ call
     ;
 
 call_constant
-    : CALL LABEL_NAME
+    : CALL label_name
     ;
 
 return

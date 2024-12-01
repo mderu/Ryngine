@@ -30,10 +30,6 @@ RBRACE           : '}'; // CLOSE_BRACE
 DOT              : '.';
 COLON            : ':';
 
-LABEL_NAME
-    : DOT? NAME
-    ;
-
 NAME
     : ID_START ID_CONTINUE*
     ;

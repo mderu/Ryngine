@@ -52,6 +52,11 @@ namespace AntlrRenpy
             Stack.Add(nameof(EnterLabel_constant));
         }
 
+        public void EnterLabel_name([NotNull] RenpyParser.Label_nameContext context)
+        {
+            Stack.Add(nameof(EnterLabel_name));
+        }
+
         public void EnterPass_statement([NotNull] RenpyParser.Pass_statementContext context)
         {
             Stack.Add(nameof(EnterPass_statement));
@@ -130,6 +135,11 @@ namespace AntlrRenpy
         public void ExitLabel_constant([NotNull] RenpyParser.Label_constantContext context)
         {
             Stack.Add(nameof(ExitLabel_constant));
+        }
+
+        public void ExitLabel_name([NotNull] RenpyParser.Label_nameContext context)
+        {
+            Stack.Add(nameof(ExitLabel_name));
         }
 
         public void ExitPass_statement([NotNull] RenpyParser.Pass_statementContext context)

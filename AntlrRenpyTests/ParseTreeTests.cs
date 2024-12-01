@@ -65,7 +65,7 @@ public class ParseTreeTests
     }
 
     [Fact]
-    public void Test000_empty_file()
+    public void Test000__empty_file()
     {
         (RenpyListener renpyListener, ParserErrorListener errorListener) = Parse("test000__empty_file.rpy");
 
@@ -145,37 +145,19 @@ public class ParseTreeTests
     [Fact]
     public void Test004__say()
     {
-        string renpyFileName = Path.Combine(
-            ".",
-            "TestScripts",
-            "test003__call_and_return.rpy"
-        );
+        (RenpyListener renpyListener, ParserErrorListener errorListener) = Parse("test004__say.rpy");
 
-        string text = File.ReadAllText(renpyFileName);
+        Assert.Empty(errorListener.Errors);
 
-        AntlrInputStream inputStream = new(text);
-        RenpyLexer speakLexer = new(inputStream);
-        CommonTokenStream commonTokenStream = new(speakLexer);
-        RenpyParser parser = new(commonTokenStream);
+        var labels = renpyListener.Script.Labels;
+        Assert.Empty(labels);
 
-        PrintingRenpyParserListener renpyListener = new();
-        ParserErrorListener errorListener = new();
-        parser.AddErrorListener(errorListener);
-        ParseTreeWalker.Default.Walk(renpyListener, parser.entire_tree());
-        Console.WriteLine("");
-        //(RenpyListener renpyListener, ParserErrorListener errorListener) = Parse("test004__say.rpy");
+        var instructions = renpyListener.Script.Instructions;
+        Assert.Single(instructions);
 
-        //Assert.Empty(errorListener.Errors);
-
-        //var labels = renpyListener.Script.Labels;
-        //Assert.Empty(labels);
-
-        //var instructions = renpyListener.Script.Instructions;
-        //Assert.Single(instructions);
-
-        //Assert.Equal(typeof(Say), instructions[0].GetType());
-        //Say instruction = (Say)instructions[0];
-        //Assert.Equal("Some words in the text box.", instruction.Text);
-        //Assert.Equal("Narrator", instruction.Speaker);
+        Assert.Equal(typeof(Say), instructions[0].GetType());
+        Say instruction = (Say)instructions[0];
+        Assert.Equal("Some words in the text box.", instruction.Text);
+        Assert.Equal("Narrator", instruction.Speaker);
     }
 }

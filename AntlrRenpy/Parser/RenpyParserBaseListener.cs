@@ -132,6 +132,18 @@ public partial class RenpyParserBaseListener : IRenpyParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitLabel_constant([NotNull] RenpyParser.Label_constantContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="RenpyParser.label_name"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterLabel_name([NotNull] RenpyParser.Label_nameContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RenpyParser.label_name"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitLabel_name([NotNull] RenpyParser.Label_nameContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="RenpyParser.jump"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
