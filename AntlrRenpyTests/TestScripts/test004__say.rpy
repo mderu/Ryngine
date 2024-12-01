@@ -1,0 +1,1 @@
+Narrator"Some words in the text box."
