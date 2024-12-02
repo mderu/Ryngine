@@ -358,41 +358,106 @@ public class ParseTreeTests
             {
                 AssertType(item, out Assignment assignment);
 
-                AssertType(assignment.Lhs, out Constant<bool> constantBool);
-                Assert.True(constantBool.Value);
-
                 AssertType(assignment.Rhs, out NamedStore namedStore);
                 Assert.Equal("a", namedStore.StoreName);
+
+                AssertType(assignment.Lhs, out Constant<bool> constantBool);
+                Assert.True(constantBool.Value);
             },
             (item) =>
             {
                 AssertType(item, out Assignment assignment);
-                AssertType(assignment.Lhs, out Null constantNull);
 
                 AssertType(assignment.Rhs, out NamedStore namedStore);
                 Assert.Equal("b", namedStore.StoreName);
+                
+                AssertType(assignment.Lhs, out Null constantNull);
             },
             (item) =>
             {
                 AssertType(item, out Assignment assignment);
-                AssertType(assignment.Lhs, out Constant<string> constantString);
-                Assert.Equal("Ryn", constantString.Value);
 
                 AssertType(assignment.Rhs, out NamedStore namedStore);
                 Assert.Equal("name", namedStore.StoreName);
+
+                AssertType(assignment.Lhs, out Constant<string> constantString);
+                Assert.Equal("Ryn", constantString.Value);
             },
             (item) =>
             {
                 AssertType(item, out Assignment assignment);
 
-                AssertType(assignment.Lhs, out ConstantNumber constantNumber);
-                Assert.Equal("1.414", constantNumber.Value);
-
                 AssertType(assignment.Rhs, out MemberAccess memberAccess);
                 Assert.Equal("score", memberAccess.MemberName);
-
                 AssertType(memberAccess.BaseExpression, out NamedStore namedStore);
                 Assert.Equal("persistent", namedStore.StoreName);
+
+                AssertType(assignment.Lhs, out ConstantNumber constantNumber);
+                Assert.Equal("1.414", constantNumber.Value);
+            }
+        );
+    }
+
+    [Fact]
+    public void Test008__sum()
+    {
+        (RenpyListener renpyListener, ParserErrorListener errorListener) = Parse("test008__sum.rpy");
+
+        Assert.Empty(errorListener.Errors);
+
+        var labels = renpyListener.Script.Labels;
+        Assert.Empty(labels);
+
+        var instructions = renpyListener.Script.Instructions;
+
+        Assert.Collection(instructions,
+            (item) =>
+            {
+                AssertType(item, out Assignment assignment);
+
+                AssertType(assignment.Rhs, out NamedStore namedStore);
+                Assert.Equal("a", namedStore.StoreName);
+
+                AssertType(assignment.Lhs, out ConstantNumber constNumber);
+                Assert.Equal("1", constNumber.Value);
+            },
+            (item) =>
+            {
+                AssertType(item, out Assignment assignment);
+
+                AssertType(assignment.Rhs, out NamedStore namedStore);
+                Assert.Equal("b", namedStore.StoreName);
+
+                AssertType(assignment.Lhs, out ConstantNumber constNumber);
+                Assert.Equal("2", constNumber.Value);
+            },
+            (item) =>
+            {
+                AssertType(item, out Assignment assignment);
+
+                AssertType(assignment.Rhs, out NamedStore namedStore);
+                Assert.Equal("c", namedStore.StoreName);
+
+                AssertType(assignment.Lhs, out Add firstAdd);
+                AssertType(firstAdd.B, out Negate firstNegate);
+                AssertType(firstNegate.ExpressionToNegate, out ConstantNumber firstConstant);
+                Assert.Equal("0", firstConstant.Value);
+
+                AssertType(firstAdd.A, out Add secondAdd);
+                AssertType(secondAdd.B, out Negate secondNegate);
+                AssertType(secondNegate.ExpressionToNegate, out NamedStore firstNamedStore);
+                Assert.Equal("a", firstNamedStore.StoreName);
+
+                AssertType(secondAdd.A, out Add thirdAdd);
+                AssertType(thirdAdd.B, out ConstantNumber secondConstant);
+                Assert.Equal("3",  secondConstant.Value);
+
+                AssertType(thirdAdd.A, out Add fourthAdd);
+                AssertType(fourthAdd.B, out NamedStore secondNamedStore);
+                Assert.Equal("b", secondNamedStore.StoreName);
+
+                AssertType(fourthAdd.A, out NamedStore thirdNamedStore);
+                Assert.Equal("a", thirdNamedStore.StoreName);
             }
         );
     }

@@ -173,7 +173,9 @@ namespace AntlrRenpy
             {
                 if (context.PLUS() is not null)
                 {
-                    expressionStack.Push(new Add(expressionStack.Pop(), expressionStack.Pop()));
+                    IExpression lhs = expressionStack.Pop();
+                    IExpression rhs = expressionStack.Pop();
+                    expressionStack.Push(new Add(rhs, lhs));
                 }
                 else if (context.MINUS() is not null)
                 {

@@ -39,6 +39,9 @@
     <None Update="TestScripts\test007__assignment.rpy">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="TestScripts\test008__sum.rpy">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="TestScripts\test006__renpy_strings.rpy">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
