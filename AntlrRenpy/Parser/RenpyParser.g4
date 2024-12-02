@@ -91,7 +91,7 @@ say
     ;
 
 assignment
-    : assignment_rhs EQUALS expression
+    : assignment_lhs EQUALS expression
     ;
 
 //
@@ -127,8 +127,8 @@ strings
     : (STRING)+
     ;
 
-assignment_rhs
-    : assignment_rhs (DOT NAME)
+assignment_lhs
+    : assignment_lhs (DOT NAME)
     | NAME
     ;
 

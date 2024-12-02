@@ -336,17 +336,17 @@ public partial class RenpyParserBaseListener : IRenpyParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitStrings([NotNull] RenpyParser.StringsContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="RenpyParser.assignment_rhs"/>.
+	/// Enter a parse tree produced by <see cref="RenpyParser.assignment_lhs"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterAssignment_rhs([NotNull] RenpyParser.Assignment_rhsContext context) { }
+	public virtual void EnterAssignment_lhs([NotNull] RenpyParser.Assignment_lhsContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="RenpyParser.assignment_rhs"/>.
+	/// Exit a parse tree produced by <see cref="RenpyParser.assignment_lhs"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitAssignment_rhs([NotNull] RenpyParser.Assignment_rhsContext context) { }
+	public virtual void ExitAssignment_lhs([NotNull] RenpyParser.Assignment_lhsContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="RenpyParser.data_accessor"/>.
 	/// <para>The default implementation does nothing.</para>

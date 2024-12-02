@@ -48,13 +48,13 @@ public partial class RenpyParser : RenpyParserBase {
 		RULE_jump = 12, RULE_jump_constant = 13, RULE_call = 14, RULE_call_constant = 15, 
 		RULE_return = 16, RULE_return_simple = 17, RULE_say = 18, RULE_assignment = 19, 
 		RULE_expression = 20, RULE_sum = 21, RULE_primary = 22, RULE_atom = 23, 
-		RULE_strings = 24, RULE_assignment_rhs = 25, RULE_data_accessor = 26;
+		RULE_strings = 24, RULE_assignment_lhs = 25, RULE_data_accessor = 26;
 	public static readonly string[] ruleNames = {
 		"entire_tree", "statements", "statement", "block_statements", "simple_statements", 
 		"block", "menu", "menu_item", "pass_statement", "label", "label_constant", 
 		"label_name", "jump", "jump_constant", "call", "call_constant", "return", 
 		"return_simple", "say", "assignment", "expression", "sum", "primary", 
-		"atom", "strings", "assignment_rhs", "data_accessor"
+		"atom", "strings", "assignment_lhs", "data_accessor"
 	};
 
 	private static readonly string[] _LiteralNames = {
@@ -1318,8 +1318,8 @@ public partial class RenpyParser : RenpyParserBase {
 	}
 
 	public partial class AssignmentContext : ParserRuleContext {
-		[System.Diagnostics.DebuggerNonUserCode] public Assignment_rhsContext assignment_rhs() {
-			return GetRuleContext<Assignment_rhsContext>(0);
+		[System.Diagnostics.DebuggerNonUserCode] public Assignment_lhsContext assignment_lhs() {
+			return GetRuleContext<Assignment_lhsContext>(0);
 		}
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode EQUALS() { return GetToken(RenpyParser.EQUALS, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression() {
@@ -1356,7 +1356,7 @@ public partial class RenpyParser : RenpyParserBase {
 			EnterOuterAlt(_localctx, 1);
 			{
 			State = 154;
-			assignment_rhs(0);
+			assignment_lhs(0);
 			State = 155;
 			Match(EQUALS);
 			State = 156;
@@ -1781,47 +1781,47 @@ public partial class RenpyParser : RenpyParserBase {
 		return _localctx;
 	}
 
-	public partial class Assignment_rhsContext : ParserRuleContext {
+	public partial class Assignment_lhsContext : ParserRuleContext {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode NAME() { return GetToken(RenpyParser.NAME, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public Assignment_rhsContext assignment_rhs() {
-			return GetRuleContext<Assignment_rhsContext>(0);
+		[System.Diagnostics.DebuggerNonUserCode] public Assignment_lhsContext assignment_lhs() {
+			return GetRuleContext<Assignment_lhsContext>(0);
 		}
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode DOT() { return GetToken(RenpyParser.DOT, 0); }
-		public Assignment_rhsContext(ParserRuleContext parent, int invokingState)
+		public Assignment_lhsContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
-		public override int RuleIndex { get { return RULE_assignment_rhs; } }
+		public override int RuleIndex { get { return RULE_assignment_lhs; } }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void EnterRule(IParseTreeListener listener) {
 			IRenpyParserListener typedListener = listener as IRenpyParserListener;
-			if (typedListener != null) typedListener.EnterAssignment_rhs(this);
+			if (typedListener != null) typedListener.EnterAssignment_lhs(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void ExitRule(IParseTreeListener listener) {
 			IRenpyParserListener typedListener = listener as IRenpyParserListener;
-			if (typedListener != null) typedListener.ExitAssignment_rhs(this);
+			if (typedListener != null) typedListener.ExitAssignment_lhs(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IRenpyParserVisitor<TResult> typedVisitor = visitor as IRenpyParserVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitAssignment_rhs(this);
+			if (typedVisitor != null) return typedVisitor.VisitAssignment_lhs(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
 
 	[RuleVersion(0)]
-	public Assignment_rhsContext assignment_rhs() {
-		return assignment_rhs(0);
+	public Assignment_lhsContext assignment_lhs() {
+		return assignment_lhs(0);
 	}
 
-	private Assignment_rhsContext assignment_rhs(int _p) {
+	private Assignment_lhsContext assignment_lhs(int _p) {
 		ParserRuleContext _parentctx = Context;
 		int _parentState = State;
-		Assignment_rhsContext _localctx = new Assignment_rhsContext(Context, _parentState);
-		Assignment_rhsContext _prevctx = _localctx;
+		Assignment_lhsContext _localctx = new Assignment_lhsContext(Context, _parentState);
+		Assignment_lhsContext _prevctx = _localctx;
 		int _startState = 50;
-		EnterRecursionRule(_localctx, 50, RULE_assignment_rhs, _p);
+		EnterRecursionRule(_localctx, 50, RULE_assignment_lhs, _p);
 		try {
 			int _alt;
 			EnterOuterAlt(_localctx, 1);
@@ -1841,8 +1841,8 @@ public partial class RenpyParser : RenpyParserBase {
 					_prevctx = _localctx;
 					{
 					{
-					_localctx = new Assignment_rhsContext(_parentctx, _parentState);
-					PushNewRecursionContext(_localctx, _startState, RULE_assignment_rhs);
+					_localctx = new Assignment_lhsContext(_parentctx, _parentState);
+					PushNewRecursionContext(_localctx, _startState, RULE_assignment_lhs);
 					State = 198;
 					if (!(Precpred(Context, 2))) throw new FailedPredicateException(this, "Precpred(Context, 2)");
 					{
@@ -1925,7 +1925,7 @@ public partial class RenpyParser : RenpyParserBase {
 		switch (ruleIndex) {
 		case 21: return sum_sempred((SumContext)_localctx, predIndex);
 		case 22: return primary_sempred((PrimaryContext)_localctx, predIndex);
-		case 25: return assignment_rhs_sempred((Assignment_rhsContext)_localctx, predIndex);
+		case 25: return assignment_lhs_sempred((Assignment_lhsContext)_localctx, predIndex);
 		}
 		return true;
 	}
@@ -1941,7 +1941,7 @@ public partial class RenpyParser : RenpyParserBase {
 		}
 		return true;
 	}
-	private bool assignment_rhs_sempred(Assignment_rhsContext _localctx, int predIndex) {
+	private bool assignment_lhs_sempred(Assignment_lhsContext _localctx, int predIndex) {
 		switch (predIndex) {
 		case 2: return Precpred(Context, 2);
 		}

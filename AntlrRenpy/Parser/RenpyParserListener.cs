@@ -281,15 +281,15 @@ public interface IRenpyParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitStrings([NotNull] RenpyParser.StringsContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="RenpyParser.assignment_rhs"/>.
+	/// Enter a parse tree produced by <see cref="RenpyParser.assignment_lhs"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterAssignment_rhs([NotNull] RenpyParser.Assignment_rhsContext context);
+	void EnterAssignment_lhs([NotNull] RenpyParser.Assignment_lhsContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="RenpyParser.assignment_rhs"/>.
+	/// Exit a parse tree produced by <see cref="RenpyParser.assignment_lhs"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitAssignment_rhs([NotNull] RenpyParser.Assignment_rhsContext context);
+	void ExitAssignment_lhs([NotNull] RenpyParser.Assignment_lhsContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="RenpyParser.data_accessor"/>.
 	/// </summary>

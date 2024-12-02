@@ -268,14 +268,14 @@ namespace AntlrRenpy
             Stack.Add(new(nameof(ExitStrings), context.GetText()));
         }
 
-        public void EnterAssignment_rhs([NotNull] RenpyParser.Assignment_rhsContext context)
+        public void EnterAssignment_lhs([NotNull] RenpyParser.Assignment_lhsContext context)
         {
-            Stack.Add(new(nameof(EnterAssignment_rhs), context.GetText()));
+            Stack.Add(new(nameof(EnterAssignment_lhs), context.GetText()));
         }
 
-        public void ExitAssignment_rhs([NotNull] RenpyParser.Assignment_rhsContext context)
+        public void ExitAssignment_lhs([NotNull] RenpyParser.Assignment_lhsContext context)
         {
-            Stack.Add(new(nameof(ExitAssignment_rhs), context.GetText()));
+            Stack.Add(new(nameof(ExitAssignment_lhs), context.GetText()));
         }
 
         public void EnterData_accessor([NotNull] RenpyParser.Data_accessorContext context)

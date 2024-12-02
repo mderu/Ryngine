@@ -182,11 +182,11 @@ public interface IRenpyParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitStrings([NotNull] RenpyParser.StringsContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="RenpyParser.assignment_rhs"/>.
+	/// Visit a parse tree produced by <see cref="RenpyParser.assignment_lhs"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitAssignment_rhs([NotNull] RenpyParser.Assignment_rhsContext context);
+	Result VisitAssignment_lhs([NotNull] RenpyParser.Assignment_lhsContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="RenpyParser.data_accessor"/>.
 	/// </summary>

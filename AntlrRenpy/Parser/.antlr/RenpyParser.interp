@@ -92,7 +92,7 @@ sum
 primary
 atom
 strings
-assignment_rhs
+assignment_lhs
 data_accessor
 
 

@@ -210,9 +210,9 @@ namespace AntlrRenpy
             expressionStack.Push(new Constant<string>(stringBuilder.ToString()));
         }
 
-        public override void ExitAssignment_rhs([NotNull] Assignment_rhsContext context)
+        public override void ExitAssignment_lhs([NotNull] Assignment_lhsContext context)
         {
-            if (context.assignment_rhs() is not null)
+            if (context.assignment_lhs() is not null)
             {
                 if (context.NAME() is not null)
                 {
