@@ -2,12 +2,12 @@
 
 namespace AntlrRenpy.Program.Instructions
 {
-    public class Assignment(IExpression rhs, IExpression lhs) : IInstruction
+    public class Assignment(IExpression lhs, IExpression rhs) : IInstruction
     {
-        // RHS = right-hand side.
-        public IExpression Rhs { get; } = rhs;
-
         // LHS = left-hand side.
         public IExpression Lhs { get; } = lhs;
+
+        // RHS = right-hand side.
+        public IExpression Rhs { get; } = rhs;
     }
 }

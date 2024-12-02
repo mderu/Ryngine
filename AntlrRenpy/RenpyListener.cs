@@ -173,17 +173,17 @@ namespace AntlrRenpy
             {
                 if (context.PLUS() is not null)
                 {
-                    IExpression lhs = expressionStack.Pop();
                     IExpression rhs = expressionStack.Pop();
-                    expressionStack.Push(new Add(rhs, lhs));
+                    IExpression lhs = expressionStack.Pop();
+                    expressionStack.Push(new Add(lhs, rhs));
                 }
                 else if (context.MINUS() is not null)
                 {
                     // Negate instead of subtraction. Haven't thought too much about
                     // what that would do for integer edge cases.
-                    IExpression lhs = new Negate(expressionStack.Pop());
-                    IExpression rhs = expressionStack.Pop();
-                    expressionStack.Push(new Add(rhs, lhs));
+                    IExpression rhs = new Negate(expressionStack.Pop());
+                    IExpression lhs = expressionStack.Pop();
+                    expressionStack.Push(new Add(lhs, rhs));
                 }
                 else
                 {

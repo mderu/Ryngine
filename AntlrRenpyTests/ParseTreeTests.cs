@@ -358,41 +358,41 @@ public class ParseTreeTests
             {
                 AssertType(item, out Assignment assignment);
 
-                AssertType(assignment.Rhs, out NamedStore namedStore);
+                AssertType(assignment.Lhs, out NamedStore namedStore);
                 Assert.Equal("a", namedStore.StoreName);
 
-                AssertType(assignment.Lhs, out Constant<bool> constantBool);
+                AssertType(assignment.Rhs, out Constant<bool> constantBool);
                 Assert.True(constantBool.Value);
             },
             (item) =>
             {
                 AssertType(item, out Assignment assignment);
 
-                AssertType(assignment.Rhs, out NamedStore namedStore);
+                AssertType(assignment.Lhs, out NamedStore namedStore);
                 Assert.Equal("b", namedStore.StoreName);
                 
-                AssertType(assignment.Lhs, out Null constantNull);
+                AssertType(assignment.Rhs, out Null constantNull);
             },
             (item) =>
             {
                 AssertType(item, out Assignment assignment);
 
-                AssertType(assignment.Rhs, out NamedStore namedStore);
+                AssertType(assignment.Lhs, out NamedStore namedStore);
                 Assert.Equal("name", namedStore.StoreName);
 
-                AssertType(assignment.Lhs, out Constant<string> constantString);
+                AssertType(assignment.Rhs, out Constant<string> constantString);
                 Assert.Equal("Ryn", constantString.Value);
             },
             (item) =>
             {
                 AssertType(item, out Assignment assignment);
 
-                AssertType(assignment.Rhs, out MemberAccess memberAccess);
+                AssertType(assignment.Lhs, out MemberAccess memberAccess);
                 Assert.Equal("score", memberAccess.MemberName);
                 AssertType(memberAccess.BaseExpression, out NamedStore namedStore);
                 Assert.Equal("persistent", namedStore.StoreName);
 
-                AssertType(assignment.Lhs, out ConstantNumber constantNumber);
+                AssertType(assignment.Rhs, out ConstantNumber constantNumber);
                 Assert.Equal("1.414", constantNumber.Value);
             }
         );
@@ -415,30 +415,30 @@ public class ParseTreeTests
             {
                 AssertType(item, out Assignment assignment);
 
-                AssertType(assignment.Rhs, out NamedStore namedStore);
+                AssertType(assignment.Lhs, out NamedStore namedStore);
                 Assert.Equal("a", namedStore.StoreName);
 
-                AssertType(assignment.Lhs, out ConstantNumber constNumber);
+                AssertType(assignment.Rhs, out ConstantNumber constNumber);
                 Assert.Equal("1", constNumber.Value);
             },
             (item) =>
             {
                 AssertType(item, out Assignment assignment);
 
-                AssertType(assignment.Rhs, out NamedStore namedStore);
+                AssertType(assignment.Lhs, out NamedStore namedStore);
                 Assert.Equal("b", namedStore.StoreName);
 
-                AssertType(assignment.Lhs, out ConstantNumber constNumber);
+                AssertType(assignment.Rhs, out ConstantNumber constNumber);
                 Assert.Equal("2", constNumber.Value);
             },
             (item) =>
             {
                 AssertType(item, out Assignment assignment);
 
-                AssertType(assignment.Rhs, out NamedStore namedStore);
+                AssertType(assignment.Lhs, out NamedStore namedStore);
                 Assert.Equal("c", namedStore.StoreName);
 
-                AssertType(assignment.Lhs, out Add firstAdd);
+                AssertType(assignment.Rhs, out Add firstAdd);
                 AssertType(firstAdd.B, out Negate firstNegate);
                 AssertType(firstNegate.ExpressionToNegate, out ConstantNumber firstConstant);
                 Assert.Equal("0", firstConstant.Value);
