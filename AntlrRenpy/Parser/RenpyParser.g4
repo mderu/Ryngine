@@ -29,6 +29,7 @@ simple_statements
     | call
     | return
     | say
+    | assignment
     ;
 
 block
@@ -87,4 +88,52 @@ return_simple
 say
     : NAME STRING
     | STRING
+    ;
+
+assignment
+    : assignment_rhs EQUALS expression
+    ;
+
+//
+// Expressions
+//
+
+expression
+    : sum
+    ;
+
+// disjunction > conjunction > inversion > comparison > compare_op_bitwise_or_pair > bitwise_or > bitwise_xor > bitwise_and > shift_expr > sum
+sum
+    : sum (PLUS | MINUS) primary
+    | primary
+    ;
+
+// term > factor > power > await primary > primary
+primary
+    : primary ('.' NAME )
+    | atom
+    ;
+
+atom
+    : strings
+    | NAME
+    | TRUE
+    | FALSE
+    | NONE
+    | NUMBER
+    ;
+
+strings
+    : (STRING)+
+    ;
+
+assignment_rhs
+    : assignment_rhs (DOT NAME)
+    | NAME
+    ;
+
+data_accessor
+    : '.' NAME
+ // | '(' arguments? ')'
+ // | '[' slices ']')
     ;

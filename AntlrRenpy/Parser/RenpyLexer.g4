@@ -20,15 +20,22 @@ RETURN : 'return';
 WITH   : 'with';
 MENU   : 'menu';
 
+TRUE   : 'True';
+FALSE  : 'False';
+NONE   : 'None';
+
 LPAR             : '('; // OPEN_PAREN
 LSQB             : '['; // OPEN_BRACK
 LBRACE           : '{'; // OPEN_BRACE
 RPAR             : ')'; // CLOSE_PAREN
 RSQB             : ']'; // CLOSE_BRACK
 RBRACE           : '}'; // CLOSE_BRACE
+PLUS             : '+';
+MINUS            : '-';
 
 DOT              : '.';
 COLON            : ':';
+EQUALS           : '=';
 
 NAME
     : ID_START ID_CONTINUE*
@@ -38,6 +45,32 @@ NAME
 STRING
     : (SHORT_STRING | LONG_STRING)
     ;
+
+// https://docs.python.org/3.12/reference/lexical_analysis.html#numeric-literals
+NUMBER
+    : INTEGER
+    | FLOAT_NUMBER
+    ;
+
+// https://docs.python.org/3.12/reference/lexical_analysis.html#integer-literals
+fragment INTEGER        : DEC_INTEGER | BIN_INTEGER | OCT_INTEGER | HEX_INTEGER;
+fragment DEC_INTEGER    : NON_ZERO_DIGIT ('_'? DIGIT)* | '0'+ ('_'? '0')*;
+fragment BIN_INTEGER    : '0' ('b' | 'B') ('_'? BIN_DIGIT)+;
+fragment OCT_INTEGER    : '0' ('o' | 'O') ('_'? OCT_DIGIT)+;
+fragment HEX_INTEGER    : '0' ('x' | 'X') ('_'? HEX_DIGIT)+;
+fragment NON_ZERO_DIGIT : [1-9];
+fragment DIGIT          : [0-9];
+fragment BIN_DIGIT      : '0' | '1';
+fragment OCT_DIGIT      : [0-7];
+fragment HEX_DIGIT      : DIGIT | [a-f] | [A-F];
+
+// https://docs.python.org/3.12/reference/lexical_analysis.html#floating-point-literals
+fragment FLOAT_NUMBER   : POINT_FLOAT | EXPONENT_FLOAT;
+fragment POINT_FLOAT    : DIGIT_PART? FRACTION | DIGIT_PART '.';
+fragment EXPONENT_FLOAT : (DIGIT_PART | POINT_FLOAT) EXPONENT;
+fragment DIGIT_PART     : DIGIT ('_'? DIGIT)*;
+fragment FRACTION       : '.' DIGIT_PART;
+fragment EXPONENT       : ('e' | 'E') ('+' | '-')? DIGIT_PART;
 
 // https://docs.python.org/3.12/reference/lexical_analysis.html#physical-lines
 NEWLINE : '\r'? '\n'; // Unix, Windows
@@ -87,6 +120,8 @@ fragment STRING_ESCAPE_SEQ // https://docs.python.org/3/reference/lexical_analys
     ;
 
 // https://github.com/RobEin/ANTLR4-parser-for-Python-3.12/tree/main/valid_chars_in_py_identifiers
+// NOTE: Ren'Py ID's consider \u{00a0} .. \u{fffd} to all be valid letters.
+//       I'm not sure if this is true for Python statements. Can be revisited later.
 fragment ID_CONTINUE:
     ID_START
     | '\u{0030}' .. '\u{0039}'

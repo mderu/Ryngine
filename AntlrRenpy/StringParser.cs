@@ -67,7 +67,13 @@ namespace AntlrRenpy
                 // https://www.renpy.org/doc/html/text.html#:~:text=Includes%20an%20additional%20space%20in%20a%20Ren%27Py%20string.%20By%20default%2C%20Ren%27Py%20script%20text%20collapses%20adjacent%20whitespace%20into%20a%20single%20space%20character.
                 else if (curChar == ' ' || curChar == '\t')
                 {
-                    if (capturedWhitespace == '\0')
+                    if (escapeChar == '\\')
+                    {
+                        result.Append(curChar);
+                        escapeChar = '\0';
+                        capturedWhitespace = '\0';
+                    }
+                    else if (capturedWhitespace == '\0')
                     {
                         capturedWhitespace = curChar;
                     }
@@ -78,6 +84,11 @@ namespace AntlrRenpy
                 }
                 else if (curChar == '\\')
                 {
+                    if (capturedWhitespace != '\0')
+                    {
+                        result.Append(capturedWhitespace);
+                        capturedWhitespace = '\0';
+                    }
                     escapeChar = '\\';
                 }
                 else

@@ -17,5 +17,12 @@ namespace AntlrRenpy.Test
             string result = StringParser.Parse("\"a\n\nb\"");
             Xunit.Assert.Equal("a\n\nb", result);
         }
+
+        [Fact]
+        public void Parse_MultipleWhitespace_EscapedSpacesAreRespected()
+        {
+            string result = StringParser.Parse("\"a  \\   b\"");
+            Xunit.Assert.Equal("a   b", result);
+        }
     }
 }

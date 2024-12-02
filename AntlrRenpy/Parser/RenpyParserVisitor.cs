@@ -145,4 +145,52 @@ public interface IRenpyParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitSay([NotNull] RenpyParser.SayContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="RenpyParser.assignment"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitAssignment([NotNull] RenpyParser.AssignmentContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="RenpyParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitExpression([NotNull] RenpyParser.ExpressionContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="RenpyParser.sum"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitSum([NotNull] RenpyParser.SumContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="RenpyParser.primary"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitPrimary([NotNull] RenpyParser.PrimaryContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="RenpyParser.atom"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitAtom([NotNull] RenpyParser.AtomContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="RenpyParser.strings"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitStrings([NotNull] RenpyParser.StringsContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="RenpyParser.assignment_rhs"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitAssignment_rhs([NotNull] RenpyParser.Assignment_rhsContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="RenpyParser.data_accessor"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitData_accessor([NotNull] RenpyParser.Data_accessorContext context);
 }

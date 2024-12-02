@@ -36,6 +36,9 @@
     <None Update="TestScripts\test002__labels_and_jumps.rpy">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="TestScripts\test007__assignment.rpy">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="TestScripts\test006__renpy_strings.rpy">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

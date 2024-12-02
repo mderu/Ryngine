@@ -7,6 +7,9 @@ using AntlrRenpy;
 using AntlrRenpy.Program.Instructions;
 using Assert = Xunit.Assert;
 using System.Diagnostics;
+using System.Reflection.Metadata;
+using AntlrRenpy.Program.Expressions;
+using AntlrRenpy.Program.Expressions.Operators;
 
 public class ParseTreeTests
 {
@@ -317,6 +320,79 @@ public class ParseTreeTests
                 Say say = (Say)item;
                 Assert.Equal("Triple-single quoted string.", say.Text);
                 Assert.Equal("", say.Speaker);
+            }
+        );
+    }
+
+    public class AssertTrue(bool condition) : IDisposable
+    {
+        bool Condition { get; } = condition;
+
+        public void Dispose() {}
+    }
+
+    public static bool AssertType<T1, T2>(T2 baseType, out T1 convertedType)
+    {
+        if (baseType is T1 typedAsOther)
+        {
+            convertedType = typedAsOther;
+            return true;
+        }
+        throw new AssertFailedException($"{baseType} is not of type {typeof(T1)}");
+    }
+
+    [Fact]
+    public void Test007__assignment()
+    {
+        (RenpyListener renpyListener, ParserErrorListener errorListener) = Parse("Test007__assignment.rpy");
+
+        Assert.Empty(errorListener.Errors);
+
+        var labels = renpyListener.Script.Labels;
+        Assert.Empty(labels);
+
+        var instructions = renpyListener.Script.Instructions;
+
+        Assert.Collection(instructions,
+            (item) =>
+            {
+                AssertType(item, out Assignment assignment);
+
+                AssertType(assignment.Lhs, out Constant<bool> constantBool);
+                Assert.True(constantBool.Value);
+
+                AssertType(assignment.Rhs, out NamedStore namedStore);
+                Assert.Equal("a", namedStore.StoreName);
+            },
+            (item) =>
+            {
+                AssertType(item, out Assignment assignment);
+                AssertType(assignment.Lhs, out Null constantNull);
+
+                AssertType(assignment.Rhs, out NamedStore namedStore);
+                Assert.Equal("b", namedStore.StoreName);
+            },
+            (item) =>
+            {
+                AssertType(item, out Assignment assignment);
+                AssertType(assignment.Lhs, out Constant<string> constantString);
+                Assert.Equal("Ryn", constantString.Value);
+
+                AssertType(assignment.Rhs, out NamedStore namedStore);
+                Assert.Equal("name", namedStore.StoreName);
+            },
+            (item) =>
+            {
+                AssertType(item, out Assignment assignment);
+
+                AssertType(assignment.Lhs, out ConstantNumber constantNumber);
+                Assert.Equal("1.414", constantNumber.Value);
+
+                AssertType(assignment.Rhs, out MemberAccess memberAccess);
+                Assert.Equal("score", memberAccess.MemberName);
+
+                AssertType(memberAccess.BaseExpression, out NamedStore namedStore);
+                Assert.Equal("persistent", namedStore.StoreName);
             }
         );
     }
