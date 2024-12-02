@@ -269,4 +269,55 @@ public class ParseTreeTests
             }
         );
     }
+
+    [Fact]
+    public void Test006__renpy_strings()
+    {
+        (RenpyListener renpyListener, ParserErrorListener errorListener) = Parse("test006__renpy_strings.rpy");
+
+        Assert.Empty(errorListener.Errors);
+
+        var labels = renpyListener.Script.Labels;
+        Assert.Empty(labels);
+
+        var instructions = renpyListener.Script.Instructions;
+
+        Assert.Collection(instructions,
+            (item) =>
+            {
+                Assert.True(item is Say);
+                Say say = (Say)item;
+                Assert.Equal("This is one string.", say.Text);
+                Assert.Equal("", say.Speaker);
+            },
+            (item) =>
+            {
+                Assert.True(item is Say);
+                Say say = (Say)item;
+                Assert.Equal("This string continues\n even when the line ends.", say.Text);
+                Assert.Equal("", say.Speaker);
+            },
+            (item) =>
+            {
+                Assert.True(item is Say);
+                Say say = (Say)item;
+                Assert.Equal("This is also a single string,\nthough it's the same in Python so nothing new.\n", say.Text);
+                Assert.Equal("", say.Speaker);
+            },
+            (item) =>
+            {
+                Assert.True(item is Say);
+                Say say = (Say)item;
+                Assert.Equal("Single quoted string.", say.Text);
+                Assert.Equal("", say.Speaker);
+            },
+            (item) =>
+            {
+                Assert.True(item is Say);
+                Say say = (Say)item;
+                Assert.Equal("Triple-single quoted string.", say.Text);
+                Assert.Equal("", say.Speaker);
+            }
+        );
+    }
 }

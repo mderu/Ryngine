@@ -70,8 +70,8 @@ fragment SHORT_STRING
 
 fragment SHORT_STRING_ITEM_FOR_SINGLE_QUOTE : SHORT_STRING_CHAR_NO_SINGLE_QUOTE | STRING_ESCAPE_SEQ;
 fragment SHORT_STRING_ITEM_FOR_DOUBLE_QUOTE : SHORT_STRING_CHAR_NO_DOUBLE_QUOTE | STRING_ESCAPE_SEQ;
-fragment SHORT_STRING_CHAR_NO_SINGLE_QUOTE : ~[\\\r\n'];       // <any source character except "\" or newline or single quote>
-fragment SHORT_STRING_CHAR_NO_DOUBLE_QUOTE : ~[\\\r\n"];       // <any source character except "\" or newline or double quote>
+fragment SHORT_STRING_CHAR_NO_SINGLE_QUOTE : ~[\\'];       // <any source character except "\" or newline or single quote>
+fragment SHORT_STRING_CHAR_NO_DOUBLE_QUOTE : ~[\\"];       // <any source character except "\" or newline or double quote>
 
 fragment LONG_STRING
     : '\'\'\'' LONG_STRING_ITEM*? '\'\'\''
