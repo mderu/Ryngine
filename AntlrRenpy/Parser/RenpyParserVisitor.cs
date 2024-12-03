@@ -92,12 +92,6 @@ public interface IRenpyParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitLabel([NotNull] RenpyParser.LabelContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="RenpyParser.label_constant"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitLabel_constant([NotNull] RenpyParser.Label_constantContext context);
-	/// <summary>
 	/// Visit a parse tree produced by <see cref="RenpyParser.label_name"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -121,12 +115,6 @@ public interface IRenpyParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitCall([NotNull] RenpyParser.CallContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="RenpyParser.call_constant"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitCall_constant([NotNull] RenpyParser.Call_constantContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="RenpyParser.return"/>.
 	/// </summary>

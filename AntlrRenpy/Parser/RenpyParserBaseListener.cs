@@ -156,18 +156,6 @@ public partial class RenpyParserBaseListener : IRenpyParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitLabel([NotNull] RenpyParser.LabelContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="RenpyParser.label_constant"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterLabel_constant([NotNull] RenpyParser.Label_constantContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="RenpyParser.label_constant"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitLabel_constant([NotNull] RenpyParser.Label_constantContext context) { }
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="RenpyParser.label_name"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -215,18 +203,6 @@ public partial class RenpyParserBaseListener : IRenpyParserListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitCall([NotNull] RenpyParser.CallContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="RenpyParser.call_constant"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterCall_constant([NotNull] RenpyParser.Call_constantContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="RenpyParser.call_constant"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitCall_constant([NotNull] RenpyParser.Call_constantContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="RenpyParser.return"/>.
 	/// <para>The default implementation does nothing.</para>

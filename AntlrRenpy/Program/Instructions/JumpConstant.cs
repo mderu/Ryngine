@@ -1,7 +1,9 @@
-﻿namespace AntlrRenpy.Program.Instructions
+﻿using AntlrRenpy.Program.Expressions;
+
+namespace AntlrRenpy.Program.Instructions
 {
-    public class JumpConstant(string jumpToLabel) : IInstruction
+    public class JumpConstant(IExpression jumpExpression) : IInstruction
     {
-        public string label = jumpToLabel;
+        public IExpression Label { get; } = jumpExpression;
     }
 }

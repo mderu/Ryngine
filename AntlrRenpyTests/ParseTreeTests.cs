@@ -168,7 +168,7 @@ public class ParseTreeTests
             (item) => Assert.Equal(typeof(Pass), item.GetType()),
             (item) => Assert.Equal(typeof(ReturnSimple), item.GetType()),
             (item) => Assert.Equal(typeof(Pass), item.GetType()),
-            (item) => Assert.Equal(typeof(CallConstant), item.GetType()),
+            (item) => Assert.Equal(typeof(PushFrame), item.GetType()),
             (item) => Assert.Equal(typeof(Pass), item.GetType())
         );
     }
@@ -458,6 +458,44 @@ public class ParseTreeTests
 
                 AssertType(fourthAdd.A, out NamedStore thirdNamedStore);
                 Assert.Equal("a", thirdNamedStore.StoreName);
+            }
+        );
+    }
+
+    [Fact]
+    public void Test009__labels_with_args()
+    {
+        (RenpyListener renpyListener, ParserErrorListener errorListener) = Parse("test009__labels_with_args.rpy");
+
+        Assert.Empty(errorListener.Errors);
+
+        var labels = renpyListener.Script.Labels;
+        Assert.Collection(labels,
+             (item) =>
+             {
+                 Assert.Equal("speak", item.Key);
+                 Assert.Equal(1, item.Value);
+             }
+        );
+
+        var instructions = renpyListener.Script.Instructions;
+
+        Assert.Collection(instructions,
+            (item) =>
+            {
+                AssertType(item, out PushFrame pushFrame);
+                Assert.Equal("speak", pushFrame.LabelName);
+                // TODO: Argument check
+                Assert.Fail();
+            },
+            (item) =>
+            {
+                AssertType(item, out Say say);
+                Assert.Equal("[text]", say.Text);
+            },
+            (item) =>
+            {
+                AssertType(item, out ReturnSimple say);
             }
         );
     }

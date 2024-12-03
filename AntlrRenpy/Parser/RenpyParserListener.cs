@@ -131,16 +131,6 @@ public interface IRenpyParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitLabel([NotNull] RenpyParser.LabelContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="RenpyParser.label_constant"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterLabel_constant([NotNull] RenpyParser.Label_constantContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="RenpyParser.label_constant"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitLabel_constant([NotNull] RenpyParser.Label_constantContext context);
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="RenpyParser.label_name"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -180,16 +170,6 @@ public interface IRenpyParserListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitCall([NotNull] RenpyParser.CallContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="RenpyParser.call_constant"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterCall_constant([NotNull] RenpyParser.Call_constantContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="RenpyParser.call_constant"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitCall_constant([NotNull] RenpyParser.Call_constantContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="RenpyParser.return"/>.
 	/// </summary>

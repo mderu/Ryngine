@@ -50,11 +50,7 @@ pass_statement
 
 label
     // https://www.renpy.org/doc/html/label.html
-    : label_constant
-    ;
-
-label_constant
-    : LABEL label_name COLON? // blocks aren't actually required.
+    : LABEL label_name ('(' (arguments)? ')')? COLON? // blocks aren't actually required.
     ;
 
 label_name
@@ -70,11 +66,7 @@ jump_constant
     ;
 
 call
-    : call_constant
-    ;
-
-call_constant
-    : CALL expression
+    : CALL label_name ( '(' arguments? ')')?
     ;
 
 return
@@ -127,8 +119,6 @@ atom
 strings
     : (STRING)+
     ;
-
-// single_target
 
 single_target
     : single_subscript_attribute_target

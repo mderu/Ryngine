@@ -1,5 +1,5 @@
-using Antlr4.Runtime;
 using Antlr4.Runtime.Misc;
+using Antlr4.Runtime.Tree;
 using AntlrRenpy.Program;
 using AntlrRenpy.Program.Expressions;
 using AntlrRenpy.Program.Expressions.Operators;
@@ -11,11 +11,21 @@ namespace AntlrRenpy
 {
     public class RenpyListener : RenpyParserBaseListener
     {
-        private Stack<Menu.Builder> menuBuilderStack = new();
-        private Stack<MenuItem.Builder> menuItemBuilderStack = new();
-        private Stack<IExpression> expressionStack = new();
+        private readonly Stack<Menu.Builder> menuBuilderStack = new();
+        private readonly Stack<MenuItem.Builder> menuItemBuilderStack = new();
+        private readonly Stack<IExpression> expressionStack = new();
 
         public Script Script { get; private init; } = new();
+
+        public override void ExitStatement([NotNull] StatementContext context)
+        {
+            // Avoid having resulting expressions accumulate memory.
+            // Expressions should always be confined to its statement.
+            if (expressionStack.Count > 0)
+            {
+                throw new Exception("Expressions have leaked.");
+            }
+        }
 
         public override void EnterPass_statement([NotNull] Pass_statementContext context)
         {
@@ -27,17 +37,22 @@ namespace AntlrRenpy
             Script.AppendInstruction(new ReturnSimple());
         }
 
-        public override void EnterJump_constant([NotNull] Jump_constantContext context)
+        public override void ExitJump_constant([NotNull] Jump_constantContext context)
         {
-            Script.AppendInstruction(new JumpConstant(context.expression().GetText()));
+            Script.AppendInstruction(new JumpConstant(expressionStack.Pop()));
         }
 
-        public override void EnterCall_constant([NotNull] Call_constantContext context)
+        public override void ExitCall([NotNull] CallContext context)
         {
-            Script.AppendInstruction(new CallConstant(context.expression().GetText()));
+            IExpression arguments = (context.arguments() is not null
+                && context.arguments().ChildCount > 0)
+                    ? expressionStack.Pop()
+                    : new Arguments();
+            string labelName = context.label_name().GetText();
+            Script.AppendInstruction(new PushFrame(labelName, arguments));
         }
 
-        public override void EnterLabel_constant([NotNull] Label_constantContext context)
+        public override void EnterLabel([NotNull] LabelContext context)
         {
             Script.InsertLabel(context.label_name().GetText());
         }
@@ -167,7 +182,7 @@ namespace AntlrRenpy
                 {
                     IExpression baseExpression = expressionStack.Pop();
                     IExpression arguments = expressionStack.Pop();
-                    Script.AppendInstruction(new Call(baseExpression, arguments));
+                    expressionStack.Push(new Call(baseExpression, arguments));
                 }
                 else
                 {
@@ -178,7 +193,7 @@ namespace AntlrRenpy
             {
                 IExpression baseExpression = expressionStack.Pop();
                 IExpression sliceExpression = expressionStack.Pop();
-                Script.AppendInstruction(new Call(baseExpression, sliceExpression));
+                expressionStack.Push(new SubscriptAccess(baseExpression, sliceExpression));
             }
             else
             {
@@ -203,7 +218,7 @@ namespace AntlrRenpy
                 {
                     IExpression baseExpression = expressionStack.Pop();
                     IExpression arguments = expressionStack.Pop();
-                    Script.AppendInstruction(new Call(baseExpression, arguments));
+                    expressionStack.Push(new Call(baseExpression, arguments));
                 }
                 else
                 {
@@ -214,7 +229,7 @@ namespace AntlrRenpy
             {
                 IExpression baseExpression = expressionStack.Pop();
                 IExpression sliceExpression = expressionStack.Pop();
-                Script.AppendInstruction(new Call(baseExpression, sliceExpression));
+                expressionStack.Push(new Call(baseExpression, sliceExpression));
             }
             else
             {
