@@ -29,12 +29,12 @@ namespace AntlrRenpy
 
         public override void EnterJump_constant([NotNull] Jump_constantContext context)
         {
-            Script.AppendInstruction(new JumpConstant(context.label_name().GetText()));
+            Script.AppendInstruction(new JumpConstant(context.expression().GetText()));
         }
 
         public override void EnterCall_constant([NotNull] Call_constantContext context)
         {
-            Script.AppendInstruction(new CallConstant(context.label_name().GetText()));
+            Script.AppendInstruction(new CallConstant(context.expression().GetText()));
         }
 
         public override void EnterLabel_constant([NotNull] Label_constantContext context)
@@ -150,6 +150,42 @@ namespace AntlrRenpy
             }
         }
 
+        public override void ExitT_primary([NotNull] T_primaryContext context)
+        {
+            if (context.ChildCount == 1 && context.NAME() is not null)
+            {
+                expressionStack.Push(new NamedStore(context.NAME().GetText()));
+            }
+            else if (context.NAME() is not null)
+            {
+                IExpression baseExpression = expressionStack.Pop();
+                expressionStack.Push(new MemberAccess(baseExpression, context.NAME().GetText()));
+            }
+            else if (context.arguments() is not null)
+            {
+                if (context.arguments().ChildCount == 1)
+                {
+                    IExpression baseExpression = expressionStack.Pop();
+                    IExpression arguments = expressionStack.Pop();
+                    Script.AppendInstruction(new Call(baseExpression, arguments));
+                }
+                else
+                {
+                    // TODO: Pass an empty args object.
+                }
+            }
+            else if (context.slices() is not null)
+            {
+                IExpression baseExpression = expressionStack.Pop();
+                IExpression sliceExpression = expressionStack.Pop();
+                Script.AppendInstruction(new Call(baseExpression, sliceExpression));
+            }
+            else
+            {
+                throw new NotImplementedException($"Rule `primary` currently doesn't support {context.GetText()}");
+            }
+        }
+
         public override void ExitPrimary([NotNull] PrimaryContext context)
         {
             if (context.atom() is not null)
@@ -160,6 +196,25 @@ namespace AntlrRenpy
             {
                 IExpression baseExpression = expressionStack.Pop();
                 expressionStack.Push(new MemberAccess(baseExpression, context.NAME().GetText()));
+            }
+            else if (context.arguments() is not null)
+            {
+                if (context.arguments().ChildCount == 1)
+                {
+                    IExpression baseExpression = expressionStack.Pop();
+                    IExpression arguments = expressionStack.Pop();
+                    Script.AppendInstruction(new Call(baseExpression, arguments));
+                }
+                else
+                {
+                    // TODO: Pass an empty args object.
+                }
+            }
+            else if (context.slices() is not null)
+            {
+                IExpression baseExpression = expressionStack.Pop();
+                IExpression sliceExpression = expressionStack.Pop();
+                Script.AppendInstruction(new Call(baseExpression, sliceExpression));
             }
             else
             {
@@ -200,6 +255,11 @@ namespace AntlrRenpy
             }
         }
 
+        public override void ExitAssignment_expression([NotNull] Assignment_expressionContext context)
+        {
+            expressionStack.Push(new AssignmentExpression(context.NAME().GetText(), expressionStack.Pop()));
+        }
+
         public override void ExitStrings([NotNull] StringsContext context)
         {
             StringBuilder stringBuilder = new();
@@ -210,26 +270,30 @@ namespace AntlrRenpy
             expressionStack.Push(new Constant<string>(stringBuilder.ToString()));
         }
 
-        public override void ExitAssignment_lhs([NotNull] Assignment_lhsContext context)
+        public override void ExitSingle_target([NotNull] Single_targetContext context)
         {
-            if (context.assignment_lhs() is not null)
+            if (context.single_subscript_attribute_target() is not null)
             {
-                if (context.NAME() is not null)
-                {
-                    expressionStack.Push(new MemberAccess(expressionStack.Pop(), context.NAME().GetText()));
-                }
-                else
-                {
-                    throw new NotImplementedException("Recursive `assignment_rhs` reached, but NAME is missing.");
-                }
+                //Handled by ExitSingle_subscript_attribute_target.
             }
             else if (context.NAME() is not null)
             {
                 expressionStack.Push(new NamedStore(context.NAME().GetText()));
             }
-            else
+        }
+
+        public override void ExitSingle_subscript_attribute_target(
+            [NotNull] Single_subscript_attribute_targetContext context)
+        {
+            if (context.NAME() is not null)
             {
-                throw new NotImplementedException($"Rule `assignment_rhs` currently doesn't support {context.GetText()}");
+                expressionStack.Push(new MemberAccess(expressionStack.Pop(), context.NAME().GetText()));
+            }
+            else if (context.slices() is not null)
+            {
+                IExpression sliceExpression = expressionStack.Pop();
+                IExpression baseExpression = expressionStack.Pop();
+                expressionStack.Push(new SubscriptAccess(sliceExpression, baseExpression));
             }
         }
 

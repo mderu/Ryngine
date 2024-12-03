@@ -13,29 +13,30 @@ LABEL  : 'label';
 JUMP   : 'jump';
 CALL   : 'call';
 
-// Not sure if this is supported in Ren'Py, but using this as a placeholder for real statements.
 PASS   : 'pass';
 RETURN : 'return';
-
 WITH   : 'with';
 MENU   : 'menu';
-
 TRUE   : 'True';
 FALSE  : 'False';
 NONE   : 'None';
 
-LPAR             : '('; // OPEN_PAREN
-LSQB             : '['; // OPEN_BRACK
-LBRACE           : '{'; // OPEN_BRACE
-RPAR             : ')'; // CLOSE_PAREN
-RSQB             : ']'; // CLOSE_BRACK
-RBRACE           : '}'; // CLOSE_BRACE
-PLUS             : '+';
-MINUS            : '-';
+LPAR       : '('; // OPEN_PAREN
+LSQB       : '['; // OPEN_BRACK
+LBRACE     : '{'; // OPEN_BRACE
+RPAR       : ')'; // CLOSE_PAREN
+RSQB       : ']'; // CLOSE_BRACK
+RBRACE     : '}'; // CLOSE_BRACE
+PLUS       : '+';
+MINUS      : '-';
 
-DOT              : '.';
-COLON            : ':';
-EQUALS           : '=';
+DOT        : '.';
+COLON      : ':';
+EQUALS     : '=';
+COMMA      : ',';
+STAR       : '*';
+DOUBLESTAR : '**';
+COLONEQUAL : ':=';
 
 NAME
     : ID_START ID_CONTINUE*

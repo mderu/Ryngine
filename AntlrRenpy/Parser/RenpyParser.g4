@@ -66,7 +66,7 @@ jump
     ;
 
 jump_constant
-    : JUMP label_name
+    : JUMP expression
     ;
 
 call
@@ -74,7 +74,7 @@ call
     ;
 
 call_constant
-    : CALL label_name
+    : CALL expression
     ;
 
 return
@@ -91,7 +91,7 @@ say
     ;
 
 assignment
-    : assignment_lhs EQUALS expression
+    : single_target EQUALS expression
     ;
 
 //
@@ -110,7 +110,8 @@ sum
 
 // term > factor > power > await primary > primary
 primary
-    : primary ('.' NAME )
+    //: primary ('.' NAME | genexp | '(' arguments? ')' | '[' slices ']')
+    : primary ('.' NAME | '(' arguments? ')' | '[' slices ']')
     | atom
     ;
 
@@ -127,13 +128,63 @@ strings
     : (STRING)+
     ;
 
-assignment_lhs
-    : assignment_lhs (DOT NAME)
+// single_target
+
+single_target
+    : single_subscript_attribute_target
+    | NAME
+    | '(' single_target ')';
+
+single_subscript_attribute_target
+    : t_primary ('.' NAME | '[' slices ']')
+    ;
+
+t_primary
+    : t_primary  ('.' NAME | genexp | '(' arguments? ')' | '[' slices ']')
     | NAME
     ;
 
-data_accessor
-    : '.' NAME
- // | '(' arguments? ')'
- // | '[' slices ']')
+genexp
+    //: '(' ( assignment_expression | expression) for_if_clauses ')';
+    : '(' ( assignment_expression | expression) ')'
     ;
+
+// FUNCTION CALL ARGUMENTS
+// =======================
+
+arguments
+    : args ','?;
+
+args
+    : (starred_expression | ( assignment_expression | expression)) (',' (starred_expression | ( assignment_expression | expression)))* (',' kwargs )?
+    | kwargs;
+
+kwargs
+    : kwarg_or_starred (',' kwarg_or_starred)* (',' kwarg_or_double_starred (',' kwarg_or_double_starred)*)?
+    | kwarg_or_double_starred (',' kwarg_or_double_starred)*
+    ;
+
+starred_expression
+    : '*' expression;
+
+kwarg_or_double_starred
+    : NAME '=' expression
+    | '**' expression;
+
+kwarg_or_starred
+    : NAME '=' expression
+    | starred_expression;
+
+// Would have expected NAME to be a single_target to allow for assignment to any data store.
+assignment_expression
+    : NAME ':=' expression;
+
+slices
+  //: slice
+    : named_expression
+  //| (slice | starred_expression) (',' (slice | starred_expression))* ','?
+    ;
+
+named_expression
+    : assignment_expression
+    | expression;

@@ -336,29 +336,161 @@ public partial class RenpyParserBaseListener : IRenpyParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitStrings([NotNull] RenpyParser.StringsContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="RenpyParser.assignment_lhs"/>.
+	/// Enter a parse tree produced by <see cref="RenpyParser.single_target"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterAssignment_lhs([NotNull] RenpyParser.Assignment_lhsContext context) { }
+	public virtual void EnterSingle_target([NotNull] RenpyParser.Single_targetContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="RenpyParser.assignment_lhs"/>.
+	/// Exit a parse tree produced by <see cref="RenpyParser.single_target"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitAssignment_lhs([NotNull] RenpyParser.Assignment_lhsContext context) { }
+	public virtual void ExitSingle_target([NotNull] RenpyParser.Single_targetContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="RenpyParser.data_accessor"/>.
+	/// Enter a parse tree produced by <see cref="RenpyParser.single_subscript_attribute_target"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterData_accessor([NotNull] RenpyParser.Data_accessorContext context) { }
+	public virtual void EnterSingle_subscript_attribute_target([NotNull] RenpyParser.Single_subscript_attribute_targetContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="RenpyParser.data_accessor"/>.
+	/// Exit a parse tree produced by <see cref="RenpyParser.single_subscript_attribute_target"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitData_accessor([NotNull] RenpyParser.Data_accessorContext context) { }
+	public virtual void ExitSingle_subscript_attribute_target([NotNull] RenpyParser.Single_subscript_attribute_targetContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="RenpyParser.t_primary"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterT_primary([NotNull] RenpyParser.T_primaryContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RenpyParser.t_primary"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitT_primary([NotNull] RenpyParser.T_primaryContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="RenpyParser.genexp"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterGenexp([NotNull] RenpyParser.GenexpContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RenpyParser.genexp"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitGenexp([NotNull] RenpyParser.GenexpContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="RenpyParser.arguments"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterArguments([NotNull] RenpyParser.ArgumentsContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RenpyParser.arguments"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitArguments([NotNull] RenpyParser.ArgumentsContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="RenpyParser.args"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterArgs([NotNull] RenpyParser.ArgsContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RenpyParser.args"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitArgs([NotNull] RenpyParser.ArgsContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="RenpyParser.kwargs"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterKwargs([NotNull] RenpyParser.KwargsContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RenpyParser.kwargs"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitKwargs([NotNull] RenpyParser.KwargsContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="RenpyParser.starred_expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterStarred_expression([NotNull] RenpyParser.Starred_expressionContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RenpyParser.starred_expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitStarred_expression([NotNull] RenpyParser.Starred_expressionContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="RenpyParser.kwarg_or_double_starred"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterKwarg_or_double_starred([NotNull] RenpyParser.Kwarg_or_double_starredContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RenpyParser.kwarg_or_double_starred"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitKwarg_or_double_starred([NotNull] RenpyParser.Kwarg_or_double_starredContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="RenpyParser.kwarg_or_starred"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterKwarg_or_starred([NotNull] RenpyParser.Kwarg_or_starredContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RenpyParser.kwarg_or_starred"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitKwarg_or_starred([NotNull] RenpyParser.Kwarg_or_starredContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="RenpyParser.assignment_expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterAssignment_expression([NotNull] RenpyParser.Assignment_expressionContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RenpyParser.assignment_expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitAssignment_expression([NotNull] RenpyParser.Assignment_expressionContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="RenpyParser.slices"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterSlices([NotNull] RenpyParser.SlicesContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RenpyParser.slices"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitSlices([NotNull] RenpyParser.SlicesContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="RenpyParser.named_expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterNamed_expression([NotNull] RenpyParser.Named_expressionContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RenpyParser.named_expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitNamed_expression([NotNull] RenpyParser.Named_expressionContext context) { }
 
 	/// <inheritdoc/>
 	/// <remarks>The default implementation does nothing.</remarks>

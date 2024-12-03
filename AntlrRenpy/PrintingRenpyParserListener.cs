@@ -268,24 +268,134 @@ namespace AntlrRenpy
             Stack.Add(new(nameof(ExitStrings), context.GetText()));
         }
 
-        public void EnterAssignment_lhs([NotNull] RenpyParser.Assignment_lhsContext context)
+        public void EnterSingle_target([NotNull] RenpyParser.Single_targetContext context)
         {
-            Stack.Add(new(nameof(EnterAssignment_lhs), context.GetText()));
+            Stack.Add(new(nameof(EnterSingle_target), context.GetText()));
         }
 
-        public void ExitAssignment_lhs([NotNull] RenpyParser.Assignment_lhsContext context)
+        public void ExitSingle_target([NotNull] RenpyParser.Single_targetContext context)
         {
-            Stack.Add(new(nameof(ExitAssignment_lhs), context.GetText()));
+            Stack.Add(new(nameof(ExitSingle_target), context.GetText()));
         }
 
-        public void EnterData_accessor([NotNull] RenpyParser.Data_accessorContext context)
+        public void EnterSingle_subscript_attribute_target([NotNull] RenpyParser.Single_subscript_attribute_targetContext context)
         {
-            Stack.Add(new(nameof(EnterData_accessor), context.GetText()));
+            Stack.Add(new(nameof(EnterSingle_subscript_attribute_target), context.GetText()));
         }
 
-        public void ExitData_accessor([NotNull] RenpyParser.Data_accessorContext context)
+        public void ExitSingle_subscript_attribute_target([NotNull] RenpyParser.Single_subscript_attribute_targetContext context)
         {
-            Stack.Add(new(nameof(ExitData_accessor), context.GetText()));
+            Stack.Add(new(nameof(ExitSingle_subscript_attribute_target), context.GetText()));
+        }
+
+        public void EnterT_primary([NotNull] RenpyParser.T_primaryContext context)
+        {
+            Stack.Add(new(nameof(EnterT_primary), context.GetText()));
+        }
+
+        public void ExitT_primary([NotNull] RenpyParser.T_primaryContext context)
+        {
+            Stack.Add(new(nameof(ExitT_primary), context.GetText()));
+        }
+
+        public void EnterGenexp([NotNull] RenpyParser.GenexpContext context)
+        {
+            Stack.Add(new(nameof(EnterGenexp), context.GetText()));
+        }
+
+        public void ExitGenexp([NotNull] RenpyParser.GenexpContext context)
+        {
+            Stack.Add(new(nameof(ExitGenexp), context.GetText()));
+        }
+
+        public void EnterArguments([NotNull] RenpyParser.ArgumentsContext context)
+        {
+            Stack.Add(new(nameof(EnterArguments), context.GetText()));
+        }
+
+        public void ExitArguments([NotNull] RenpyParser.ArgumentsContext context)
+        {
+            Stack.Add(new(nameof(ExitArguments), context.GetText()));
+        }
+
+        public void EnterArgs([NotNull] RenpyParser.ArgsContext context)
+        {
+            Stack.Add(new(nameof(EnterArgs), context.GetText()));
+        }
+
+        public void ExitArgs([NotNull] RenpyParser.ArgsContext context)
+        {
+            Stack.Add(new(nameof(ExitArgs), context.GetText()));
+        }
+
+        public void EnterKwargs([NotNull] RenpyParser.KwargsContext context)
+        {
+            Stack.Add(new(nameof(EnterKwargs), context.GetText()));
+        }
+
+        public void ExitKwargs([NotNull] RenpyParser.KwargsContext context)
+        {
+            Stack.Add(new(nameof(ExitKwargs), context.GetText()));
+        }
+
+        public void EnterStarred_expression([NotNull] RenpyParser.Starred_expressionContext context)
+        {
+            Stack.Add(new(nameof(EnterStarred_expression), context.GetText()));
+        }
+
+        public void ExitStarred_expression([NotNull] RenpyParser.Starred_expressionContext context)
+        {
+            Stack.Add(new(nameof(ExitStarred_expression), context.GetText()));
+        }
+
+        public void EnterKwarg_or_double_starred([NotNull] RenpyParser.Kwarg_or_double_starredContext context)
+        {
+            Stack.Add(new(nameof(EnterKwarg_or_double_starred), context.GetText()));
+        }
+
+        public void ExitKwarg_or_double_starred([NotNull] RenpyParser.Kwarg_or_double_starredContext context)
+        {
+            Stack.Add(new(nameof(ExitKwarg_or_double_starred), context.GetText()));
+        }
+
+        public void EnterKwarg_or_starred([NotNull] RenpyParser.Kwarg_or_starredContext context)
+        {
+            Stack.Add(new(nameof(EnterKwarg_or_starred), context.GetText()));
+        }
+
+        public void ExitKwarg_or_starred([NotNull] RenpyParser.Kwarg_or_starredContext context)
+        {
+            Stack.Add(new(nameof(ExitKwarg_or_starred), context.GetText()));
+        }
+
+        public void EnterAssignment_expression([NotNull] RenpyParser.Assignment_expressionContext context)
+        {
+            Stack.Add(new(nameof(EnterAssignment_expression), context.GetText()));
+        }
+
+        public void ExitAssignment_expression([NotNull] RenpyParser.Assignment_expressionContext context)
+        {
+            Stack.Add(new(nameof(ExitAssignment_expression), context.GetText()));
+        }
+
+        public void EnterSlices([NotNull] RenpyParser.SlicesContext context)
+        {
+            Stack.Add(new(nameof(EnterSlices), context.GetText()));
+        }
+
+        public void ExitSlices([NotNull] RenpyParser.SlicesContext context)
+        {
+            Stack.Add(new(nameof(ExitSlices), context.GetText()));
+        }
+
+        public void EnterNamed_expression([NotNull] RenpyParser.Named_expressionContext context)
+        {
+            Stack.Add(new(nameof(EnterNamed_expression), context.GetText()));
+        }
+
+        public void ExitNamed_expression([NotNull] RenpyParser.Named_expressionContext context)
+        {
+            Stack.Add(new(nameof(ExitNamed_expression), context.GetText()));
         }
 
         public void VisitTerminal(ITerminalNode node)
