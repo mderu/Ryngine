@@ -9,6 +9,7 @@ using Assert = Xunit.Assert;
 using System.Diagnostics;
 using AntlrRenpy.Program.Expressions;
 using AntlrRenpy.Program.Expressions.Operators;
+using AntlrRenpy.Listener;
 
 public class ParseTreeTests
 {

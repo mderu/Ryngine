@@ -7,12 +7,10 @@ using AntlrRenpy.Program.Instructions;
 using System.Text;
 using static RenpyParser;
 
-namespace AntlrRenpy
+namespace AntlrRenpy.Listener
 {
-    public class RenpyListener : RenpyParserBaseListener
+    public partial class RenpyListener : RenpyParserBaseListener
     {
-        private readonly Stack<Menu.Builder> menuBuilderStack = [];
-        private readonly Stack<MenuItem.Builder> menuItemBuilderStack = [];
         private readonly Stack<IExpression> expressionStack = [];
         private readonly Queue<Parameter> parameterQueue = [];
         private readonly Stack<int> labelStartStack = [];
@@ -46,7 +44,7 @@ namespace AntlrRenpy
 
         public override void ExitCall([NotNull] CallContext context)
         {
-            Arguments arguments = (context.arguments() is not null)
+            Arguments arguments = context.arguments() is not null
                     ? (Arguments)expressionStack.Pop()
                     : new();
             string labelName = context.label_name().GetText();
@@ -79,7 +77,7 @@ namespace AntlrRenpy
             List<string> paramNames = [];
             Dictionary<string, IExpression> defaultValues = [];
 
-            while(parameterQueue.Count > 0)
+            while (parameterQueue.Count > 0)
             {
                 Parameter curParam = parameterQueue.Dequeue();
                 paramNames.Add(curParam.Name);
@@ -168,40 +166,6 @@ namespace AntlrRenpy
             }
 
             menuBuilderStack.Push(newMenuBuilder);
-        }
-
-        public override void ExitMenu([NotNull] MenuContext context)
-        {
-            // Handle the label portion of the menu.
-            string labelName = context.label_name()?.GetText() ?? "";
-            // `menu` takes in arguments, not parameters. These arguments seem to be specific
-            // See https://www.renpy.org/doc/html/menus.html#menu-arguments.
-            InsertLabel(labelName, parametersContext: null);
-
-            // Update the menu placeholder.
-            Menu.Builder builder = menuBuilderStack.Pop();
-            Menu menu = builder.Build();
-            Script.ReplacePlaceholder(builder.SelfInstructionIndex, builder, menu);
-        }
-
-        public override void EnterMenu_item([NotNull] Menu_itemContext context)
-        {
-            string caption = StringParser.Parse(context.STRING().GetText());
-            int startingIndex = Script.Instructions.Count;
-
-            MenuItem.Builder builder = new();
-            builder.SetCaption(caption);
-            builder.SetStartInstructionIndex(startingIndex);
-            menuItemBuilderStack.Push(builder);
-        }
-
-        public override void ExitMenu_item([NotNull] Menu_itemContext context)
-        {
-            MenuItem.Builder builder = menuItemBuilderStack.Pop();
-
-            builder.SetEndInstructionIndex(Script.Instructions.Count);
-
-            menuBuilderStack.Peek().AddMenuItem(builder.Build());
         }
 
         public override void ExitAtom([NotNull] AtomContext context)
@@ -376,7 +340,7 @@ namespace AntlrRenpy
             }
 
             expressionStack.Push(new Arguments(
-                arguments: [.. argStack, .. kwargs?.OrderedArguments ?? []], 
+                arguments: [.. argStack, .. kwargs?.OrderedArguments ?? []],
                 keywordArguments: kwargs?.KeywordArguments));
         }
 
