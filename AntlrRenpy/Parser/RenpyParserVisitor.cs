@@ -140,6 +140,60 @@ public interface IRenpyParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitAssignment([NotNull] RenpyParser.AssignmentContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="RenpyParser.parameters"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitParameters([NotNull] RenpyParser.ParametersContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="RenpyParser.kwds"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitKwds([NotNull] RenpyParser.KwdsContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="RenpyParser.param_no_default"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitParam_no_default([NotNull] RenpyParser.Param_no_defaultContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="RenpyParser.param_with_default"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitParam_with_default([NotNull] RenpyParser.Param_with_defaultContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="RenpyParser.param"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitParam([NotNull] RenpyParser.ParamContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="RenpyParser.annotation"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitAnnotation([NotNull] RenpyParser.AnnotationContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="RenpyParser.default_assignment"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitDefault_assignment([NotNull] RenpyParser.Default_assignmentContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="RenpyParser.type_comment"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitType_comment([NotNull] RenpyParser.Type_commentContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="RenpyParser.star_expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitStar_expression([NotNull] RenpyParser.Star_expressionContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="RenpyParser.expression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

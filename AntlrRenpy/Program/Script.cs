@@ -4,10 +4,10 @@ namespace AntlrRenpy.Program
 {
     public class Script
     {
-        private readonly Dictionary<string, int> labels = new();
+        private readonly Dictionary<string, Label> labels = new();
         private readonly List<IInstruction> instructions = new();
 
-        public IReadOnlyDictionary<string, int> Labels => labels.AsReadOnly();
+        public IReadOnlyDictionary<string, Label> Labels => labels.AsReadOnly();
         public IReadOnlyList<IInstruction> Instructions => instructions.AsReadOnly();
 
         public void AppendInstruction(IInstruction instruction)
@@ -15,9 +15,11 @@ namespace AntlrRenpy.Program
             instructions.Add(instruction);
         }
 
-        public void InsertLabel(string label)
+        public int NextInstructionIndex => instructions.Count;
+
+        public void InsertLabel(Label label)
         {
-            labels[label] = instructions.Count;
+            labels[label.Name] = label;
         }
 
         public void ReplacePlaceholder<T>(int index, object requester, T replacement)

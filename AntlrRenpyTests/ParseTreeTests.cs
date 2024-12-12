@@ -7,7 +7,6 @@ using AntlrRenpy;
 using AntlrRenpy.Program.Instructions;
 using Assert = Xunit.Assert;
 using System.Diagnostics;
-using System.Reflection.Metadata;
 using AntlrRenpy.Program.Expressions;
 using AntlrRenpy.Program.Expressions.Operators;
 
@@ -130,12 +129,12 @@ public class ParseTreeTests
 
         var labels = renpyListener.Script.Labels;
         Assert.Collection(labels,
-            (item) => { Assert.Equal("myLabelName", item.Key); Assert.Equal(2, item.Value); },
-            (item) => { Assert.Equal("otherLabel", item.Key); Assert.Equal(3, item.Value); },
-            (item) => { Assert.Equal("anotherLabel", item.Key); Assert.Equal(4, item.Value); },
-            (item) => { Assert.Equal("multiLabel0", item.Key); Assert.Equal(5, item.Value); },
-            (item) => { Assert.Equal("multiLabel1", item.Key); Assert.Equal(5, item.Value); },
-            (item) => { Assert.Equal("multiLabel2", item.Key); Assert.Equal(5, item.Value); }
+            (item) => { Assert.Equal("myLabelName", item.Key); Assert.Equal(2, item.Value.InstructionIndex); },
+            (item) => { Assert.Equal("otherLabel", item.Key); Assert.Equal(3, item.Value.InstructionIndex); },
+            (item) => { Assert.Equal("anotherLabel", item.Key); Assert.Equal(4, item.Value.InstructionIndex); },
+            (item) => { Assert.Equal("multiLabel0", item.Key); Assert.Equal(5, item.Value.InstructionIndex); },
+            (item) => { Assert.Equal("multiLabel1", item.Key); Assert.Equal(5, item.Value.InstructionIndex); },
+            (item) => { Assert.Equal("multiLabel2", item.Key); Assert.Equal(5, item.Value.InstructionIndex); }
         );
 
         var instructions = renpyListener.Script.Instructions;
@@ -158,8 +157,8 @@ public class ParseTreeTests
 
         var labels = renpyListener.Script.Labels;
         Assert.Collection(labels,
-            (item) => { Assert.Equal("myLabel", item.Key); Assert.Equal(1, item.Value); },
-            (item) => { Assert.Equal("skipMyLabel", item.Key); Assert.Equal(3, item.Value); }
+            (item) => { Assert.Equal("myLabel", item.Key); Assert.Equal(1, item.Value.InstructionIndex); },
+            (item) => { Assert.Equal("skipMyLabel", item.Key); Assert.Equal(3, item.Value.InstructionIndex); }
         );
 
         var instructions = renpyListener.Script.Instructions;
@@ -212,7 +211,7 @@ public class ParseTreeTests
 
         var labels = renpyListener.Script.Labels;
         Assert.Collection(labels,
-            (item) => { Assert.Equal("expectedMenuLabel", item.Key); Assert.Equal(0, item.Value); }
+            (item) => { Assert.Equal("expectedMenuLabel", item.Key); Assert.Equal(0, item.Value.InstructionIndex); }
         );
 
         var instructions = renpyListener.Script.Instructions;
@@ -474,7 +473,7 @@ public class ParseTreeTests
              (item) =>
              {
                  Assert.Equal("speak", item.Key);
-                 Assert.Equal(1, item.Value);
+                 Assert.Equal(1, item.Value.InstructionIndex);
              }
         );
 
@@ -485,8 +484,13 @@ public class ParseTreeTests
             {
                 AssertType(item, out PushFrame pushFrame);
                 Assert.Equal("speak", pushFrame.LabelName);
-                // TODO: Argument check
-                Assert.Fail();
+                Assert.Collection(pushFrame.Arguments.OrderedArguments,
+                    (item) =>
+                    {
+                        AssertType(item, out Constant<string> constant);
+                        Assert.Equal("Hello World!", constant.Value);
+                    }
+                );
             },
             (item) =>
             {

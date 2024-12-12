@@ -29,6 +29,8 @@ RSQB       : ']'; // CLOSE_BRACK
 RBRACE     : '}'; // CLOSE_BRACE
 PLUS       : '+';
 MINUS      : '-';
+ARROW      : '->';
+SLASH      : '/';
 
 DOT        : '.';
 COLON      : ':';
@@ -80,11 +82,6 @@ NEWLINE : '\r'? '\n'; // Unix, Windows
 COMMENT : '#' ~[\r\n]*               -> channel(HIDDEN);
 
 // https://docs.python.org/3.12/reference/lexical_analysis.html#whitespace-between-tokens
-// TODO(mderu): No idea why the hidden channel isn't hiding.
-//              Switched to skip, but should come back and fix this. 
-//              Someone else hit the same problem on SO:
-//              https://stackoverflow.com/questions/34852332/switch-commontokenstream-to-ignore-or-enable-whitespace
-//WS : [ \t\f]+                        -> skip;
 WS : [ \t\f]+                        -> channel(HIDDEN);
 
 // https://docs.python.org/3.12/reference/lexical_analysis.html#explicit-line-joining

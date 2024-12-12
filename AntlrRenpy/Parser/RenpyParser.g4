@@ -37,7 +37,7 @@ block
     ;
 
 menu
-    : MENU label_name? COLON NEWLINE INDENT (say NEWLINE)? (menu_item)+ DEDENT
+    : MENU (label_name)? COLON NEWLINE INDENT (say NEWLINE)? (menu_item)+ DEDENT
     ;
 
 menu_item
@@ -50,7 +50,7 @@ pass_statement
 
 label
     // https://www.renpy.org/doc/html/label.html
-    : LABEL label_name ('(' (arguments)? ')')? COLON? // blocks aren't actually required.
+    : LABEL label_name ('(' (parameters) ')')? COLON? // blocks aren't actually required.
     ;
 
 label_name
@@ -86,9 +86,55 @@ assignment
     : single_target EQUALS expression
     ;
 
+parameters
+    // SyntaxError: at least one argument must precede /
+    // SyntaxError: named arguments must follow bare *
+    : (((param_no_default+ param_with_default*) | (param_no_default* param_with_default+)) ('/' ','))? param_with_default*                   (('*' ',')? param_with_default+)? kwds?
+    |                                                                   (param_no_default+ ('/' ','))? param_no_default* param_with_default* (('*' ',')? param_with_default+)? kwds?
+    |                                                                   (param_no_default+ ('/' ','))? param_no_default*                     (('*' ',')? ((param_no_default+ param_with_default*) | (param_no_default* param_with_default+)))? kwds?
+    ;
+    //: slash_no_default param_no_default* param_with_default* star_etc?
+    //| slash_with_default param_with_default* star_etc?
+    //| param_no_default+ param_with_default* star_etc?
+    //| param_with_default+ star_etc?
+    //| star_etc;
+
+kwds
+    : '**' param_no_default;
+
+param_no_default
+    : param ','? type_comment?
+    ;
+
+param_with_default
+    : param default_assignment ','? type_comment?
+    ;
+
+param
+    : NAME annotation?
+    ;
+
+annotation
+    : ':' expression
+    ;
+
+default_assignment
+    : '=' expression
+    ;
+
+// No idea what the best way to parse this is, but I think type comments
+// are a subset of expressions.
+type_comment
+    : '->' expression;
+
 //
 // Expressions
 //
+
+star_expression
+    //: '*' bitwise_or
+    : '*' sum
+    | expression;
 
 expression
     : sum
@@ -149,6 +195,7 @@ args
     : (starred_expression | ( assignment_expression | expression)) (',' (starred_expression | ( assignment_expression | expression)))* (',' kwargs )?
     | kwargs;
 
+// More like kwargs-ish, since it allows starred_expression's.
 kwargs
     : kwarg_or_starred (',' kwarg_or_starred)* (',' kwarg_or_double_starred (',' kwarg_or_double_starred)*)?
     | kwarg_or_double_starred (',' kwarg_or_double_starred)*

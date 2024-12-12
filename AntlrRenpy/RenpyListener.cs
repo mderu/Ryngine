@@ -11,9 +11,11 @@ namespace AntlrRenpy
 {
     public class RenpyListener : RenpyParserBaseListener
     {
-        private readonly Stack<Menu.Builder> menuBuilderStack = new();
-        private readonly Stack<MenuItem.Builder> menuItemBuilderStack = new();
-        private readonly Stack<IExpression> expressionStack = new();
+        private readonly Stack<Menu.Builder> menuBuilderStack = [];
+        private readonly Stack<MenuItem.Builder> menuItemBuilderStack = [];
+        private readonly Stack<IExpression> expressionStack = [];
+        private readonly Queue<Parameter> parameterQueue = [];
+        private readonly Stack<int> labelStartStack = [];
 
         public Script Script { get; private init; } = new();
 
@@ -44,17 +46,82 @@ namespace AntlrRenpy
 
         public override void ExitCall([NotNull] CallContext context)
         {
-            IExpression arguments = (context.arguments() is not null
-                && context.arguments().ChildCount > 0)
-                    ? expressionStack.Pop()
-                    : new Arguments();
+            Arguments arguments = (context.arguments() is not null)
+                    ? (Arguments)expressionStack.Pop()
+                    : new();
             string labelName = context.label_name().GetText();
             Script.AppendInstruction(new PushFrame(labelName, arguments));
         }
 
+        public override void ExitParam_no_default([NotNull] Param_no_defaultContext context)
+        {
+            string parameterName = context.param().NAME().GetText();
+            parameterQueue.Enqueue(new Parameter(parameterName));
+        }
+
+        public override void ExitParam_with_default([NotNull] Param_with_defaultContext context)
+        {
+            string parameterName = context.param().NAME().GetText();
+            IExpression defaultValue = expressionStack.Pop();
+            parameterQueue.Enqueue(new Parameter(parameterName, defaultValue));
+        }
+
+        public override void EnterParameters([NotNull] ParametersContext context)
+        {
+            if (parameterQueue.Count > 0)
+            {
+                throw new InvalidOperationException("Began parameters with items still in the parameter queue.");
+            }
+        }
+
+        public override void ExitParameters([NotNull] ParametersContext context)
+        {
+            List<string> paramNames = [];
+            Dictionary<string, IExpression> defaultValues = [];
+
+            while(parameterQueue.Count > 0)
+            {
+                Parameter curParam = parameterQueue.Dequeue();
+                paramNames.Add(curParam.Name);
+
+                if (curParam.DefaultValue is not null)
+                {
+                    defaultValues[curParam.Name] = curParam.DefaultValue;
+                }
+            }
+
+            int numPositionalParameters = 0;
+            int numNameOnlyParameters = 0;
+            for (int i = 0; i < context.ChildCount; i++)
+            {
+                if (context.children[i] == context.SLASH())
+                {
+                    numPositionalParameters = i - 1;
+                }
+                else if (context.children[i] == context.STAR())
+                {
+                    numNameOnlyParameters = context.ChildCount - i - 1;
+
+                    // Subtract the non-parameters ('/' ',') if they were present.
+                    if (numPositionalParameters > 0)
+                    {
+                        numNameOnlyParameters -= 2;
+                    }
+                }
+            }
+
+            expressionStack.Push(new Parameters(paramNames, defaultValues, numPositionalParameters, numNameOnlyParameters));
+        }
+
         public override void EnterLabel([NotNull] LabelContext context)
         {
-            Script.InsertLabel(context.label_name().GetText());
+            labelStartStack.Push(Script.NextInstructionIndex);
+        }
+
+        public override void ExitLabel([NotNull] LabelContext context)
+        {
+            string labelName = context.label_name().GetText();
+            InsertLabel(labelName, context.parameters());
         }
 
         public override void EnterSay([NotNull] SayContext context)
@@ -75,7 +142,7 @@ namespace AntlrRenpy
             var labelNameContext = context.label_name();
             if (labelNameContext is not null)
             {
-                Script.InsertLabel(context.label_name().GetText());
+                labelStartStack.Push(Script.NextInstructionIndex);
             }
 
             Menu.Builder newMenuBuilder = new(Script.Instructions.Count);
@@ -105,10 +172,15 @@ namespace AntlrRenpy
 
         public override void ExitMenu([NotNull] MenuContext context)
         {
+            // Handle the label portion of the menu.
+            string labelName = context.label_name()?.GetText() ?? "";
+            // `menu` takes in arguments, not parameters. These arguments seem to be specific
+            // See https://www.renpy.org/doc/html/menus.html#menu-arguments.
+            InsertLabel(labelName, parametersContext: null);
+
+            // Update the menu placeholder.
             Menu.Builder builder = menuBuilderStack.Pop();
-
             Menu menu = builder.Build();
-
             Script.ReplacePlaceholder(builder.SelfInstructionIndex, builder, menu);
         }
 
@@ -285,6 +357,77 @@ namespace AntlrRenpy
             expressionStack.Push(new Constant<string>(stringBuilder.ToString()));
         }
 
+        public override void ExitArgs([NotNull] ArgsContext context)
+        {
+            Arguments? kwargs = null;
+            Stack<IExpression> argStack = [];
+            if (context.kwargs() is not null)
+            {
+                kwargs = (Arguments)expressionStack.Pop();
+            }
+
+            int totalOrderedArgs = context.starred_expression().Length
+                + context.assignment_expression().Length
+                + context.expression().Length;
+
+            for (int index = totalOrderedArgs; index > 0; index--)
+            {
+                argStack.Push(expressionStack.Pop());
+            }
+
+            expressionStack.Push(new Arguments(
+                arguments: [.. argStack, .. kwargs?.OrderedArguments ?? []], 
+                keywordArguments: kwargs?.KeywordArguments));
+        }
+
+        public override void ExitKwargs([NotNull] KwargsContext context)
+        {
+            Stack<IExpression> args = [];
+            Stack<IExpression> kwargs = [];
+            int expressionCount = context.kwarg_or_double_starred().Length + context.kwarg_or_starred().Length;
+            for (int index = expressionCount; index > 0; index--)
+            {
+                IExpression expression = expressionStack.Pop();
+
+                (expression switch
+                {
+                    UnaryStar _ => args,
+                    NamedArgument _ => kwargs,
+                    UnaryDoubleStar _ => kwargs,
+                    _ => throw new InvalidCastException($"Uncertain what type of argument {expression.GetType()} is."),
+                }).Push(expressionStack.Pop());
+            }
+
+            // Stacks iterate in Pop() order. This flips the args & kwargs.
+            expressionStack.Push(new Arguments([.. args], [.. kwargs]));
+        }
+
+        public override void ExitKwarg_or_starred([NotNull] Kwarg_or_starredContext context)
+        {
+            if (context.NAME() is ITerminalNode node)
+            {
+                expressionStack.Push(new NamedArgument(node.GetText(), expressionStack.Pop()));
+            }
+            // starred_expression can remain in the stack.
+        }
+
+        public override void ExitKwarg_or_double_starred([NotNull] Kwarg_or_double_starredContext context)
+        {
+            if (context.NAME() is ITerminalNode node)
+            {
+                expressionStack.Push(new NamedArgument(node.GetText(), expressionStack.Pop()));
+            }
+            else if (context.DOUBLESTAR() is not null)
+            {
+                expressionStack.Push(new UnaryDoubleStar(expressionStack.Pop()));
+            }
+        }
+
+        public override void ExitStarred_expression([NotNull] Starred_expressionContext context)
+        {
+            expressionStack.Push(new UnaryStar(expressionStack.Pop()));
+        }
+
         public override void ExitSingle_target([NotNull] Single_targetContext context)
         {
             if (context.single_subscript_attribute_target() is not null)
@@ -324,6 +467,17 @@ namespace AntlrRenpy
             {
                 throw new NotImplementedException($"Rule `assignment` currently doesn't support {context.GetText()}");
             }
+        }
+
+        private void InsertLabel(string labelName, ParametersContext? parametersContext)
+        {
+            int instructionIndex = labelStartStack.Pop();
+            Parameters parameters = parametersContext is not null
+                ? (Parameters)expressionStack.Pop()
+                : new Parameters([], [], 0, 0);
+
+            Label label = new(labelName, parameters, instructionIndex);
+            Script.InsertLabel(label);
         }
     }
 }

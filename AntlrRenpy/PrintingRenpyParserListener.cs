@@ -198,6 +198,96 @@ namespace AntlrRenpy
             Stack.Add(new(nameof(ExitAssignment), context.GetText()));
         }
 
+        public void EnterParameters([NotNull] RenpyParser.ParametersContext context)
+        {
+            Stack.Add(new(nameof(EnterParameters), context.GetText()));
+        }
+
+        public void ExitParameters([NotNull] RenpyParser.ParametersContext context)
+        {
+            Stack.Add(new(nameof(ExitParameters), context.GetText()));
+        }
+
+        public void EnterKwds([NotNull] RenpyParser.KwdsContext context)
+        {
+            Stack.Add(new(nameof(EnterKwds), context.GetText()));
+        }
+
+        public void ExitKwds([NotNull] RenpyParser.KwdsContext context)
+        {
+            Stack.Add(new(nameof(ExitKwds), context.GetText()));
+        }
+
+        public void EnterParam_no_default([NotNull] RenpyParser.Param_no_defaultContext context)
+        {
+            Stack.Add(new(nameof(EnterParam_no_default), context.GetText()));
+        }
+
+        public void ExitParam_no_default([NotNull] RenpyParser.Param_no_defaultContext context)
+        {
+            Stack.Add(new(nameof(ExitParam_no_default), context.GetText()));
+        }
+
+        public void EnterParam_with_default([NotNull] RenpyParser.Param_with_defaultContext context)
+        {
+            Stack.Add(new(nameof(EnterParam_with_default), context.GetText()));
+        }
+
+        public void ExitParam_with_default([NotNull] RenpyParser.Param_with_defaultContext context)
+        {
+            Stack.Add(new(nameof(ExitParam_with_default), context.GetText()));
+        }
+
+        public void EnterParam([NotNull] RenpyParser.ParamContext context)
+        {
+            Stack.Add(new(nameof(EnterParam), context.GetText()));
+        }
+
+        public void ExitParam([NotNull] RenpyParser.ParamContext context)
+        {
+            Stack.Add(new(nameof(ExitParam), context.GetText()));
+        }
+
+        public void EnterAnnotation([NotNull] RenpyParser.AnnotationContext context)
+        {
+            Stack.Add(new(nameof(EnterAnnotation), context.GetText()));
+        }
+
+        public void ExitAnnotation([NotNull] RenpyParser.AnnotationContext context)
+        {
+            Stack.Add(new(nameof(ExitAnnotation), context.GetText()));
+        }
+
+        public void EnterDefault_assignment([NotNull] RenpyParser.Default_assignmentContext context)
+        {
+            Stack.Add(new(nameof(EnterDefault_assignment), context.GetText()));
+        }
+
+        public void ExitDefault_assignment([NotNull] RenpyParser.Default_assignmentContext context)
+        {
+            Stack.Add(new(nameof(ExitDefault_assignment), context.GetText()));
+        }
+
+        public void EnterType_comment([NotNull] RenpyParser.Type_commentContext context)
+        {
+            Stack.Add(new(nameof(EnterType_comment), context.GetText()));
+        }
+
+        public void ExitType_comment([NotNull] RenpyParser.Type_commentContext context)
+        {
+            Stack.Add(new(nameof(ExitType_comment), context.GetText()));
+        }
+
+        public void EnterStar_expression([NotNull] RenpyParser.Star_expressionContext context)
+        {
+            Stack.Add(new(nameof(EnterStar_expression), context.GetText()));
+        }
+
+        public void ExitStar_expression([NotNull] RenpyParser.Star_expressionContext context)
+        {
+            Stack.Add(new(nameof(ExitStar_expression), context.GetText()));
+        }
+
         public void EnterExpression([NotNull] RenpyParser.ExpressionContext context)
         {
             Stack.Add(new(nameof(EnterExpression), context.GetText()));
