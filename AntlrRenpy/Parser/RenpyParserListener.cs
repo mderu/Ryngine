@@ -151,16 +151,6 @@ public interface IRenpyParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitJump([NotNull] RenpyParser.JumpContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="RenpyParser.jump_constant"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterJump_constant([NotNull] RenpyParser.Jump_constantContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="RenpyParser.jump_constant"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitJump_constant([NotNull] RenpyParser.Jump_constantContext context);
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="RenpyParser.call"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

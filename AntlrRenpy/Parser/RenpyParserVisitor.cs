@@ -104,12 +104,6 @@ public interface IRenpyParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitJump([NotNull] RenpyParser.JumpContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="RenpyParser.jump_constant"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitJump_constant([NotNull] RenpyParser.Jump_constantContext context);
-	/// <summary>
 	/// Visit a parse tree produced by <see cref="RenpyParser.call"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

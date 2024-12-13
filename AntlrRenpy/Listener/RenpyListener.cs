@@ -36,9 +36,20 @@ namespace AntlrRenpy.Listener
             Script.AppendInstruction(new ReturnSimple());
         }
 
-        public override void ExitJump_constant([NotNull] Jump_constantContext context)
+        public override void ExitJump([NotNull] JumpContext context)
         {
-            Script.AppendInstruction(new JumpConstant(expressionStack.Pop()));
+            if (context.label_name() is not null)
+            {
+                Script.AppendInstruction(new Jump(new Constant<string>(context.label_name().GetText())));
+            }
+            else if (context.EXPRESSION() is not null)
+            {
+                Script.AppendInstruction(new Jump(expressionStack.Pop()));
+            }
+            else
+            {
+                throw new NotImplementedException($"Uncertain what to do with jump {context}");
+            }
         }
 
         public override void ExitCall([NotNull] CallContext context)

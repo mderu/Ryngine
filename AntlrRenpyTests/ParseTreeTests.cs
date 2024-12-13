@@ -141,7 +141,7 @@ public class ParseTreeTests
         var instructions = renpyListener.Script.Instructions;
         Assert.Collection(instructions,
             (item) => Assert.Equal(typeof(Pass), item.GetType()),
-            (item) => Assert.Equal(typeof(JumpConstant), item.GetType()),
+            (item) => Assert.Equal(typeof(Jump), item.GetType()),
             (item) => Assert.Equal(typeof(Pass), item.GetType()),
             (item) => Assert.Equal(typeof(Pass), item.GetType()),
             (item) => Assert.Equal(typeof(Pass), item.GetType()),
@@ -164,7 +164,7 @@ public class ParseTreeTests
 
         var instructions = renpyListener.Script.Instructions;
         Assert.Collection(instructions,
-            (item) => Assert.Equal(typeof(JumpConstant), item.GetType()),
+            (item) => Assert.Equal(typeof(Jump), item.GetType()),
             (item) => Assert.Equal(typeof(Pass), item.GetType()),
             (item) => Assert.Equal(typeof(ReturnSimple), item.GetType()),
             (item) => Assert.Equal(typeof(Pass), item.GetType()),
@@ -506,7 +506,7 @@ public class ParseTreeTests
     }
 
     [Fact]
-    public void test010__args_and_params()
+    public void Test010__args_and_params()
     {
         (RenpyListener renpyListener, ParserErrorListener errorListener) = Parse("test010__args_and_params.rpy");
 

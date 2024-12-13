@@ -9,9 +9,10 @@ tokens {
 
 options { superClass=RenpyLexerBase; }
 
-LABEL  : 'label';
-JUMP   : 'jump';
-CALL   : 'call';
+LABEL      : 'label';
+JUMP       : 'jump';
+EXPRESSION : 'expression';
+CALL       : 'call';
 
 PASS   : 'pass';
 RETURN : 'return';

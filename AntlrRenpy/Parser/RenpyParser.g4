@@ -58,11 +58,8 @@ label_name
     ;
 
 jump
-    : jump_constant
-    ;
-
-jump_constant
-    : JUMP expression
+    : JUMP label_name
+    | JUMP EXPRESSION expression
     ;
 
 call

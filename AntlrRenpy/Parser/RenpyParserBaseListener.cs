@@ -180,18 +180,6 @@ public partial class RenpyParserBaseListener : IRenpyParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitJump([NotNull] RenpyParser.JumpContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="RenpyParser.jump_constant"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterJump_constant([NotNull] RenpyParser.Jump_constantContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="RenpyParser.jump_constant"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitJump_constant([NotNull] RenpyParser.Jump_constantContext context) { }
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="RenpyParser.call"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
