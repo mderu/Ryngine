@@ -504,4 +504,95 @@ public class ParseTreeTests
             }
         );
     }
+
+    [Fact]
+    public void test010__args_and_params()
+    {
+        (RenpyListener renpyListener, ParserErrorListener errorListener) = Parse("test010__args_and_params.rpy");
+
+        Assert.Empty(errorListener.Errors);
+
+        var labels = renpyListener.Script.Labels;
+        Assert.Collection(labels,
+             (item) =>
+             {
+                 Assert.Equal("speak", item.Key);
+                 Assert.Equal(1, item.Value.InstructionIndex);
+             }
+        );
+
+        var instructions = renpyListener.Script.Instructions;
+
+        Assert.Collection(instructions,
+            (item) =>
+            {
+                AssertType(item, out PushFrame pushFrame);
+                Assert.Equal("speak", pushFrame.LabelName);
+                Assert.Collection(pushFrame.Arguments.OrderedArguments,
+                    (item) =>
+                    {
+                        AssertType(item, out Constant<string> constant);
+                        Assert.Equal("A", constant.Value);
+                    },
+                    (item) =>
+                    {
+                        AssertType(item, out UnaryStar unaryStar);
+                        AssertType(unaryStar.InnerExpression, out ListDefinition listDefinition);
+                        Assert.Single(listDefinition.InnerExpressions);
+                        AssertType(listDefinition.InnerExpressions.First(), out Constant<string> constant);
+                        Assert.Equal("B", constant.Value);
+                    }
+                );
+
+                Assert.Collection(pushFrame.Arguments.KeywordArguments,
+                    (item) =>
+                    {
+                        AssertType(item, out NamedArgument namedArgument);
+                        Assert.Equal("c", namedArgument.Name);
+                        AssertType(namedArgument.Expression, out Constant<string> constant);
+                        Assert.Equal("C", constant.Value);
+                    },
+                    (item) =>
+                    {
+                        AssertType(item, out UnaryDoubleStar unaryDoubleStar);
+                        AssertType(unaryDoubleStar.InnerExpression, out DictDefinition dictDefinition);
+                        Assert.Collection(dictDefinition.DictEntries,
+                            (item) =>
+                            {
+                                AssertType(item, out KeyValuePair kvp);
+                                AssertType(kvp.Key, out Constant<string> keyConstant);
+                                Assert.Equal("d", keyConstant.Value);
+                                AssertType(kvp.Value, out Constant<string> valueConstant);
+                                Assert.Equal("D", valueConstant.Value);
+                            },
+                            (item) =>
+                            {
+                                AssertType(item, out KeyValuePair kvp);
+                                AssertType(kvp.Key, out Constant<string> keyConstant);
+                                Assert.Equal("f", keyConstant.Value);
+                                AssertType(kvp.Value, out Constant<string> valueConstant);
+                                Assert.Equal("F", valueConstant.Value);
+                            }
+                        );
+                    },
+                    (item) =>
+                    {
+                        AssertType(item, out NamedArgument namedArgument);
+                        Assert.Equal("e", namedArgument.Name);
+                        AssertType(namedArgument.Expression, out Constant<string> constant);
+                        Assert.Equal("E", constant.Value);
+                    }
+                );
+            },
+            (item) =>
+            {
+                AssertType(item, out Say say);
+                Assert.Equal("[a] [b] [c] [d] [e] [kwargs.f]", say.Text);
+            },
+            (item) =>
+            {
+                AssertType(item, out ReturnSimple say);
+            }
+        );
+    }
 }

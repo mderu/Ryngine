@@ -127,6 +127,32 @@ default_assignment
 type_comment
     : '->' expression;
 
+// Lists
+// -----
+
+list
+    : '[' star_named_expressions? ']';
+
+tuple
+    : '(' (star_named_expression ',' star_named_expressions?  )? ')';
+
+set: LBRACE star_named_expressions RBRACE;
+
+// Dicts
+// -----
+
+dict
+    : LBRACE double_starred_kvpairs? RBRACE;
+
+double_starred_kvpairs: double_starred_kvpair (',' double_starred_kvpair)* ','?;
+
+double_starred_kvpair
+    //: '**' bitwise_or
+    : '**' sum
+    | kvpair;
+
+kvpair: expression ':' expression;
+
 //
 // Expressions
 //
@@ -137,10 +163,17 @@ star_expression
     | expression;
 
 expression
+    : bitwise_or
+    ;
+
+// disjunction > conjunction > inversion > comparison > compare_op_bitwise_or_pair > 
+bitwise_or
+    //: bitwise_or '|' bitwise_xor
+    //| bitwise_xor;
     : sum
     ;
 
-// disjunction > conjunction > inversion > comparison > compare_op_bitwise_or_pair > bitwise_or > bitwise_xor > bitwise_and > shift_expr > sum
+// bitwise_or > bitwise_xor > bitwise_and > shift_expr > sum
 sum
     : sum (PLUS | MINUS) primary
     | primary
@@ -155,6 +188,8 @@ primary
 
 atom
     : strings
+    | list
+    | dict
     | NAME
     | TRUE
     | FALSE
@@ -212,15 +247,22 @@ kwarg_or_starred
     : NAME '=' expression
     | starred_expression;
 
-// Would have expected NAME to be a single_target to allow for assignment to any data store.
-assignment_expression
-    : NAME ':=' expression;
-
 slices
   //: slice
     : named_expression
   //| (slice | starred_expression) (',' (slice | starred_expression))* ','?
     ;
+
+star_named_expressions: star_named_expression (',' star_named_expression)* ','?;
+
+star_named_expression
+    //: '*' bitwise_or
+    : '*' sum
+    | named_expression;
+
+// Would have expected NAME to be a single_target to allow for assignment to any data store.
+assignment_expression
+    : NAME ':=' expression;
 
 named_expression
     : assignment_expression

@@ -12,7 +12,6 @@ namespace AntlrRenpy.Listener
     public partial class RenpyListener : RenpyParserBaseListener
     {
         private readonly Stack<IExpression> expressionStack = [];
-        private readonly Queue<Parameter> parameterQueue = [];
         private readonly Stack<int> labelStartStack = [];
 
         public Script Script { get; private init; } = new();
@@ -49,66 +48,6 @@ namespace AntlrRenpy.Listener
                     : new();
             string labelName = context.label_name().GetText();
             Script.AppendInstruction(new PushFrame(labelName, arguments));
-        }
-
-        public override void ExitParam_no_default([NotNull] Param_no_defaultContext context)
-        {
-            string parameterName = context.param().NAME().GetText();
-            parameterQueue.Enqueue(new Parameter(parameterName));
-        }
-
-        public override void ExitParam_with_default([NotNull] Param_with_defaultContext context)
-        {
-            string parameterName = context.param().NAME().GetText();
-            IExpression defaultValue = expressionStack.Pop();
-            parameterQueue.Enqueue(new Parameter(parameterName, defaultValue));
-        }
-
-        public override void EnterParameters([NotNull] ParametersContext context)
-        {
-            if (parameterQueue.Count > 0)
-            {
-                throw new InvalidOperationException("Began parameters with items still in the parameter queue.");
-            }
-        }
-
-        public override void ExitParameters([NotNull] ParametersContext context)
-        {
-            List<string> paramNames = [];
-            Dictionary<string, IExpression> defaultValues = [];
-
-            while (parameterQueue.Count > 0)
-            {
-                Parameter curParam = parameterQueue.Dequeue();
-                paramNames.Add(curParam.Name);
-
-                if (curParam.DefaultValue is not null)
-                {
-                    defaultValues[curParam.Name] = curParam.DefaultValue;
-                }
-            }
-
-            int numPositionalParameters = 0;
-            int numNameOnlyParameters = 0;
-            for (int i = 0; i < context.ChildCount; i++)
-            {
-                if (context.children[i] == context.SLASH())
-                {
-                    numPositionalParameters = i - 1;
-                }
-                else if (context.children[i] == context.STAR())
-                {
-                    numNameOnlyParameters = context.ChildCount - i - 1;
-
-                    // Subtract the non-parameters ('/' ',') if they were present.
-                    if (numPositionalParameters > 0)
-                    {
-                        numNameOnlyParameters -= 2;
-                    }
-                }
-            }
-
-            expressionStack.Push(new Parameters(paramNames, defaultValues, numPositionalParameters, numNameOnlyParameters));
         }
 
         public override void EnterLabel([NotNull] LabelContext context)
@@ -194,6 +133,14 @@ namespace AntlrRenpy.Listener
             {
                 // Claim type is decimal. Doesn't really matter for parsing.
                 expressionStack.Push(new ConstantNumber(context.NUMBER().GetText()));
+            }
+            else if (context.list() is not null)
+            {
+                // No action needed, covered by ExitList
+            }
+            else if (context.dict() is not null)
+            {
+                // No action needed, covered by ExitDict
             }
             else
             {
@@ -319,77 +266,6 @@ namespace AntlrRenpy.Listener
                 stringBuilder.Append(StringParser.Parse(str.GetText()));
             }
             expressionStack.Push(new Constant<string>(stringBuilder.ToString()));
-        }
-
-        public override void ExitArgs([NotNull] ArgsContext context)
-        {
-            Arguments? kwargs = null;
-            Stack<IExpression> argStack = [];
-            if (context.kwargs() is not null)
-            {
-                kwargs = (Arguments)expressionStack.Pop();
-            }
-
-            int totalOrderedArgs = context.starred_expression().Length
-                + context.assignment_expression().Length
-                + context.expression().Length;
-
-            for (int index = totalOrderedArgs; index > 0; index--)
-            {
-                argStack.Push(expressionStack.Pop());
-            }
-
-            expressionStack.Push(new Arguments(
-                arguments: [.. argStack, .. kwargs?.OrderedArguments ?? []],
-                keywordArguments: kwargs?.KeywordArguments));
-        }
-
-        public override void ExitKwargs([NotNull] KwargsContext context)
-        {
-            Stack<IExpression> args = [];
-            Stack<IExpression> kwargs = [];
-            int expressionCount = context.kwarg_or_double_starred().Length + context.kwarg_or_starred().Length;
-            for (int index = expressionCount; index > 0; index--)
-            {
-                IExpression expression = expressionStack.Pop();
-
-                (expression switch
-                {
-                    UnaryStar _ => args,
-                    NamedArgument _ => kwargs,
-                    UnaryDoubleStar _ => kwargs,
-                    _ => throw new InvalidCastException($"Uncertain what type of argument {expression.GetType()} is."),
-                }).Push(expressionStack.Pop());
-            }
-
-            // Stacks iterate in Pop() order. This flips the args & kwargs.
-            expressionStack.Push(new Arguments([.. args], [.. kwargs]));
-        }
-
-        public override void ExitKwarg_or_starred([NotNull] Kwarg_or_starredContext context)
-        {
-            if (context.NAME() is ITerminalNode node)
-            {
-                expressionStack.Push(new NamedArgument(node.GetText(), expressionStack.Pop()));
-            }
-            // starred_expression can remain in the stack.
-        }
-
-        public override void ExitKwarg_or_double_starred([NotNull] Kwarg_or_double_starredContext context)
-        {
-            if (context.NAME() is ITerminalNode node)
-            {
-                expressionStack.Push(new NamedArgument(node.GetText(), expressionStack.Pop()));
-            }
-            else if (context.DOUBLESTAR() is not null)
-            {
-                expressionStack.Push(new UnaryDoubleStar(expressionStack.Pop()));
-            }
-        }
-
-        public override void ExitStarred_expression([NotNull] Starred_expressionContext context)
-        {
-            expressionStack.Push(new UnaryStar(expressionStack.Pop()));
         }
 
         public override void ExitSingle_target([NotNull] Single_targetContext context)

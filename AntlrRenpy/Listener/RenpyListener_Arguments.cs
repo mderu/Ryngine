@@ -46,7 +46,7 @@ namespace AntlrRenpy.Listener
                     NamedArgument _ => kwargs,
                     UnaryDoubleStar _ => kwargs,
                     _ => throw new InvalidCastException($"Uncertain what type of argument {expression.GetType()} is."),
-                }).Push(expressionStack.Pop());
+                }).Push(expression);
             }
 
             // Stacks iterate in Pop() order. This flips the args & kwargs.
