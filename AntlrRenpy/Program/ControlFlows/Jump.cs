@@ -1,6 +1,6 @@
 ﻿using AntlrRenpy.Program.Expressions;
 
-namespace AntlrRenpy.Program.Instructions
+namespace AntlrRenpy.Program.ControlFlows
 {
     public class Jump(IExpression jumpExpression) : IInstruction
     {

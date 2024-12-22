@@ -1,4 +1,4 @@
-﻿namespace AntlrRenpy.Program
+﻿namespace AntlrRenpy.Program.ControlFlows
 {
     /// <param name="Name">The name of the label.</param>
     /// <param name="Parameters">The set of parameters the label takes in.</param>
