@@ -18,12 +18,12 @@ statement
 // These don't have a required trailing newline.
 block_statements
     : menu
+    | if_stmt
     | label COLON block
     ;
 
 simple_statements
     : pass_statement
-    | menu
     | jump
     | label
     | call
@@ -123,6 +123,18 @@ default_assignment
 // are a subset of expressions.
 type_comment
     : '->' expression;
+
+// If statement
+// ------------
+
+if_stmt
+    : 'if' named_expression ':' block (elif_stmt | else_block?)
+    ;
+elif_stmt
+    : 'elif' named_expression ':' block (elif_stmt | else_block?)
+    ;
+else_block
+    : 'else' ':' block;
 
 // Lists
 // -----

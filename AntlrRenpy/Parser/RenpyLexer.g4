@@ -22,6 +22,10 @@ TRUE   : 'True';
 FALSE  : 'False';
 NONE   : 'None';
 
+IF     : 'if';
+ELIF   : 'elif';
+ELSE   : 'else';
+
 LPAR       : '('; // OPEN_PAREN
 LSQB       : '['; // OPEN_BRACK
 LBRACE     : '{'; // OPEN_BRACE

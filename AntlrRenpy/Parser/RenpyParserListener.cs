@@ -281,6 +281,36 @@ public interface IRenpyParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitType_comment([NotNull] RenpyParser.Type_commentContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="RenpyParser.if_stmt"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterIf_stmt([NotNull] RenpyParser.If_stmtContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RenpyParser.if_stmt"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitIf_stmt([NotNull] RenpyParser.If_stmtContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="RenpyParser.elif_stmt"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterElif_stmt([NotNull] RenpyParser.Elif_stmtContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RenpyParser.elif_stmt"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitElif_stmt([NotNull] RenpyParser.Elif_stmtContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="RenpyParser.else_block"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterElse_block([NotNull] RenpyParser.Else_blockContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RenpyParser.else_block"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitElse_block([NotNull] RenpyParser.Else_blockContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="RenpyParser.list"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

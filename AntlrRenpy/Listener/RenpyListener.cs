@@ -1,5 +1,4 @@
 using Antlr4.Runtime.Misc;
-using Antlr4.Runtime.Tree;
 using AntlrRenpy.Program;
 using AntlrRenpy.Program.Expressions;
 using AntlrRenpy.Program.Expressions.Operators;
@@ -12,12 +11,34 @@ namespace AntlrRenpy.Listener
     public partial class RenpyListener : RenpyParserBaseListener
     {
         private readonly Stack<IExpression> expressionStack = [];
-        private readonly Stack<int> labelStartStack = [];
+        private readonly Stack<Block> blockStack = [];
 
         public Script Script { get; private init; } = new();
 
-        public override void ExitStatement([NotNull] StatementContext context)
+        public override void EnterEntire_tree([NotNull] Entire_treeContext context)
         {
+            // Always add a pass statement so scripts that start with a label have a root instruction
+            // to point to.
+            blockStack.Push(new([new Pass()]));
+        }
+
+        public override void ExitEntire_tree([NotNull] Entire_treeContext context)
+        {
+            Stack<Block> reorganizedBlocks = new(blockStack.Count);
+            while (blockStack.Count > 0)
+            {
+                reorganizedBlocks.Push(blockStack.Pop());
+            }
+
+            while (reorganizedBlocks.Count > 0)
+            {
+                Block block = reorganizedBlocks.Pop();
+                foreach (IInstruction instruction in block.Instructions)
+                {
+                    Script.AppendInstruction(instruction);
+                }
+            }
+
             // Avoid having resulting expressions accumulate memory.
             // Expressions should always be confined to its statement.
             if (expressionStack.Count > 0)
@@ -28,23 +49,24 @@ namespace AntlrRenpy.Listener
 
         public override void EnterPass_statement([NotNull] Pass_statementContext context)
         {
-            Script.AppendInstruction(new Pass());
+            AppendInstruction(new Pass());
         }
 
         public override void EnterReturn_simple([NotNull] Return_simpleContext context)
         {
-            Script.AppendInstruction(new ReturnSimple());
+            AppendInstruction(new ReturnSimple());
         }
 
         public override void ExitJump([NotNull] JumpContext context)
         {
             if (context.label_name() is not null)
             {
-                Script.AppendInstruction(new Jump(new Constant<string>(context.label_name().GetText())));
+                Constant<string> labelName = new(context.label_name().GetText());
+                AppendInstruction(new Jump(labelName));
             }
             else if (context.EXPRESSION() is not null)
             {
-                Script.AppendInstruction(new Jump(expressionStack.Pop()));
+                AppendInstruction(new Jump(expressionStack.Pop()));
             }
             else
             {
@@ -58,18 +80,14 @@ namespace AntlrRenpy.Listener
                     ? (Arguments)expressionStack.Pop()
                     : new();
             string labelName = context.label_name().GetText();
-            Script.AppendInstruction(new PushFrame(labelName, arguments));
-        }
-
-        public override void EnterLabel([NotNull] LabelContext context)
-        {
-            labelStartStack.Push(Script.NextInstructionIndex);
+            AppendInstruction(new PushFrame(labelName, arguments));
         }
 
         public override void ExitLabel([NotNull] LabelContext context)
         {
             string labelName = context.label_name().GetText();
-            InsertLabel(labelName, context.parameters());
+            IInstruction lastInstruction = GetPreviousInstruction();
+            InsertLabel(labelName, lastInstruction, context.parameters(), jumpToAfterInstruction: true);
         }
 
         public override void EnterSay([NotNull] SayContext context)
@@ -77,45 +95,12 @@ namespace AntlrRenpy.Listener
             string text = StringParser.Parse(context.STRING().GetText());
             string speaker = context.NAME() is null ? "" : context.NAME().GetText();
 
-            Script.AppendInstruction(
+            AppendInstruction(
                 new Say(text)
                 {
                     Speaker = speaker,
                 }
             );
-        }
-
-        public override void EnterMenu([NotNull] MenuContext context)
-        {
-            var labelNameContext = context.label_name();
-            if (labelNameContext is not null)
-            {
-                labelStartStack.Push(Script.NextInstructionIndex);
-            }
-
-            Menu.Builder newMenuBuilder = new(Script.Instructions.Count);
-            Script.AppendInstruction(new Placeholder<Menu>(newMenuBuilder));
-
-            // https://www.renpy.org/doc/html/menus.html#menu-set
-            // The "set" clause is technically not an instruction, so if the
-            // say instruction is present, it's safe to assume it will be the
-            // next instruction. Ren'Py's documentation doesn't specify that it
-            // allows screen directives here.
-            //
-            // I do see some scripts use:
-            //
-            //     menu:
-            //         with expression
-            //         "First option"
-            //
-            // Might look into the expected behavior here in the future, but the
-            // "with" clause is also not an instruction, and is a clause on a say.
-            if (context.say() is not null)
-            {
-                newMenuBuilder.SetSayInstructionIndex(Script.Instructions.Count);
-            }
-
-            menuBuilderStack.Push(newMenuBuilder);
         }
 
         public override void ExitAtom([NotNull] AtomContext context)
@@ -312,7 +297,7 @@ namespace AntlrRenpy.Listener
             {
                 IExpression lhs = expressionStack.Pop();
                 IExpression rhs = expressionStack.Pop();
-                Script.AppendInstruction(new Assignment(rhs, lhs));
+                AppendInstruction(new Assignment(rhs, lhs));
             }
             else
             {
@@ -320,15 +305,36 @@ namespace AntlrRenpy.Listener
             }
         }
 
-        private void InsertLabel(string labelName, ParametersContext? parametersContext)
+        private void InsertLabel(
+            string labelName,
+            IInstruction instruction,
+            ParametersContext? parametersContext,
+            bool jumpToAfterInstruction = false)
         {
-            int instructionIndex = labelStartStack.Pop();
             Parameters parameters = parametersContext is not null
                 ? (Parameters)expressionStack.Pop()
                 : new Parameters([], [], 0, 0);
 
-            Label label = new(labelName, parameters, instructionIndex);
+            Label label = new(labelName, parameters, instruction, jumpToAfterInstruction);
             Script.InsertLabel(label);
+        }
+
+        private IInstruction AppendInstruction(IInstruction instruction)
+        {
+            blockStack.Peek().Instructions.Add(instruction);
+            return instruction;
+        }
+
+        private IInstruction GetPreviousInstruction()
+        {
+            foreach (Block block in blockStack)
+            {
+                if (block.Instructions.Count > 0)
+                {
+                    return block.Instructions[^1];
+                }
+            }
+            throw new InvalidOperationException("There are no instructions in the block stack.");
         }
     }
 }

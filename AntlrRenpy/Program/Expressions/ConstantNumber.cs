@@ -5,7 +5,7 @@
     /// incredibly high integers. Can be solved when the VM is
     /// fleshed out.
     /// </summary>
-    public class ConstantNumber(string value) : Constant<string>(value)
+    public record class ConstantNumber(string value) : Constant<string>(value)
     {
     }
 }

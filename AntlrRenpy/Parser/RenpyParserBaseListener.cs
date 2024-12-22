@@ -336,6 +336,42 @@ public partial class RenpyParserBaseListener : IRenpyParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitType_comment([NotNull] RenpyParser.Type_commentContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="RenpyParser.if_stmt"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterIf_stmt([NotNull] RenpyParser.If_stmtContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RenpyParser.if_stmt"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitIf_stmt([NotNull] RenpyParser.If_stmtContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="RenpyParser.elif_stmt"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterElif_stmt([NotNull] RenpyParser.Elif_stmtContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RenpyParser.elif_stmt"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitElif_stmt([NotNull] RenpyParser.Elif_stmtContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="RenpyParser.else_block"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterElse_block([NotNull] RenpyParser.Else_blockContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RenpyParser.else_block"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitElse_block([NotNull] RenpyParser.Else_blockContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="RenpyParser.list"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>

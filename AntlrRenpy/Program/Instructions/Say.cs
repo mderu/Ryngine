@@ -13,5 +13,17 @@ namespace AntlrRenpy.Program.Instructions
 
         // TODO: Keys should be expressions.
         public Dictionary<string, string> SayArguments { get; init; } = new();
+
+        public override bool Equals(object? obj)
+        {
+            return obj is Say other &&
+                other.Speaker == Speaker &&
+                other.Text == Text;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Speaker, Text);
+        }
     }
 }

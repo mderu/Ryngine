@@ -29,5 +29,19 @@ namespace AntlrRenpy.Program
         /// <see cref="ParamNames"/> are be the names of the name-only parameters.
         /// </summary>
         public int NumNameOnlyParams { get; } = numNameOnlyParams;
+
+        public override bool Equals(object? obj)
+        {
+            return obj is Parameters other
+                && other.ParamNames.SequenceEqual(ParamNames)
+                && other.DefaultValues.OrderBy(kvp => kvp.Key).SequenceEqual(DefaultValues.OrderBy(kvp => kvp.Key))
+                && other.NumPositionalOnlyParams == NumPositionalOnlyParams
+                && other.NumNameOnlyParams == NumNameOnlyParams;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(ParamNames, DefaultValues, NumPositionalOnlyParams, NumNameOnlyParams);
+        }
     }
 }

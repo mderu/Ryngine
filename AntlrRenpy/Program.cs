@@ -21,5 +21,4 @@ CommonTokenStream commonTokenStream = new(speakLexer);
 RenpyParser parser = new(commonTokenStream);
 
 RenpyListener renpyListener = new();
-parser.AddParseListener(renpyListener);
 ParseTreeWalker.Default.Walk(renpyListener, parser.entire_tree());

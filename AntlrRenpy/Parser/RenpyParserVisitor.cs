@@ -182,6 +182,24 @@ public interface IRenpyParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitType_comment([NotNull] RenpyParser.Type_commentContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="RenpyParser.if_stmt"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitIf_stmt([NotNull] RenpyParser.If_stmtContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="RenpyParser.elif_stmt"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitElif_stmt([NotNull] RenpyParser.Elif_stmtContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="RenpyParser.else_block"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitElse_block([NotNull] RenpyParser.Else_blockContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="RenpyParser.list"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

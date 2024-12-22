@@ -10,6 +10,8 @@ using System.Diagnostics;
 using AntlrRenpy.Program.Expressions;
 using AntlrRenpy.Program.Expressions.Operators;
 using AntlrRenpy.Listener;
+using AntlrRenpy.Program;
+using AntlrRenpy.Program.ControlFlows;
 
 public class ParseTreeTests
 {
@@ -95,6 +97,23 @@ public class ParseTreeTests
         return (renpyListener, errorListener);
     }
 
+    public class AssertTrue(bool condition) : IDisposable
+    {
+        bool Condition { get; } = condition;
+
+        public void Dispose() { }
+    }
+
+    public static bool AssertType<T1, T2>(T2 baseType, out T1 convertedType)
+    {
+        if (baseType is T1 typedAsOther)
+        {
+            convertedType = typedAsOther;
+            return true;
+        }
+        throw new AssertFailedException($"{baseType} is not of type {typeof(T1)}");
+    }
+
     [Fact]
     public void Test000__empty_file()
     {
@@ -102,7 +121,9 @@ public class ParseTreeTests
 
         Assert.Empty(errorListener.Errors);
         Assert.Empty(renpyListener.Script.Labels);
-        Assert.Empty(renpyListener.Script.Instructions);
+        Assert.Collection(renpyListener.Script.Instructions,
+            (item) => Assert.Equal(typeof(Pass), item.GetType())
+        );
     }
 
     [Fact]
@@ -117,6 +138,7 @@ public class ParseTreeTests
 
         var instructions = renpyListener.Script.Instructions;
         Assert.Collection(instructions,
+            (item) => Assert.Equal(typeof(Pass), item.GetType()),
             (item) => Assert.Equal(typeof(Pass), item.GetType())
         );
     }
@@ -130,16 +152,47 @@ public class ParseTreeTests
 
         var labels = renpyListener.Script.Labels;
         Assert.Collection(labels,
-            (item) => { Assert.Equal("myLabelName", item.Key); Assert.Equal(2, item.Value.InstructionIndex); },
-            (item) => { Assert.Equal("otherLabel", item.Key); Assert.Equal(3, item.Value.InstructionIndex); },
-            (item) => { Assert.Equal("anotherLabel", item.Key); Assert.Equal(4, item.Value.InstructionIndex); },
-            (item) => { Assert.Equal("multiLabel0", item.Key); Assert.Equal(5, item.Value.InstructionIndex); },
-            (item) => { Assert.Equal("multiLabel1", item.Key); Assert.Equal(5, item.Value.InstructionIndex); },
-            (item) => { Assert.Equal("multiLabel2", item.Key); Assert.Equal(5, item.Value.InstructionIndex); }
+            (item) =>
+            {
+                Assert.Equal("myLabelName", item.Key);
+                Assert.True(item.Value.JumpToEnd);
+                Assert.Same(item.Value.Positional, renpyListener.Script.Instructions[2]);
+            },
+            (item) =>
+            {
+                Assert.Equal("otherLabel", item.Key);
+                Assert.True(item.Value.JumpToEnd);
+                Assert.Same(item.Value.Positional, renpyListener.Script.Instructions[3]);
+            },
+            (item) =>
+            {
+                Assert.Equal("anotherLabel", item.Key);
+                Assert.True(item.Value.JumpToEnd);
+                Assert.Same(item.Value.Positional, renpyListener.Script.Instructions[4]);
+            },
+            (item) =>
+            {
+                Assert.Equal("multiLabel0", item.Key);
+                Assert.True(item.Value.JumpToEnd);
+                Assert.Same(item.Value.Positional, renpyListener.Script.Instructions[5]);
+            },
+            (item) =>
+            {
+                Assert.Equal("multiLabel1", item.Key);
+                Assert.True(item.Value.JumpToEnd);
+                Assert.Same(item.Value.Positional, renpyListener.Script.Instructions[5]);
+            },
+            (item) =>
+            {
+                Assert.Equal("multiLabel2", item.Key);
+                Assert.True(item.Value.JumpToEnd);
+                Assert.Same(item.Value.Positional, renpyListener.Script.Instructions[5]);
+            }
         );
 
         var instructions = renpyListener.Script.Instructions;
         Assert.Collection(instructions,
+            (item) => Assert.Equal(typeof(Pass), item.GetType()),
             (item) => Assert.Equal(typeof(Pass), item.GetType()),
             (item) => Assert.Equal(typeof(Jump), item.GetType()),
             (item) => Assert.Equal(typeof(Pass), item.GetType()),
@@ -158,12 +211,23 @@ public class ParseTreeTests
 
         var labels = renpyListener.Script.Labels;
         Assert.Collection(labels,
-            (item) => { Assert.Equal("myLabel", item.Key); Assert.Equal(1, item.Value.InstructionIndex); },
-            (item) => { Assert.Equal("skipMyLabel", item.Key); Assert.Equal(3, item.Value.InstructionIndex); }
+            (item) =>
+            {
+                Assert.Equal("myLabel", item.Key);
+                Assert.True(item.Value.JumpToEnd);
+                Assert.Same(item.Value.Positional, renpyListener.Script.Instructions[1]);
+            },
+            (item) =>
+            {
+                Assert.Equal("skipMyLabel", item.Key);
+                Assert.True(item.Value.JumpToEnd);
+                Assert.Same(item.Value.Positional, renpyListener.Script.Instructions[3]);
+            }
         );
 
         var instructions = renpyListener.Script.Instructions;
         Assert.Collection(instructions,
+            (item) => Assert.Equal(typeof(Pass), item.GetType()),
             (item) => Assert.Equal(typeof(Jump), item.GetType()),
             (item) => Assert.Equal(typeof(Pass), item.GetType()),
             (item) => Assert.Equal(typeof(ReturnSimple), item.GetType()),
@@ -184,8 +248,8 @@ public class ParseTreeTests
         Assert.Empty(labels);
 
         var instructions = renpyListener.Script.Instructions;
-
         Assert.Collection(instructions,
+            (item) => Assert.Equal(typeof(Pass), item.GetType()),
             (item) =>
             {
                 Assert.True(item is Say);
@@ -212,56 +276,60 @@ public class ParseTreeTests
 
         var labels = renpyListener.Script.Labels;
         Assert.Collection(labels,
-            (item) => { Assert.Equal("expectedMenuLabel", item.Key); Assert.Equal(0, item.Value.InstructionIndex); }
+            (item) =>
+            {
+                Assert.Equal("expectedMenuLabel", item.Key);
+                Assert.False(item.Value.JumpToEnd);
+                Assert.Same(renpyListener.Script.Instructions[1], item.Value.Positional);
+            }
         );
 
         var instructions = renpyListener.Script.Instructions;
 
         Assert.Collection(instructions,
+            (item) => Assert.Equal(typeof(Pass), item.GetType()),
             (item) =>
             {
                 Assert.True(item is Menu);
                 Menu menu = (Menu)item;
-                Assert.Equal(1, menu.SayInstructionIndex);
+                Assert.Collection(menu.SayBlock.Instructions,
+                    (item) =>
+                    {
+                        AssertType(item, out Say say);
+                        Assert.Equal("Narrator", say.Speaker);
+                        Assert.Equal("There's a single optional say statement here.", say.Text);
+                    }
+                );
                 Assert.Collection(menu.MenuItems,
                     (item) =>
                     {
                         Assert.Equal("This is a menu choice, it ends in a colon. Menu must contain at least one menu choice", item.Caption);
-                        Assert.Equal(2, item.StartInstructionIndex);
-                        Assert.Equal(3, item.EndInstructionIndex);
+                        Assert.Collection(item.Block.Instructions,
+                            (instruction) =>
+                            {
+                                AssertType(instruction, out Say say);
+                                Assert.Equal("", say.Speaker);
+                                Assert.Equal("Menu choices must be followed by a block of Ren'Py statements.", say.Text);
+                            }
+                        );
                     },
                     (item) =>
                     {
                         Assert.Equal("When the choice is selected, the block of statements is run", item.Caption);
-                        Assert.Equal(3, item.StartInstructionIndex);
-                        Assert.Equal(5, item.EndInstructionIndex);
+                        Assert.Collection(item.Block.Instructions,
+                            (instruction) =>
+                            {
+                                AssertType(instruction, out Say say);
+                                Assert.Equal("", say.Speaker);
+                                Assert.Equal("Message that only appears in the second choice.", say.Text);
+                            },
+                            (instruction) =>
+                            {
+                                AssertType(instruction, out Pass pass);
+                            }
+                        );
                     }
                 );
-            },
-            (item) =>
-            {
-                Assert.True(item is Say);
-                Say say = (Say)item;
-                Assert.Equal("There's a single optional say statement here.", say.Text);
-                Assert.Equal("Narrator", say.Speaker);
-            },
-            (item) =>
-            {
-                Assert.True(item is Say);
-                Say say = (Say)item;
-                Assert.Equal("Menu choices must be followed by a block of Ren'Py statements.", say.Text);
-                Assert.Equal("", say.Speaker);
-            },
-            (item) =>
-            {
-                Assert.True(item is Say);
-                Say say = (Say)item;
-                Assert.Equal("Message that only appears in the second choice.", say.Text);
-                Assert.Equal("", say.Speaker);
-            },
-            (item) =>
-            {
-                Assert.Equal(typeof(Pass), item.GetType());
             },
             (item) =>
             {
@@ -272,7 +340,7 @@ public class ParseTreeTests
             }
         );
     }
-
+    
     [Fact]
     public void Test006__renpy_strings()
     {
@@ -286,6 +354,7 @@ public class ParseTreeTests
         var instructions = renpyListener.Script.Instructions;
 
         Assert.Collection(instructions,
+            (item) => Assert.Equal(typeof(Pass), item.GetType()),
             (item) =>
             {
                 Assert.True(item is Say);
@@ -323,24 +392,7 @@ public class ParseTreeTests
             }
         );
     }
-
-    public class AssertTrue(bool condition) : IDisposable
-    {
-        bool Condition { get; } = condition;
-
-        public void Dispose() {}
-    }
-
-    public static bool AssertType<T1, T2>(T2 baseType, out T1 convertedType)
-    {
-        if (baseType is T1 typedAsOther)
-        {
-            convertedType = typedAsOther;
-            return true;
-        }
-        throw new AssertFailedException($"{baseType} is not of type {typeof(T1)}");
-    }
-
+    
     [Fact]
     public void Test007__assignment()
     {
@@ -354,6 +406,7 @@ public class ParseTreeTests
         var instructions = renpyListener.Script.Instructions;
 
         Assert.Collection(instructions,
+            (item) => Assert.Equal(typeof(Pass), item.GetType()),
             (item) =>
             {
                 AssertType(item, out Assignment assignment);
@@ -411,6 +464,7 @@ public class ParseTreeTests
         var instructions = renpyListener.Script.Instructions;
 
         Assert.Collection(instructions,
+            (item) => Assert.Equal(typeof(Pass), item.GetType()),
             (item) =>
             {
                 AssertType(item, out Assignment assignment);
@@ -461,7 +515,7 @@ public class ParseTreeTests
             }
         );
     }
-
+    
     [Fact]
     public void Test009__labels_with_args()
     {
@@ -470,17 +524,21 @@ public class ParseTreeTests
         Assert.Empty(errorListener.Errors);
 
         var labels = renpyListener.Script.Labels;
-        Assert.Collection(labels,
-             (item) =>
-             {
-                 Assert.Equal("speak", item.Key);
-                 Assert.Equal(1, item.Value.InstructionIndex);
-             }
-        );
-
         var instructions = renpyListener.Script.Instructions;
 
+        Assert.Collection(labels,
+            (item) =>
+            {
+                Assert.Equal("speak", item.Key);
+                Assert.True(item.Value.JumpToEnd);
+                Assert.Same(instructions[1], item.Value.Positional);
+                Parameters parameters = item.Value.Parameters;
+                Assert.Equal(new Parameters(["text"], [], 0, 0), parameters);
+            }
+        );
+
         Assert.Collection(instructions,
+            (item) => Assert.Equal(typeof(Pass), item.GetType()),
             (item) =>
             {
                 AssertType(item, out PushFrame pushFrame);
@@ -513,17 +571,21 @@ public class ParseTreeTests
         Assert.Empty(errorListener.Errors);
 
         var labels = renpyListener.Script.Labels;
-        Assert.Collection(labels,
-             (item) =>
-             {
-                 Assert.Equal("speak", item.Key);
-                 Assert.Equal(1, item.Value.InstructionIndex);
-             }
-        );
-
         var instructions = renpyListener.Script.Instructions;
 
+        Assert.Collection(labels,
+            (item) =>
+            {
+                Assert.Equal("speak", item.Key);
+                Assert.True(item.Value.JumpToEnd);
+                Assert.Same(instructions[1], item.Value.Positional);
+                Parameters parameters = item.Value.Parameters;
+                Assert.Equal(new Parameters(["a", "b", "c", "d", "e", "kwargs"], [], 0, 0), parameters);
+            }
+        );
+
         Assert.Collection(instructions,
+            (item) => Assert.Equal(typeof(Pass), item.GetType()),
             (item) =>
             {
                 AssertType(item, out PushFrame pushFrame);
@@ -531,26 +593,21 @@ public class ParseTreeTests
                 Assert.Collection(pushFrame.Arguments.OrderedArguments,
                     (item) =>
                     {
-                        AssertType(item, out Constant<string> constant);
-                        Assert.Equal("A", constant.Value);
+                        Assert.Equal(new Constant<string>("A"), item);
                     },
                     (item) =>
                     {
                         AssertType(item, out UnaryStar unaryStar);
                         AssertType(unaryStar.InnerExpression, out ListDefinition listDefinition);
                         Assert.Single(listDefinition.InnerExpressions);
-                        AssertType(listDefinition.InnerExpressions.First(), out Constant<string> constant);
-                        Assert.Equal("B", constant.Value);
+                        Assert.Equal(new Constant<string>("B"), listDefinition.InnerExpressions.First());
                     }
                 );
 
                 Assert.Collection(pushFrame.Arguments.KeywordArguments,
                     (item) =>
                     {
-                        AssertType(item, out NamedArgument namedArgument);
-                        Assert.Equal("c", namedArgument.Name);
-                        AssertType(namedArgument.Expression, out Constant<string> constant);
-                        Assert.Equal("C", constant.Value);
+                        Assert.Equal(new NamedArgument("c", new Constant<string>("C")), item);
                     },
                     (item) =>
                     {
@@ -559,28 +616,23 @@ public class ParseTreeTests
                         Assert.Collection(dictDefinition.DictEntries,
                             (item) =>
                             {
-                                AssertType(item, out KeyValuePair kvp);
-                                AssertType(kvp.Key, out Constant<string> keyConstant);
-                                Assert.Equal("d", keyConstant.Value);
-                                AssertType(kvp.Value, out Constant<string> valueConstant);
-                                Assert.Equal("D", valueConstant.Value);
+                                Assert.Equal(
+                                    new KeyValuePair(new Constant<string>("d"), new Constant<string>("D")),
+                                    item
+                                );
                             },
                             (item) =>
                             {
-                                AssertType(item, out KeyValuePair kvp);
-                                AssertType(kvp.Key, out Constant<string> keyConstant);
-                                Assert.Equal("f", keyConstant.Value);
-                                AssertType(kvp.Value, out Constant<string> valueConstant);
-                                Assert.Equal("F", valueConstant.Value);
+                                Assert.Equal(
+                                    new KeyValuePair(new Constant<string>("f"), new Constant<string>("F")),
+                                    item
+                                );
                             }
                         );
                     },
                     (item) =>
                     {
-                        AssertType(item, out NamedArgument namedArgument);
-                        Assert.Equal("e", namedArgument.Name);
-                        AssertType(namedArgument.Expression, out Constant<string> constant);
-                        Assert.Equal("E", constant.Value);
+                        Assert.Equal(new NamedArgument("e", new Constant<string>("E")), item);
                     }
                 );
             },
@@ -592,6 +644,44 @@ public class ParseTreeTests
             (item) =>
             {
                 AssertType(item, out ReturnSimple say);
+            }
+        );
+    }
+    
+    [Fact]
+    public void Test011__if_elif_else()
+    {
+        (RenpyListener renpyListener, ParserErrorListener errorListener) = Parse("test011__if_elif_else.rpy");
+
+        Assert.Empty(errorListener.Errors);
+
+        var labels = renpyListener.Script.Labels;
+        var instructions = renpyListener.Script.Instructions;
+
+        Assert.Collection(instructions,
+            (item) => Assert.Equal(typeof(Pass), item.GetType()),
+            (item) =>
+            {
+                AssertType(item, out If ifStatement);
+                Assert.Collection(ifStatement.IfBlock.Instructions,
+                    (item) => Assert.Equal(new Say("Not said"), item)
+                );
+
+                Assert.NotNull(ifStatement.ElseStatement);
+                Assert.Collection(ifStatement.ElseStatement.Block.Instructions,
+                    (item) =>
+                    {
+                        AssertType(item, out If innerIfStatement);
+                        Assert.Collection(innerIfStatement.IfBlock.Instructions,
+                            (item) => Assert.Equal(new Say("Said"), item)
+                        );
+
+                        Assert.NotNull(innerIfStatement.ElseStatement);
+                        Assert.Collection(innerIfStatement.ElseStatement.Block.Instructions,
+                            (item) => Assert.Equal(new Say("Also not said"), item)
+                        );
+                    }
+                );
             }
         );
     }
