@@ -29,7 +29,11 @@ simple_statements
     | call
     | return
     | say
-    | assignment
+    | python_one_line
+    ;
+
+python_one_line
+    : DOLLAR (assignment | expression)
     ;
 
 block

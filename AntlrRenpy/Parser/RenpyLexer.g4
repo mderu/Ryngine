@@ -45,6 +45,8 @@ STAR       : '*';
 DOUBLESTAR : '**';
 COLONEQUAL : ':=';
 
+DOLLAR     : '$';
+
 NAME
     : ID_START ID_CONTINUE*
     ;

@@ -62,6 +62,12 @@ public interface IRenpyParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitSimple_statements([NotNull] RenpyParser.Simple_statementsContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="RenpyParser.python_one_line"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitPython_one_line([NotNull] RenpyParser.Python_one_lineContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="RenpyParser.block"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

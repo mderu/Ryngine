@@ -96,6 +96,18 @@ public partial class RenpyParserBaseListener : IRenpyParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitSimple_statements([NotNull] RenpyParser.Simple_statementsContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="RenpyParser.python_one_line"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterPython_one_line([NotNull] RenpyParser.Python_one_lineContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RenpyParser.python_one_line"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitPython_one_line([NotNull] RenpyParser.Python_one_lineContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="RenpyParser.block"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
