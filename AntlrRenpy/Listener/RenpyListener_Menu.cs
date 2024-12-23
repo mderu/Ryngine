@@ -20,10 +20,11 @@ namespace AntlrRenpy.Listener
 
             AppendInstruction(menu);
 
-            if (context.label_name().GetText() is string labelName)
+            if (context.label_name() is Label_nameContext labelContext)
             {
                 // `menu` takes in arguments, not parameters. These arguments seem to be specific
                 // See https://www.renpy.org/doc/html/menus.html#menu-arguments.
+                string labelName = labelContext.GetText();
                 InsertLabel(labelName, menu, parametersContext: null, jumpToAfterInstruction: false);
             }
 

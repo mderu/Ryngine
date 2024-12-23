@@ -51,6 +51,11 @@ namespace AntlrRenpy.Listener
             }
         }
 
+        public override void ExitExpression_as_statement([NotNull] Expression_as_statementContext context)
+        {
+            AppendInstruction(new ExpressionAsInstruction(expressionStack.Pop()));
+        }
+
         public override void EnterPass_statement([NotNull] Pass_statementContext context)
         {
             AppendInstruction(new Pass());
@@ -195,9 +200,9 @@ namespace AntlrRenpy.Listener
                 IExpression baseExpression = expressionStack.Pop();
                 expressionStack.Push(new MemberAccess(baseExpression, context.name().GetText()));
             }
-            else if (context.arguments() is not null)
+            else if (context.LPAR() is not null)
             {
-                if (context.arguments().ChildCount == 1)
+                if (context.arguments() is not null)
                 {
                     IExpression baseExpression = expressionStack.Pop();
                     IExpression arguments = expressionStack.Pop();
@@ -205,7 +210,8 @@ namespace AntlrRenpy.Listener
                 }
                 else
                 {
-                    // TODO: Pass an empty args object.
+                    IExpression baseExpression = expressionStack.Pop();
+                    expressionStack.Push(new Call(baseExpression, new Arguments()));
                 }
             }
             else if (context.slices() is not null)

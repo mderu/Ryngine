@@ -29,7 +29,7 @@ MENU   : 'menu';  // https://www.renpy.org/doc/html/menus.html
 WITH   : 'with';  // https://www.renpy.org/doc/html/displaying_images.html#with-statement
 
 WINDOW : 'window';  //https://www.renpy.org/doc/html/displaying_images.html#hide-and-show-window
-SHOW   : 'show';  // https://www.renpy.org/doc/html/displaying_images.html#show-statement
+SHOW   : 'show';
 HIDE   : 'hide';
 PAUSE  : 'pause';
 
@@ -38,6 +38,9 @@ BEHIND  : 'behind';
 ONLAYER : 'onlayer';
 AS      : 'as';
 AT      : 'at';
+
+INIT   : 'init';
+PYTHON : 'python';
 
 LPAR       : '('; // OPEN_PAREN
 LSQB       : '['; // OPEN_BRACK

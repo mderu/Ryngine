@@ -60,6 +60,18 @@ public partial class RenpyParserBaseListener : IRenpyParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitStatements([NotNull] RenpyParser.StatementsContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="RenpyParser.python_statements"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterPython_statements([NotNull] RenpyParser.Python_statementsContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RenpyParser.python_statements"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitPython_statements([NotNull] RenpyParser.Python_statementsContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="RenpyParser.statement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -71,6 +83,18 @@ public partial class RenpyParserBaseListener : IRenpyParserListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitStatement([NotNull] RenpyParser.StatementContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="RenpyParser.python_statement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterPython_statement([NotNull] RenpyParser.Python_statementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RenpyParser.python_statement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitPython_statement([NotNull] RenpyParser.Python_statementContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="RenpyParser.block_statements"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -84,6 +108,30 @@ public partial class RenpyParserBaseListener : IRenpyParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitBlock_statements([NotNull] RenpyParser.Block_statementsContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="RenpyParser.init_python_block"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterInit_python_block([NotNull] RenpyParser.Init_python_blockContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RenpyParser.init_python_block"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitInit_python_block([NotNull] RenpyParser.Init_python_blockContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="RenpyParser.python"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterPython([NotNull] RenpyParser.PythonContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RenpyParser.python"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitPython([NotNull] RenpyParser.PythonContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="RenpyParser.simple_statements"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -95,6 +143,30 @@ public partial class RenpyParserBaseListener : IRenpyParserListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitSimple_statements([NotNull] RenpyParser.Simple_statementsContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="RenpyParser.python_simple_statements"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterPython_simple_statements([NotNull] RenpyParser.Python_simple_statementsContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RenpyParser.python_simple_statements"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitPython_simple_statements([NotNull] RenpyParser.Python_simple_statementsContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="RenpyParser.expression_as_statement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterExpression_as_statement([NotNull] RenpyParser.Expression_as_statementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RenpyParser.expression_as_statement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitExpression_as_statement([NotNull] RenpyParser.Expression_as_statementContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="RenpyParser.window"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -168,18 +240,6 @@ public partial class RenpyParserBaseListener : IRenpyParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitPython_one_line([NotNull] RenpyParser.Python_one_lineContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="RenpyParser.python_statement"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterPython_statement([NotNull] RenpyParser.Python_statementContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="RenpyParser.python_statement"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitPython_statement([NotNull] RenpyParser.Python_statementContext context) { }
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="RenpyParser.block"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -191,6 +251,18 @@ public partial class RenpyParserBaseListener : IRenpyParserListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitBlock([NotNull] RenpyParser.BlockContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="RenpyParser.python_block"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterPython_block([NotNull] RenpyParser.Python_blockContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RenpyParser.python_block"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitPython_block([NotNull] RenpyParser.Python_blockContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="RenpyParser.menu"/>.
 	/// <para>The default implementation does nothing.</para>

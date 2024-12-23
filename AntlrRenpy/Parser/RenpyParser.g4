@@ -10,9 +10,18 @@ statements
     : statement+
     ;
 
+python_statements
+    : python_statement+
+    ;
+
 statement
     : simple_statements NEWLINE
     | block_statements
+    ;
+
+python_statement
+    : python_simple_statements NEWLINE
+    //| python_block_statements
     ;
 
 // These don't have a required trailing newline.
@@ -21,7 +30,23 @@ block_statements
     | if_stmt
     | while_stmt
     | label COLON block
+    | init_python_block
+    | python
     ;
+
+// https://www.renpy.org/doc/html/python.html#init-python-statement
+init_python_block
+    : INIT NUMBER? python
+    ;
+
+// https://www.renpy.org/doc/html/python.html#python-statements
+python
+    : PYTHON (HIDE | IN NAME)? COLON python_block
+    ;
+
+// python_block_statements
+//     :
+//     ;
 
 simple_statements
     : pass_statement
@@ -36,6 +61,17 @@ simple_statements
     | pause
     | show
     | hide
+    ;
+
+python_simple_statements
+    : pass_statement
+    | return
+    | assignment
+    | expression_as_statement
+    ;
+
+expression_as_statement
+    : expression
     ;
 
 // https://www.renpy.org/doc/html/displaying_images.html#hide-and-show-window
@@ -66,16 +102,15 @@ hide
     ;
 
 python_one_line
-    : DOLLAR python_statement
-    ;
-
-python_statement
-    : assignment
-    | expression
+    : DOLLAR python_simple_statements
     ;
 
 block
     : NEWLINE INDENT statements DEDENT
+    ;
+
+python_block
+    : NEWLINE INDENT python_statements DEDENT
     ;
 
 menu
@@ -300,7 +335,9 @@ name
     | BEHIND
     | ONLAYER
     | AS
-    | AT;
+    | AT
+    | INIT
+    | PYTHON;
 
 strings
     : (STRING)+

@@ -44,11 +44,23 @@ public interface IRenpyParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitStatements([NotNull] RenpyParser.StatementsContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="RenpyParser.python_statements"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitPython_statements([NotNull] RenpyParser.Python_statementsContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="RenpyParser.statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitStatement([NotNull] RenpyParser.StatementContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="RenpyParser.python_statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitPython_statement([NotNull] RenpyParser.Python_statementContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="RenpyParser.block_statements"/>.
 	/// </summary>
@@ -56,11 +68,35 @@ public interface IRenpyParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitBlock_statements([NotNull] RenpyParser.Block_statementsContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="RenpyParser.init_python_block"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitInit_python_block([NotNull] RenpyParser.Init_python_blockContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="RenpyParser.python"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitPython([NotNull] RenpyParser.PythonContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="RenpyParser.simple_statements"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitSimple_statements([NotNull] RenpyParser.Simple_statementsContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="RenpyParser.python_simple_statements"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitPython_simple_statements([NotNull] RenpyParser.Python_simple_statementsContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="RenpyParser.expression_as_statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitExpression_as_statement([NotNull] RenpyParser.Expression_as_statementContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="RenpyParser.window"/>.
 	/// </summary>
@@ -98,17 +134,17 @@ public interface IRenpyParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitPython_one_line([NotNull] RenpyParser.Python_one_lineContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="RenpyParser.python_statement"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitPython_statement([NotNull] RenpyParser.Python_statementContext context);
-	/// <summary>
 	/// Visit a parse tree produced by <see cref="RenpyParser.block"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitBlock([NotNull] RenpyParser.BlockContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="RenpyParser.python_block"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitPython_block([NotNull] RenpyParser.Python_blockContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="RenpyParser.menu"/>.
 	/// </summary>
