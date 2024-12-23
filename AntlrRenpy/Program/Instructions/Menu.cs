@@ -1,11 +1,9 @@
-﻿using Ryngine.Utils;
+﻿using AntlrRenpy.Program.Expressions;
 
 namespace AntlrRenpy.Program.Instructions
 {
-    public class Menu(List<MenuItem> menuItems, Block sayBlock)
+    public record class Menu(List<MenuItem> MenuItems, Block SayBlock, IExpression? MenuSet = null)
         : IInstruction
     {
-        public List<MenuItem> MenuItems { get; } = menuItems;
-        public Block SayBlock { get; set; } = sayBlock;
     }
 }

@@ -705,4 +705,236 @@ public class ParseTreeTests
             }
         );
     }
+
+    [Fact]
+    public void Test013__python()
+    {
+        (RenpyListener renpyListener, ParserErrorListener errorListener) = Parse("test013__python.rpy");
+
+        Assert.Empty(errorListener.Errors);
+
+        var labels = renpyListener.Script.Labels;
+        var instructions = renpyListener.Script.Instructions;
+
+        Assert.Collection(labels,
+            (item) =>
+            {
+                Assert.Equal("start", item.Key);
+                Assert.Same(instructions[1], item.Value.Positional);
+                Assert.True(item.Value.JumpToEnd);
+                Assert.Empty(item.Value.Parameters.ParamNames);
+            },
+            (item) =>
+            {
+                Assert.Equal("question_menu", item.Key);
+                Assert.Same(instructions[4], item.Value.Positional);
+                Assert.False(item.Value.JumpToEnd);
+                Assert.Empty(item.Value.Parameters.ParamNames);
+            }
+        );
+
+        Assert.Collection(instructions,
+            (item) => Assert.Equal(typeof(Pass), item.GetType()),
+            (item) =>
+            {
+                AssertType(item, out Define define);
+                Assert.Equal(new NamedStore("eileen"), define.Lhs);
+
+                AssertType(define.Rhs, out Call call);
+                AssertType(call.Arguments, out Arguments arguments);
+                Assert.Collection(arguments.OrderedArguments,
+                    (item) => Assert.Equal(new Constant<string>("Eileen"), item)
+                );
+                Assert.Equal(new NamedStore("Character"), call.Callee);
+            },
+            (item) =>
+            {
+                AssertType(item, out Assignment assignment);
+                Assert.Equal(Assignment.Type.Equal, assignment.AssignmentType);
+                Assert.Equal(new NamedStore("my_menuset"), assignment.Lhs);
+                AssertType(assignment.Rhs, out ListDefinition listDefinition);
+                Assert.Collection(listDefinition.InnerExpressions,
+                    (item) => Assert.Equal(
+                        new Constant<string>("Hey, this wasn't here before. What gives?"),
+                        item)
+                );
+            },
+            (item) =>
+            {
+                AssertType(item, out Assignment assignment);
+                Assert.Equal(Assignment.Type.Equal, assignment.AssignmentType);
+                Assert.Equal(new NamedStore("questions_asked"), assignment.Lhs);
+                Assert.Equal(new ConstantNumber("0"), assignment.Rhs);
+            },
+            (item) =>
+            {
+                AssertType(item, out Menu menu);
+                Assert.Collection(menu.SayBlock.Instructions,
+                    (item) =>
+                    {
+                        Assert.Equal(new Say("Do you have any questions?") { Speaker = "eileen" }, item);
+                    }
+                );
+
+                Assert.Equal(new NamedStore("my_menuset"), menu.MenuSet);
+
+                Assert.Collection(menu.MenuItems,
+                    (item) =>
+                    {
+                        Assert.Equal("What do menu sets do?", item.Caption);
+                        Assert.Collection(item.Block.Instructions,
+                            (item) =>
+                            {
+                                AssertType(item, out Assignment assignment);
+                                Assert.Equal(new NamedStore("questions_asked"), assignment.Lhs);
+                                Assert.Equal(Assignment.Type.PlusEqual, assignment.AssignmentType);
+                                Assert.Equal(new ConstantNumber("1"), assignment.Rhs);
+                            },
+                            (item) =>
+                            {
+                                Assert.Equal(
+                                    new Say("In short, they prevent options from appearing.") { Speaker = "eileen" },
+                                    item
+                                );
+                            },
+                            (item) =>
+                            {
+                                AssertType(item, out Jump jump);
+                                Assert.Equal(new Constant<string>("question_menu"), jump.Label);
+                            }
+                        );
+                    },
+                    (item) =>
+                    {
+                        Assert.Equal("Do I need to manually add elements to the menu set?", item.Caption);
+                        Assert.Collection(item.Block.Instructions,
+                            (item) =>
+                            {
+                                AssertType(item, out Assignment assignment);
+                                Assert.Equal(new NamedStore("questions_asked"), assignment.Lhs);
+                                Assert.Equal(Assignment.Type.PlusEqual, assignment.AssignmentType);
+                                Assert.Equal(new ConstantNumber("1"), assignment.Rhs);
+                            },
+                            (item) =>
+                            {
+                                Assert.Equal(
+                                    new Say("Options are automatically added to the set after being selected.")
+                                    {
+                                        Speaker = "eileen"
+                                    },
+                                    item
+                                );
+                            },
+                            (item) =>
+                            {
+                                Assert.Equal(
+                                    new Say("The next time you visit a menu the option will go away. " +
+                                        "No need to manually add items.")
+                                    {
+                                        Speaker = "eileen"
+                                    },
+                                    item
+                                );
+                            },
+                            (item) =>
+                            {
+                                AssertType(item, out Jump jump);
+                                Assert.Equal(new Constant<string>("question_menu"), jump.Label);
+                            }
+                        );
+                    },
+                    (item) =>
+                    {
+                        Assert.Equal("Hey, this wasn't here before. What gives?", item.Caption);
+                        Assert.Collection(item.Block.Instructions,
+                            (item) =>
+                            {
+                                AssertType(item, out Assignment assignment);
+                                Assert.Equal(new NamedStore("questions_asked"), assignment.Lhs);
+                                Assert.Equal(Assignment.Type.PlusEqual, assignment.AssignmentType);
+                                Assert.Equal(new ConstantNumber("1"), assignment.Rhs);
+                            },
+                            (item) =>
+                            {
+                                Assert.Equal(
+                                    new Say("This option was in the set initially. Now that you've cleared " +
+                                        "the questions, it is present once again.")
+                                    {
+                                        Speaker = "eileen"
+                                    },
+                                    item
+                                );
+                            },
+                            (item) =>
+                            {
+                                AssertType(item, out Jump jump);
+                                Assert.Equal(new Constant<string>("question_menu"), jump.Label);
+                            }
+                        );
+                    },
+                    (item) =>
+                    {
+                        Assert.Equal("I'm confused. Let me try re-asking my questions.", item.Caption);
+                        Assert.Collection(item.Block.Instructions,
+                            (item) =>
+                            {
+                                Assert.Equal(
+                                    new Say("Sure, all you need to do is clear the set and jump back to the menu!")
+                                    {
+                                        Speaker = "eileen"
+                                    },
+                                    item
+                                );
+                            },
+                            (item) =>
+                            {
+                                AssertType(item, out ExpressionAsInstruction instruction);
+                                AssertType(instruction.Expression, out Call call);
+                                Assert.Equal(new Arguments(), call.Arguments);
+                                AssertType(call.Callee, out MemberAccess memberAccess);
+                                Assert.Equal("clear", memberAccess.MemberName);
+                                Assert.Equal(new NamedStore("my_menuset"), memberAccess.BaseExpression);
+                            },
+                            (item) =>
+                            {
+                                AssertType(item, out Jump jump);
+                                Assert.Equal(new Constant<string>("question_menu"), jump.Label);
+                            }
+                        );
+                    },
+                    (item) =>
+                    {
+                        Assert.Equal("No, let's move on.", item.Caption);
+                        Assert.Collection(item.Block.Instructions,
+                            (item) => Assert.Equal(new Pass(), item)
+                        );
+                    }
+                );
+            },
+            (item) =>
+            {
+                AssertType(item, out If ifStatement);
+                
+                AssertType(ifStatement.Condition, out Comparison comparison);
+                Assert.Equal(new NamedStore("questions_asked"), comparison.Lhs);
+                Assert.Equal(Comparison.Type.IsEqualTo, comparison.ComparisonType);
+                Assert.Equal(new ConstantNumber("0"), comparison.Rhs);
+
+                Assert.Collection(ifStatement.IfBlock.Instructions,
+                    (item) =>
+                    {
+                        Assert.Equal(new Say("Glad you already understand the basics!") { Speaker = "eileen" }, item);
+                    }
+                );
+
+                Assert.NotNull(ifStatement.ElseStatement);
+                Assert.Collection(ifStatement.ElseStatement.Block.Instructions,
+                    (item) =>
+                    {
+                        Assert.Equal(new Say("Glad I could help. Let's move on!") { Speaker = "eileen" }, item);
+                    }
+                );
+            }
+        );
+    }
 }

@@ -17,15 +17,15 @@ namespace AntlrRenpy.Program.Expressions
     /// 
     /// Keyword arguments can be anywhere, but their order relative to OrderedArguments/*args is ignored.
     /// </remarks>
-    public class Arguments(
-        IEnumerable<IExpression>? arguments = null,
+    public record class Arguments(
+        IEnumerable<IExpression>? orderedArguments = null,
         IEnumerable<IExpression>? keywordArguments = null)
             : IExpression
     {
         /// <remarks>
         /// May include <see cref="UnaryStar"/> expressions that need to be expanded.
         /// </remarks>
-        public IEnumerable<IExpression> OrderedArguments { get; } = arguments ?? [];
+        public IEnumerable<IExpression> OrderedArguments { get; } = orderedArguments ?? [];
 
         /// <remarks>
         /// Order is preserved in Python 3.6+. 

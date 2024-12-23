@@ -25,8 +25,11 @@ TRUE   : 'True';
 FALSE  : 'False';
 NONE   : 'None';
 
-MENU   : 'menu';  // https://www.renpy.org/doc/html/menus.html
-WITH   : 'with';  // https://www.renpy.org/doc/html/displaying_images.html#with-statement
+MENU    : 'menu';  // https://www.renpy.org/doc/html/menus.html
+SET     : 'set';
+WITH    : 'with';  // https://www.renpy.org/doc/html/displaying_images.html#with-statement
+DEFINE  : 'define';
+DEFAULT : 'default';
 
 WINDOW : 'window';  //https://www.renpy.org/doc/html/displaying_images.html#hide-and-show-window
 SHOW   : 'show';

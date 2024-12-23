@@ -27,7 +27,7 @@ namespace AntlrRenpy.Listener
             }
 
             expressionStack.Push(new Arguments(
-                arguments: [.. argStack, .. kwargs?.OrderedArguments ?? []],
+                orderedArguments: [.. argStack, .. kwargs?.OrderedArguments ?? []],
                 keywordArguments: kwargs?.KeywordArguments));
         }
 

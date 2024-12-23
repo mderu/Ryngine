@@ -128,6 +128,18 @@ public interface IRenpyParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitHide([NotNull] RenpyParser.HideContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="RenpyParser.define"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitDefine([NotNull] RenpyParser.DefineContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="RenpyParser.default"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitDefault([NotNull] RenpyParser.DefaultContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="RenpyParser.python_one_line"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

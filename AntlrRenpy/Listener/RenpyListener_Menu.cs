@@ -1,4 +1,5 @@
 ﻿using AntlrRenpy.Program;
+using AntlrRenpy.Program.Expressions;
 using AntlrRenpy.Program.Instructions;
 using System.Diagnostics.CodeAnalysis;
 using static RenpyParser;
@@ -11,14 +12,18 @@ namespace AntlrRenpy.Listener
 
         public override void EnterMenu([NotNull] MenuContext context)
         {
-            List<MenuItem> menuItems = [];
-            Block sayBlock = new([]);
+            blockStack.Push(new([]));
+            menuItemsStack.Push([]);
+        }
 
-            // Consider supporting menuset: https://www.renpy.org/doc/html/menus.html#menu-set
-            // And with expression
-            Menu menu = new(menuItems, sayBlock);
-
-            AppendInstruction(menu);
+        public override void ExitMenu([NotNull] MenuContext context)
+        {
+            IExpression? menuSet = context.SET() is not null
+                ? expressionStack.Pop()
+                : null;
+            
+            Block sayBlock = blockStack.Pop();
+            Menu menu = new(menuItemsStack.Pop(), sayBlock, menuSet);
 
             if (context.label_name() is Label_nameContext labelContext)
             {
@@ -28,14 +33,7 @@ namespace AntlrRenpy.Listener
                 InsertLabel(labelName, menu, parametersContext: null, jumpToAfterInstruction: false);
             }
 
-            blockStack.Push(sayBlock);
-            menuItemsStack.Push(menuItems);
-        }
-
-        public override void ExitMenu([NotNull] MenuContext context)
-        {
-            menuItemsStack.Pop();
-            blockStack.Pop();
+            AppendInstruction(menu);
         }
 
         public override void EnterMenu_item([NotNull] Menu_itemContext context)

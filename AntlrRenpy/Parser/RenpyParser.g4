@@ -61,6 +61,8 @@ simple_statements
     | pause
     | show
     | hide
+    | define
+    | default
     ;
 
 python_simple_statements
@@ -101,6 +103,16 @@ hide
     | HIDE EXPRESSION expression (WITH expression)?
     ;
 
+// https://www.renpy.org/doc/html/python.html#define-statement
+define
+    : DEFINE single_target EQUALS expression
+    ;
+
+// https://www.renpy.org/doc/html/python.html#default-statement
+default
+    : DEFAULT single_target EQUALS expression
+    ;
+
 python_one_line
     : DOLLAR python_simple_statements
     ;
@@ -114,7 +126,7 @@ python_block
     ;
 
 menu
-    : MENU (label_name)? COLON NEWLINE INDENT (say NEWLINE)? (menu_item)+ DEDENT
+    : MENU (label_name)? COLON NEWLINE INDENT (SET expression NEWLINE)? (say NEWLINE)? (menu_item)+ DEDENT
     ;
 
 menu_item
@@ -337,7 +349,11 @@ name
     | AS
     | AT
     | INIT
-    | PYTHON;
+    | PYTHON
+    | SET
+    | DEFAULT
+    | DEFINE
+    ;
 
 strings
     : (STRING)+

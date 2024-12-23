@@ -45,6 +45,9 @@
     <None Update="TestScripts\test011__if_elif_else.rpy">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="TestScripts\test013__python.rpy">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="TestScripts\test012__while.rpy">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

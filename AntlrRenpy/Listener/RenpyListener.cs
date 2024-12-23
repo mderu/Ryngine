@@ -70,6 +70,7 @@ namespace AntlrRenpy.Listener
         {
             if (context.label_name() is not null)
             {
+                // TODO: Should this be a NamedStore instead?
                 Constant<string> labelName = new(context.label_name().GetText());
                 AppendInstruction(new Jump(labelName));
             }
@@ -168,8 +169,8 @@ namespace AntlrRenpy.Listener
             {
                 if (context.arguments().ChildCount == 1)
                 {
-                    IExpression baseExpression = expressionStack.Pop();
                     IExpression arguments = expressionStack.Pop();
+                    IExpression baseExpression = expressionStack.Pop();
                     expressionStack.Push(new Call(baseExpression, arguments));
                 }
                 else
@@ -179,8 +180,8 @@ namespace AntlrRenpy.Listener
             }
             else if (context.slices() is not null)
             {
-                IExpression baseExpression = expressionStack.Pop();
                 IExpression sliceExpression = expressionStack.Pop();
+                IExpression baseExpression = expressionStack.Pop();
                 expressionStack.Push(new SubscriptAccess(baseExpression, sliceExpression));
             }
             else
@@ -204,8 +205,8 @@ namespace AntlrRenpy.Listener
             {
                 if (context.arguments() is not null)
                 {
-                    IExpression baseExpression = expressionStack.Pop();
                     IExpression arguments = expressionStack.Pop();
+                    IExpression baseExpression = expressionStack.Pop();
                     expressionStack.Push(new Call(baseExpression, arguments));
                 }
                 else
@@ -216,8 +217,8 @@ namespace AntlrRenpy.Listener
             }
             else if (context.slices() is not null)
             {
-                IExpression baseExpression = expressionStack.Pop();
                 IExpression sliceExpression = expressionStack.Pop();
+                IExpression baseExpression = expressionStack.Pop();
                 expressionStack.Push(new Call(baseExpression, sliceExpression));
             }
             else
@@ -337,6 +338,20 @@ namespace AntlrRenpy.Listener
             {
                 throw new NotImplementedException($"Rule `assignment` currently doesn't support {context.GetText()}");
             }
+        }
+
+        public override void ExitDefault([NotNull] DefaultContext context)
+        {
+            IExpression rhs = expressionStack.Pop();
+            IExpression lhs = expressionStack.Pop();
+            AppendInstruction(new Default(lhs, rhs));
+        }
+
+        public override void ExitDefine([NotNull] DefineContext context)
+        {
+            IExpression rhs = expressionStack.Pop();
+            IExpression lhs = expressionStack.Pop();
+            AppendInstruction(new Define(lhs, rhs));
         }
 
         public override void ExitComparison([NotNull] ComparisonContext context)
