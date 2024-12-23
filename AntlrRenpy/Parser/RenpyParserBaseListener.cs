@@ -252,6 +252,18 @@ public partial class RenpyParserBaseListener : IRenpyParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitAssignment([NotNull] RenpyParser.AssignmentContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="RenpyParser.augassign"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterAugassign([NotNull] RenpyParser.AugassignContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RenpyParser.augassign"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitAugassign([NotNull] RenpyParser.AugassignContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="RenpyParser.parameters"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -384,6 +396,18 @@ public partial class RenpyParserBaseListener : IRenpyParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitElse_block([NotNull] RenpyParser.Else_blockContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="RenpyParser.while_stmt"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterWhile_stmt([NotNull] RenpyParser.While_stmtContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RenpyParser.while_stmt"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitWhile_stmt([NotNull] RenpyParser.While_stmtContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="RenpyParser.list"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -491,6 +515,18 @@ public partial class RenpyParserBaseListener : IRenpyParserListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitExpression([NotNull] RenpyParser.ExpressionContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="RenpyParser.comparison"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterComparison([NotNull] RenpyParser.ComparisonContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RenpyParser.comparison"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitComparison([NotNull] RenpyParser.ComparisonContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="RenpyParser.bitwise_or"/>.
 	/// <para>The default implementation does nothing.</para>

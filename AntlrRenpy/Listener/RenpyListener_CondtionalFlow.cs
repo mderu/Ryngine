@@ -52,6 +52,22 @@ namespace AntlrRenpy.Listener
             ExitElse();
         }
 
+        public override void EnterWhile_stmt([NotNull] RenpyParser.While_stmtContext context)
+        {
+            blockStack.Push(new([]));
+        }
+
+        public override void ExitWhile_stmt([NotNull] RenpyParser.While_stmtContext context)
+        {
+            Else? elseStatement = null;
+            if (context.else_block() is not null)
+            {
+                elseStatement = elseStack.Pop();
+            }
+
+            AppendInstruction(new While(blockStack.Pop(), expressionStack.Pop(), elseStatement));
+        }
+
         private void EnterIf()
         {
             // Create a block for the if.

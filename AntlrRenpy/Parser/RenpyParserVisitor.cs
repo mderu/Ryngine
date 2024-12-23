@@ -140,6 +140,12 @@ public interface IRenpyParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitAssignment([NotNull] RenpyParser.AssignmentContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="RenpyParser.augassign"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitAugassign([NotNull] RenpyParser.AugassignContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="RenpyParser.parameters"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -206,6 +212,12 @@ public interface IRenpyParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitElse_block([NotNull] RenpyParser.Else_blockContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="RenpyParser.while_stmt"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitWhile_stmt([NotNull] RenpyParser.While_stmtContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="RenpyParser.list"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -259,6 +271,12 @@ public interface IRenpyParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitExpression([NotNull] RenpyParser.ExpressionContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="RenpyParser.comparison"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitComparison([NotNull] RenpyParser.ComparisonContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="RenpyParser.bitwise_or"/>.
 	/// </summary>

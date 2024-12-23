@@ -19,6 +19,7 @@ statement
 block_statements
     : menu
     | if_stmt
+    | while_stmt
     | label COLON block
     ;
 
@@ -85,7 +86,23 @@ say
 
 assignment
     : single_target EQUALS expression
+    | single_target augassign expression
     ;
+
+augassign
+    : '+='
+    | '-='
+    | '*='
+    //| '@=' Seems to be matrix multiplication. Couldn't find documentation on how to do this outside of numpy.
+    | '/='
+    | '%='
+    | '&='
+    | '|='
+    | '^='
+    | '<<='
+    | '>>='
+    | '**='
+    | '//=';
 
 parameters
     // SyntaxError: at least one argument must precede /
@@ -140,6 +157,9 @@ elif_stmt
 else_block
     : 'else' ':' block;
 
+while_stmt
+    : 'while' named_expression ':' block else_block?;
+
 // Lists
 // -----
 
@@ -176,10 +196,16 @@ star_expression
     | expression;
 
 expression
-    : bitwise_or
+    : comparison
     ;
 
-// disjunction > conjunction > inversion > comparison > compare_op_bitwise_or_pair > 
+// Comparison operators
+// --------------------
+
+// disjunction > conjunction > inversion > comparison >
+comparison
+    : bitwise_or ( (EQEQUAL | NOTEQUAL | LESSEQUAL | LESS | GREATEREQUAL | GREATER | (NOT? IN) | (IS NOT?) ) bitwise_or)*;
+
 bitwise_or
     //: bitwise_or '|' bitwise_xor
     //| bitwise_xor;

@@ -685,4 +685,54 @@ public class ParseTreeTests
             }
         );
     }
+
+    [Fact]
+    public void Test012__while()
+    {
+        (RenpyListener renpyListener, ParserErrorListener errorListener) = Parse("test012__while.rpy");
+
+        Assert.Empty(errorListener.Errors);
+
+        var labels = renpyListener.Script.Labels;
+        var instructions = renpyListener.Script.Instructions;
+
+        Assert.Collection(instructions,
+            (item) => Assert.Equal(typeof(Pass), item.GetType()),
+            (item) =>
+            {
+                AssertType(item, out Assignment assignment);
+                AssertType(assignment.Lhs, out NamedStore namedStore);
+                Assert.Equal("count", namedStore.StoreName);
+                Assert.Equal(new ConstantNumber("10"), assignment.Rhs);
+            },
+            (item) =>
+            {
+                AssertType(item, out While whileStatement);
+                
+                AssertType(whileStatement.Condition, out Comparison comparison);
+                Assert.Equal(Comparison.Type.GreaterThan, comparison.ComparisonType);
+                Assert.Equal(new NamedStore("count"), comparison.Lhs);
+                Assert.Equal(new ConstantNumber("0"), comparison.Rhs);
+
+                Assert.Collection(whileStatement.Block.Instructions,
+                    (item) => Assert.Equal(new Say("T-minus [count]."), item),
+                    (item) => {
+                        AssertType(item, out Assignment assignment);
+                        Assert.Equal(new NamedStore("count"), assignment.Lhs);
+                        Assert.Equal(new ConstantNumber("1"), assignment.Rhs);
+                        Assert.Equal(Assignment.Type.MinEqual, assignment.AssignmentType);
+                    }
+                );
+
+                Assert.NotNull(whileStatement.ElseStatement);
+                Assert.Collection(whileStatement.ElseStatement.Block.Instructions,
+                    (item) => Assert.Equal(new Say("This is triggered if the above while loop isn't broken."), item)
+                );
+            },
+            (item) =>
+            {
+                Assert.Equal(new Say("Liftoff!"), item);
+            }
+        );
+    }
 }

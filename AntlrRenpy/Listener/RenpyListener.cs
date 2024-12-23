@@ -1,4 +1,5 @@
 using Antlr4.Runtime.Misc;
+using Antlr4.Runtime.Tree;
 using AntlrRenpy.Program;
 using AntlrRenpy.Program.ControlFlows;
 using AntlrRenpy.Program.Expressions;
@@ -296,13 +297,64 @@ namespace AntlrRenpy.Listener
         {
             if (context.EQUALS() is not null)
             {
-                IExpression lhs = expressionStack.Pop();
                 IExpression rhs = expressionStack.Pop();
-                AppendInstruction(new Assignment(rhs, lhs));
+                IExpression lhs = expressionStack.Pop();
+                AppendInstruction(new Assignment(lhs, Assignment.Type.Equal, rhs));
+            }
+            else if (context.augassign() is AugassignContext augassign)
+            {
+                IExpression rhs = expressionStack.Pop();
+                IExpression lhs = expressionStack.Pop();
+
+                Assignment.Type assignmentType = augassign.GetText() switch
+                {
+                    "+=" => Assignment.Type.PlusEqual,
+                    "-=" => Assignment.Type.MinEqual,
+                    "*=" => Assignment.Type.StarEqual,
+                    "/=" => Assignment.Type.SlashEqual,
+                    "%=" => Assignment.Type.PercentEqual,
+                    "&=" => Assignment.Type.AmperEqual,
+                    "|=" => Assignment.Type.VbarEqual,
+                    "^=" => Assignment.Type.CircumflexEqual,
+                    "<<=" => Assignment.Type.LeftShiftEqual,
+                    ">>=" => Assignment.Type.RightShiftEqual,
+                    "**=" => Assignment.Type.DoubleStarEqual,
+                    "//=" => Assignment.Type.DoubleSlashEqual,
+                    _ => throw new NotImplementedException(),
+                };
+
+                AppendInstruction(new Assignment(lhs, assignmentType, rhs));
             }
             else
             {
                 throw new NotImplementedException($"Rule `assignment` currently doesn't support {context.GetText()}");
+            }
+        }
+
+        public override void ExitComparison([NotNull] ComparisonContext context)
+        {
+            if (context.bitwise_or().Length == 2)
+            {
+                Comparison.Type comparisonType = context.children[1].GetText() switch
+                {
+                    "not" => Comparison.Type.NotIn,
+                    "==" => Comparison.Type.IsEqualTo,
+                    "!=" => Comparison.Type.IsNotEqualTo,
+                    "<=" => Comparison.Type.LessThanOrEqual,
+                    ">=" => Comparison.Type.GreaterThanOrEqual,
+                    "in" => Comparison.Type.In,
+                    "is" => context.children.Count == 3
+                        ? Comparison.Type.Is
+                        : Comparison.Type.IsNot,
+                    "<" => Comparison.Type.LessThan,
+                    ">" => Comparison.Type.GreaterThan,
+                    _ => throw new NotImplementedException(),
+                };
+
+                IExpression rhs = expressionStack.Pop();
+                IExpression lhs = expressionStack.Pop();
+
+                expressionStack.Push(new Comparison(lhs, comparisonType, rhs));
             }
         }
 

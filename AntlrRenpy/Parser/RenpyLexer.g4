@@ -21,6 +21,7 @@ MENU   : 'menu';
 TRUE   : 'True';
 FALSE  : 'False';
 NONE   : 'None';
+WHILE  : 'while';
 
 IF     : 'if';
 ELIF   : 'elif';
@@ -36,6 +37,29 @@ PLUS       : '+';
 MINUS      : '-';
 ARROW      : '->';
 SLASH      : '/';
+
+EQEQUAL      : '==';
+NOTEQUAL     : '!=';
+LESSEQUAL    : '<=';
+LESS         : '<';
+GREATEREQUAL : '>=';
+GREATER      : '>';
+NOT          : 'not';
+IN           : 'in';
+IS           : 'is';
+
+PLUSEQUAL        : '+=';
+MINEQUAL         : '-=';
+STAREQUAL        : '*=';
+SLASHEQUAL       : '/=';
+PERCENTEQUAL     : '%=';
+AMPEREQUAL       : '&=';
+VBAREQUAL        : '|=';
+CIRCUMFLEXEQUAL  : '^=';
+LEFTSHIFTEQUAL   : '<<=';
+RIGHTSHIFTEQUAL  : '>>=';
+DOUBLESTAREQUAL  : '**=';
+DOUBLESLASHEQUAL : '//=';
 
 DOT        : '.';
 COLON      : ':';

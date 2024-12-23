@@ -2,12 +2,23 @@
 
 namespace AntlrRenpy.Program.Instructions
 {
-    public class Assignment(IExpression lhs, IExpression rhs) : IInstruction
+    public record class Assignment(IExpression Lhs, Assignment.Type AssignmentType, IExpression Rhs) : IInstruction
     {
-        // LHS = left-hand side.
-        public IExpression Lhs { get; } = lhs;
-
-        // RHS = right-hand side.
-        public IExpression Rhs { get; } = rhs;
+        public enum Type
+        {
+            Equal,
+            PlusEqual,
+            MinEqual,
+            StarEqual,
+            SlashEqual,
+            PercentEqual,
+            AmperEqual,
+            VbarEqual,
+            CircumflexEqual,
+            LeftShiftEqual,
+            RightShiftEqual,
+            DoubleStarEqual,
+            DoubleSlashEqual,
+        }
     }
 }

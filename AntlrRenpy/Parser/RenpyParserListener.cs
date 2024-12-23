@@ -211,6 +211,16 @@ public interface IRenpyParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitAssignment([NotNull] RenpyParser.AssignmentContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="RenpyParser.augassign"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterAugassign([NotNull] RenpyParser.AugassignContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RenpyParser.augassign"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitAugassign([NotNull] RenpyParser.AugassignContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="RenpyParser.parameters"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -321,6 +331,16 @@ public interface IRenpyParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitElse_block([NotNull] RenpyParser.Else_blockContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="RenpyParser.while_stmt"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterWhile_stmt([NotNull] RenpyParser.While_stmtContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RenpyParser.while_stmt"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitWhile_stmt([NotNull] RenpyParser.While_stmtContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="RenpyParser.list"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -410,6 +430,16 @@ public interface IRenpyParserListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitExpression([NotNull] RenpyParser.ExpressionContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="RenpyParser.comparison"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterComparison([NotNull] RenpyParser.ComparisonContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RenpyParser.comparison"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitComparison([NotNull] RenpyParser.ComparisonContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="RenpyParser.bitwise_or"/>.
 	/// </summary>
