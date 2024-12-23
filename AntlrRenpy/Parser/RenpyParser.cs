@@ -36,69 +36,75 @@ public partial class RenpyParser : RenpyParserBase {
 	protected static DFA[] decisionToDFA;
 	protected static PredictionContextCache sharedContextCache = new PredictionContextCache();
 	public const int
-		INDENT=1, DEDENT=2, LABEL=3, JUMP=4, EXPRESSION=5, CALL=6, PASS=7, RETURN=8, 
-		WITH=9, MENU=10, TRUE=11, FALSE=12, NONE=13, WHILE=14, IF=15, ELIF=16, 
-		ELSE=17, LPAR=18, LSQB=19, LBRACE=20, RPAR=21, RSQB=22, RBRACE=23, PLUS=24, 
-		MINUS=25, ARROW=26, SLASH=27, EQEQUAL=28, NOTEQUAL=29, LESSEQUAL=30, LESS=31, 
-		GREATEREQUAL=32, GREATER=33, NOT=34, IN=35, IS=36, PLUSEQUAL=37, MINEQUAL=38, 
-		STAREQUAL=39, SLASHEQUAL=40, PERCENTEQUAL=41, AMPEREQUAL=42, VBAREQUAL=43, 
-		CIRCUMFLEXEQUAL=44, LEFTSHIFTEQUAL=45, RIGHTSHIFTEQUAL=46, DOUBLESTAREQUAL=47, 
-		DOUBLESLASHEQUAL=48, DOT=49, COLON=50, EQUALS=51, COMMA=52, STAR=53, DOUBLESTAR=54, 
-		COLONEQUAL=55, DOLLAR=56, NAME=57, STRING=58, NUMBER=59, NEWLINE=60, COMMENT=61, 
-		WS=62, EXPLICIT_LINE_JOINING=63, ERRORTOKEN=64;
+		INDENT=1, DEDENT=2, LABEL=3, JUMP=4, EXPRESSION=5, CALL=6, IF=7, ELIF=8, 
+		ELSE=9, WHILE=10, PASS=11, RETURN=12, TRUE=13, FALSE=14, NONE=15, MENU=16, 
+		WITH=17, WINDOW=18, SHOW=19, HIDE=20, PAUSE=21, SCENE=22, BEHIND=23, ONLAYER=24, 
+		AS=25, AT=26, LPAR=27, LSQB=28, LBRACE=29, RPAR=30, RSQB=31, RBRACE=32, 
+		PLUS=33, MINUS=34, ARROW=35, SLASH=36, EQEQUAL=37, NOTEQUAL=38, LESSEQUAL=39, 
+		LESS=40, GREATEREQUAL=41, GREATER=42, NOT=43, IN=44, IS=45, PLUSEQUAL=46, 
+		MINEQUAL=47, STAREQUAL=48, SLASHEQUAL=49, PERCENTEQUAL=50, AMPEREQUAL=51, 
+		VBAREQUAL=52, CIRCUMFLEXEQUAL=53, LEFTSHIFTEQUAL=54, RIGHTSHIFTEQUAL=55, 
+		DOUBLESTAREQUAL=56, DOUBLESLASHEQUAL=57, DOT=58, COLON=59, EQUALS=60, 
+		COMMA=61, STAR=62, DOUBLESTAR=63, COLONEQUAL=64, DOLLAR=65, NAME=66, STRING=67, 
+		NUMBER=68, NEWLINE=69, COMMENT=70, WS=71, EXPLICIT_LINE_JOINING=72, ERRORTOKEN=73;
 	public const int
 		RULE_entire_tree = 0, RULE_statements = 1, RULE_statement = 2, RULE_block_statements = 3, 
-		RULE_simple_statements = 4, RULE_python_one_line = 5, RULE_block = 6, 
-		RULE_menu = 7, RULE_menu_item = 8, RULE_pass_statement = 9, RULE_label = 10, 
-		RULE_label_name = 11, RULE_jump = 12, RULE_call = 13, RULE_return = 14, 
-		RULE_return_simple = 15, RULE_say = 16, RULE_assignment = 17, RULE_augassign = 18, 
-		RULE_parameters = 19, RULE_kwds = 20, RULE_param_no_default = 21, RULE_param_with_default = 22, 
-		RULE_param = 23, RULE_annotation = 24, RULE_default_assignment = 25, RULE_type_comment = 26, 
-		RULE_if_stmt = 27, RULE_elif_stmt = 28, RULE_else_block = 29, RULE_while_stmt = 30, 
-		RULE_list = 31, RULE_tuple = 32, RULE_set = 33, RULE_dict = 34, RULE_double_starred_kvpairs = 35, 
-		RULE_double_starred_kvpair = 36, RULE_kvpair = 37, RULE_star_expression = 38, 
-		RULE_expression = 39, RULE_comparison = 40, RULE_bitwise_or = 41, RULE_sum = 42, 
-		RULE_primary = 43, RULE_atom = 44, RULE_strings = 45, RULE_single_target = 46, 
-		RULE_single_subscript_attribute_target = 47, RULE_t_primary = 48, RULE_genexp = 49, 
-		RULE_arguments = 50, RULE_args = 51, RULE_kwargs = 52, RULE_starred_expression = 53, 
-		RULE_kwarg_or_double_starred = 54, RULE_kwarg_or_starred = 55, RULE_slices = 56, 
-		RULE_star_named_expressions = 57, RULE_star_named_expression = 58, RULE_assignment_expression = 59, 
-		RULE_named_expression = 60;
+		RULE_simple_statements = 4, RULE_window = 5, RULE_scene = 6, RULE_pause = 7, 
+		RULE_show = 8, RULE_hide = 9, RULE_python_one_line = 10, RULE_python_statement = 11, 
+		RULE_block = 12, RULE_menu = 13, RULE_menu_item = 14, RULE_pass_statement = 15, 
+		RULE_label = 16, RULE_label_name = 17, RULE_jump = 18, RULE_call = 19, 
+		RULE_return = 20, RULE_return_simple = 21, RULE_say = 22, RULE_assignment = 23, 
+		RULE_augassign = 24, RULE_parameters = 25, RULE_kwds = 26, RULE_param_no_default = 27, 
+		RULE_param_with_default = 28, RULE_param = 29, RULE_annotation = 30, RULE_default_assignment = 31, 
+		RULE_type_comment = 32, RULE_if_stmt = 33, RULE_elif_stmt = 34, RULE_else_block = 35, 
+		RULE_while_stmt = 36, RULE_list = 37, RULE_tuple = 38, RULE_set = 39, 
+		RULE_dict = 40, RULE_double_starred_kvpairs = 41, RULE_double_starred_kvpair = 42, 
+		RULE_kvpair = 43, RULE_star_expression = 44, RULE_expression = 45, RULE_comparison = 46, 
+		RULE_comparison_operator = 47, RULE_bitwise_or = 48, RULE_sum = 49, RULE_primary = 50, 
+		RULE_atom = 51, RULE_name = 52, RULE_strings = 53, RULE_single_target = 54, 
+		RULE_single_subscript_attribute_target = 55, RULE_t_primary = 56, RULE_genexp = 57, 
+		RULE_arguments = 58, RULE_args = 59, RULE_kwargs = 60, RULE_starred_expression = 61, 
+		RULE_kwarg_or_double_starred = 62, RULE_kwarg_or_starred = 63, RULE_slices = 64, 
+		RULE_star_named_expressions = 65, RULE_star_named_expression = 66, RULE_assignment_expression = 67, 
+		RULE_named_expression = 68;
 	public static readonly string[] ruleNames = {
 		"entire_tree", "statements", "statement", "block_statements", "simple_statements", 
-		"python_one_line", "block", "menu", "menu_item", "pass_statement", "label", 
-		"label_name", "jump", "call", "return", "return_simple", "say", "assignment", 
-		"augassign", "parameters", "kwds", "param_no_default", "param_with_default", 
-		"param", "annotation", "default_assignment", "type_comment", "if_stmt", 
-		"elif_stmt", "else_block", "while_stmt", "list", "tuple", "set", "dict", 
-		"double_starred_kvpairs", "double_starred_kvpair", "kvpair", "star_expression", 
-		"expression", "comparison", "bitwise_or", "sum", "primary", "atom", "strings", 
-		"single_target", "single_subscript_attribute_target", "t_primary", "genexp", 
-		"arguments", "args", "kwargs", "starred_expression", "kwarg_or_double_starred", 
+		"window", "scene", "pause", "show", "hide", "python_one_line", "python_statement", 
+		"block", "menu", "menu_item", "pass_statement", "label", "label_name", 
+		"jump", "call", "return", "return_simple", "say", "assignment", "augassign", 
+		"parameters", "kwds", "param_no_default", "param_with_default", "param", 
+		"annotation", "default_assignment", "type_comment", "if_stmt", "elif_stmt", 
+		"else_block", "while_stmt", "list", "tuple", "set", "dict", "double_starred_kvpairs", 
+		"double_starred_kvpair", "kvpair", "star_expression", "expression", "comparison", 
+		"comparison_operator", "bitwise_or", "sum", "primary", "atom", "name", 
+		"strings", "single_target", "single_subscript_attribute_target", "t_primary", 
+		"genexp", "arguments", "args", "kwargs", "starred_expression", "kwarg_or_double_starred", 
 		"kwarg_or_starred", "slices", "star_named_expressions", "star_named_expression", 
 		"assignment_expression", "named_expression"
 	};
 
 	private static readonly string[] _LiteralNames = {
-		null, null, null, "'label'", "'jump'", "'expression'", "'call'", "'pass'", 
-		"'return'", "'with'", "'menu'", "'True'", "'False'", "'None'", "'while'", 
-		"'if'", "'elif'", "'else'", "'('", "'['", "'{'", "')'", "']'", "'}'", 
-		"'+'", "'-'", "'->'", "'/'", "'=='", "'!='", "'<='", "'<'", "'>='", "'>'", 
-		"'not'", "'in'", "'is'", "'+='", "'-='", "'*='", "'/='", "'%='", "'&='", 
-		"'|='", "'^='", "'<<='", "'>>='", "'**='", "'//='", "'.'", "':'", "'='", 
-		"','", "'*'", "'**'", "':='", "'$'"
+		null, null, null, "'label'", "'jump'", "'expression'", "'call'", "'if'", 
+		"'elif'", "'else'", "'while'", "'pass'", "'return'", "'True'", "'False'", 
+		"'None'", "'menu'", "'with'", "'window'", "'show'", "'hide'", "'pause'", 
+		"'scene'", "'behind'", "'onlayer'", "'as'", "'at'", "'('", "'['", "'{'", 
+		"')'", "']'", "'}'", "'+'", "'-'", "'->'", "'/'", "'=='", "'!='", "'<='", 
+		"'<'", "'>='", "'>'", "'not'", "'in'", "'is'", "'+='", "'-='", "'*='", 
+		"'/='", "'%='", "'&='", "'|='", "'^='", "'<<='", "'>>='", "'**='", "'//='", 
+		"'.'", "':'", "'='", "','", "'*'", "'**'", "':='", "'$'"
 	};
 	private static readonly string[] _SymbolicNames = {
-		null, "INDENT", "DEDENT", "LABEL", "JUMP", "EXPRESSION", "CALL", "PASS", 
-		"RETURN", "WITH", "MENU", "TRUE", "FALSE", "NONE", "WHILE", "IF", "ELIF", 
-		"ELSE", "LPAR", "LSQB", "LBRACE", "RPAR", "RSQB", "RBRACE", "PLUS", "MINUS", 
-		"ARROW", "SLASH", "EQEQUAL", "NOTEQUAL", "LESSEQUAL", "LESS", "GREATEREQUAL", 
-		"GREATER", "NOT", "IN", "IS", "PLUSEQUAL", "MINEQUAL", "STAREQUAL", "SLASHEQUAL", 
-		"PERCENTEQUAL", "AMPEREQUAL", "VBAREQUAL", "CIRCUMFLEXEQUAL", "LEFTSHIFTEQUAL", 
-		"RIGHTSHIFTEQUAL", "DOUBLESTAREQUAL", "DOUBLESLASHEQUAL", "DOT", "COLON", 
-		"EQUALS", "COMMA", "STAR", "DOUBLESTAR", "COLONEQUAL", "DOLLAR", "NAME", 
-		"STRING", "NUMBER", "NEWLINE", "COMMENT", "WS", "EXPLICIT_LINE_JOINING", 
-		"ERRORTOKEN"
+		null, "INDENT", "DEDENT", "LABEL", "JUMP", "EXPRESSION", "CALL", "IF", 
+		"ELIF", "ELSE", "WHILE", "PASS", "RETURN", "TRUE", "FALSE", "NONE", "MENU", 
+		"WITH", "WINDOW", "SHOW", "HIDE", "PAUSE", "SCENE", "BEHIND", "ONLAYER", 
+		"AS", "AT", "LPAR", "LSQB", "LBRACE", "RPAR", "RSQB", "RBRACE", "PLUS", 
+		"MINUS", "ARROW", "SLASH", "EQEQUAL", "NOTEQUAL", "LESSEQUAL", "LESS", 
+		"GREATEREQUAL", "GREATER", "NOT", "IN", "IS", "PLUSEQUAL", "MINEQUAL", 
+		"STAREQUAL", "SLASHEQUAL", "PERCENTEQUAL", "AMPEREQUAL", "VBAREQUAL", 
+		"CIRCUMFLEXEQUAL", "LEFTSHIFTEQUAL", "RIGHTSHIFTEQUAL", "DOUBLESTAREQUAL", 
+		"DOUBLESLASHEQUAL", "DOT", "COLON", "EQUALS", "COMMA", "STAR", "DOUBLESTAR", 
+		"COLONEQUAL", "DOLLAR", "NAME", "STRING", "NUMBER", "NEWLINE", "COMMENT", 
+		"WS", "EXPLICIT_LINE_JOINING", "ERRORTOKEN"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
 
@@ -172,31 +178,31 @@ public partial class RenpyParser : RenpyParserBase {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 123;
+			State = 139;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 504403158265546200L) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 8199384L) != 0) || ((((_la - 65)) & ~0x3f) == 0 && ((1L << (_la - 65)) & 7L) != 0)) {
 				{
-				State = 122;
+				State = 138;
 				statements();
 				}
 			}
 
-			State = 128;
+			State = 144;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			while (_la==NEWLINE) {
 				{
 				{
-				State = 125;
+				State = 141;
 				Match(NEWLINE);
 				}
 				}
-				State = 130;
+				State = 146;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
-			State = 131;
+			State = 147;
 			Match(Eof);
 			}
 		}
@@ -249,20 +255,20 @@ public partial class RenpyParser : RenpyParserBase {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 134;
+			State = 150;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			do {
 				{
 				{
-				State = 133;
+				State = 149;
 				statement();
 				}
 				}
-				State = 136;
+				State = 152;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
-			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & 504403158265546200L) != 0) );
+			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & 8199384L) != 0) || ((((_la - 65)) & ~0x3f) == 0 && ((1L << (_la - 65)) & 7L) != 0) );
 			}
 		}
 		catch (RecognitionException re) {
@@ -312,22 +318,22 @@ public partial class RenpyParser : RenpyParserBase {
 		StatementContext _localctx = new StatementContext(Context, State);
 		EnterRule(_localctx, 4, RULE_statement);
 		try {
-			State = 142;
+			State = 158;
 			ErrorHandler.Sync(this);
 			switch ( Interpreter.AdaptivePredict(TokenStream,3,Context) ) {
 			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 138;
+				State = 154;
 				simple_statements();
-				State = 139;
+				State = 155;
 				Match(NEWLINE);
 				}
 				break;
 			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 141;
+				State = 157;
 				block_statements();
 				}
 				break;
@@ -389,38 +395,38 @@ public partial class RenpyParser : RenpyParserBase {
 		Block_statementsContext _localctx = new Block_statementsContext(Context, State);
 		EnterRule(_localctx, 6, RULE_block_statements);
 		try {
-			State = 151;
+			State = 167;
 			ErrorHandler.Sync(this);
 			switch (TokenStream.LA(1)) {
 			case MENU:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 144;
+				State = 160;
 				menu();
 				}
 				break;
 			case IF:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 145;
+				State = 161;
 				if_stmt();
 				}
 				break;
 			case WHILE:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 146;
+				State = 162;
 				while_stmt();
 				}
 				break;
 			case LABEL:
 				EnterOuterAlt(_localctx, 4);
 				{
-				State = 147;
+				State = 163;
 				label();
-				State = 148;
+				State = 164;
 				Match(COLON);
-				State = 149;
+				State = 165;
 				block();
 				}
 				break;
@@ -461,6 +467,21 @@ public partial class RenpyParser : RenpyParserBase {
 		[System.Diagnostics.DebuggerNonUserCode] public Python_one_lineContext python_one_line() {
 			return GetRuleContext<Python_one_lineContext>(0);
 		}
+		[System.Diagnostics.DebuggerNonUserCode] public WindowContext window() {
+			return GetRuleContext<WindowContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public SceneContext scene() {
+			return GetRuleContext<SceneContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public PauseContext pause() {
+			return GetRuleContext<PauseContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ShowContext show() {
+			return GetRuleContext<ShowContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public HideContext hide() {
+			return GetRuleContext<HideContext>(0);
+		}
 		public Simple_statementsContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
@@ -489,41 +510,41 @@ public partial class RenpyParser : RenpyParserBase {
 		Simple_statementsContext _localctx = new Simple_statementsContext(Context, State);
 		EnterRule(_localctx, 8, RULE_simple_statements);
 		try {
-			State = 160;
+			State = 181;
 			ErrorHandler.Sync(this);
 			switch (TokenStream.LA(1)) {
 			case PASS:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 153;
+				State = 169;
 				pass_statement();
 				}
 				break;
 			case JUMP:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 154;
+				State = 170;
 				jump();
 				}
 				break;
 			case LABEL:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 155;
+				State = 171;
 				label();
 				}
 				break;
 			case CALL:
 				EnterOuterAlt(_localctx, 4);
 				{
-				State = 156;
+				State = 172;
 				call();
 				}
 				break;
 			case RETURN:
 				EnterOuterAlt(_localctx, 5);
 				{
-				State = 157;
+				State = 173;
 				@return();
 				}
 				break;
@@ -531,15 +552,50 @@ public partial class RenpyParser : RenpyParserBase {
 			case STRING:
 				EnterOuterAlt(_localctx, 6);
 				{
-				State = 158;
+				State = 174;
 				say();
 				}
 				break;
 			case DOLLAR:
 				EnterOuterAlt(_localctx, 7);
 				{
-				State = 159;
+				State = 175;
 				python_one_line();
+				}
+				break;
+			case WINDOW:
+				EnterOuterAlt(_localctx, 8);
+				{
+				State = 176;
+				window();
+				}
+				break;
+			case SCENE:
+				EnterOuterAlt(_localctx, 9);
+				{
+				State = 177;
+				scene();
+				}
+				break;
+			case PAUSE:
+				EnterOuterAlt(_localctx, 10);
+				{
+				State = 178;
+				pause();
+				}
+				break;
+			case SHOW:
+				EnterOuterAlt(_localctx, 11);
+				{
+				State = 179;
+				show();
+				}
+				break;
+			case HIDE:
+				EnterOuterAlt(_localctx, 12);
+				{
+				State = 180;
+				hide();
 				}
 				break;
 			default:
@@ -557,13 +613,474 @@ public partial class RenpyParser : RenpyParserBase {
 		return _localctx;
 	}
 
-	public partial class Python_one_lineContext : ParserRuleContext {
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode DOLLAR() { return GetToken(RenpyParser.DOLLAR, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public AssignmentContext assignment() {
-			return GetRuleContext<AssignmentContext>(0);
-		}
+	public partial class WindowContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode WINDOW() { return GetToken(RenpyParser.WINDOW, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode SHOW() { return GetToken(RenpyParser.SHOW, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode HIDE() { return GetToken(RenpyParser.HIDE, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression() {
 			return GetRuleContext<ExpressionContext>(0);
+		}
+		public WindowContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_window; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			IRenpyParserListener typedListener = listener as IRenpyParserListener;
+			if (typedListener != null) typedListener.EnterWindow(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			IRenpyParserListener typedListener = listener as IRenpyParserListener;
+			if (typedListener != null) typedListener.ExitWindow(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IRenpyParserVisitor<TResult> typedVisitor = visitor as IRenpyParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitWindow(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public WindowContext window() {
+		WindowContext _localctx = new WindowContext(Context, State);
+		EnterRule(_localctx, 10, RULE_window);
+		int _la;
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 183;
+			Match(WINDOW);
+			State = 184;
+			_la = TokenStream.LA(1);
+			if ( !(_la==SHOW || _la==HIDE) ) {
+			ErrorHandler.RecoverInline(this);
+			}
+			else {
+				ErrorHandler.ReportMatch(this);
+			    Consume();
+			}
+			State = 186;
+			ErrorHandler.Sync(this);
+			_la = TokenStream.LA(1);
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 939384952L) != 0) || ((((_la - 66)) & ~0x3f) == 0 && ((1L << (_la - 66)) & 7L) != 0)) {
+				{
+				State = 185;
+				expression();
+				}
+			}
+
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class SceneContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode SCENE() { return GetToken(RenpyParser.SCENE, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] NAME() { return GetTokens(RenpyParser.NAME); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode NAME(int i) {
+			return GetToken(RenpyParser.NAME, i);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode WITH() { return GetToken(RenpyParser.WITH, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext[] expression() {
+			return GetRuleContexts<ExpressionContext>();
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression(int i) {
+			return GetRuleContext<ExpressionContext>(i);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode EXPRESSION() { return GetToken(RenpyParser.EXPRESSION, 0); }
+		public SceneContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_scene; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			IRenpyParserListener typedListener = listener as IRenpyParserListener;
+			if (typedListener != null) typedListener.EnterScene(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			IRenpyParserListener typedListener = listener as IRenpyParserListener;
+			if (typedListener != null) typedListener.ExitScene(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IRenpyParserVisitor<TResult> typedVisitor = visitor as IRenpyParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitScene(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public SceneContext scene() {
+		SceneContext _localctx = new SceneContext(Context, State);
+		EnterRule(_localctx, 12, RULE_scene);
+		int _la;
+		try {
+			State = 205;
+			ErrorHandler.Sync(this);
+			switch ( Interpreter.AdaptivePredict(TokenStream,10,Context) ) {
+			case 1:
+				EnterOuterAlt(_localctx, 1);
+				{
+				State = 188;
+				Match(SCENE);
+				State = 190;
+				ErrorHandler.Sync(this);
+				_la = TokenStream.LA(1);
+				do {
+					{
+					{
+					State = 189;
+					Match(NAME);
+					}
+					}
+					State = 192;
+					ErrorHandler.Sync(this);
+					_la = TokenStream.LA(1);
+				} while ( _la==NAME );
+				State = 196;
+				ErrorHandler.Sync(this);
+				_la = TokenStream.LA(1);
+				if (_la==WITH) {
+					{
+					State = 194;
+					Match(WITH);
+					State = 195;
+					expression();
+					}
+				}
+
+				}
+				break;
+			case 2:
+				EnterOuterAlt(_localctx, 2);
+				{
+				State = 198;
+				Match(SCENE);
+				State = 199;
+				Match(EXPRESSION);
+				State = 200;
+				expression();
+				State = 203;
+				ErrorHandler.Sync(this);
+				_la = TokenStream.LA(1);
+				if (_la==WITH) {
+					{
+					State = 201;
+					Match(WITH);
+					State = 202;
+					expression();
+					}
+				}
+
+				}
+				break;
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class PauseContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode PAUSE() { return GetToken(RenpyParser.PAUSE, 0); }
+		public PauseContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_pause; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			IRenpyParserListener typedListener = listener as IRenpyParserListener;
+			if (typedListener != null) typedListener.EnterPause(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			IRenpyParserListener typedListener = listener as IRenpyParserListener;
+			if (typedListener != null) typedListener.ExitPause(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IRenpyParserVisitor<TResult> typedVisitor = visitor as IRenpyParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitPause(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public PauseContext pause() {
+		PauseContext _localctx = new PauseContext(Context, State);
+		EnterRule(_localctx, 14, RULE_pause);
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 207;
+			Match(PAUSE);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class ShowContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode SHOW() { return GetToken(RenpyParser.SHOW, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] NAME() { return GetTokens(RenpyParser.NAME); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode NAME(int i) {
+			return GetToken(RenpyParser.NAME, i);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode WITH() { return GetToken(RenpyParser.WITH, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext[] expression() {
+			return GetRuleContexts<ExpressionContext>();
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression(int i) {
+			return GetRuleContext<ExpressionContext>(i);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode EXPRESSION() { return GetToken(RenpyParser.EXPRESSION, 0); }
+		public ShowContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_show; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			IRenpyParserListener typedListener = listener as IRenpyParserListener;
+			if (typedListener != null) typedListener.EnterShow(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			IRenpyParserListener typedListener = listener as IRenpyParserListener;
+			if (typedListener != null) typedListener.ExitShow(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IRenpyParserVisitor<TResult> typedVisitor = visitor as IRenpyParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitShow(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public ShowContext show() {
+		ShowContext _localctx = new ShowContext(Context, State);
+		EnterRule(_localctx, 16, RULE_show);
+		int _la;
+		try {
+			State = 226;
+			ErrorHandler.Sync(this);
+			switch ( Interpreter.AdaptivePredict(TokenStream,14,Context) ) {
+			case 1:
+				EnterOuterAlt(_localctx, 1);
+				{
+				State = 209;
+				Match(SHOW);
+				State = 211;
+				ErrorHandler.Sync(this);
+				_la = TokenStream.LA(1);
+				do {
+					{
+					{
+					State = 210;
+					Match(NAME);
+					}
+					}
+					State = 213;
+					ErrorHandler.Sync(this);
+					_la = TokenStream.LA(1);
+				} while ( _la==NAME );
+				State = 217;
+				ErrorHandler.Sync(this);
+				_la = TokenStream.LA(1);
+				if (_la==WITH) {
+					{
+					State = 215;
+					Match(WITH);
+					State = 216;
+					expression();
+					}
+				}
+
+				}
+				break;
+			case 2:
+				EnterOuterAlt(_localctx, 2);
+				{
+				State = 219;
+				Match(SHOW);
+				State = 220;
+				Match(EXPRESSION);
+				State = 221;
+				expression();
+				State = 224;
+				ErrorHandler.Sync(this);
+				_la = TokenStream.LA(1);
+				if (_la==WITH) {
+					{
+					State = 222;
+					Match(WITH);
+					State = 223;
+					expression();
+					}
+				}
+
+				}
+				break;
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class HideContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode HIDE() { return GetToken(RenpyParser.HIDE, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] NAME() { return GetTokens(RenpyParser.NAME); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode NAME(int i) {
+			return GetToken(RenpyParser.NAME, i);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode WITH() { return GetToken(RenpyParser.WITH, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext[] expression() {
+			return GetRuleContexts<ExpressionContext>();
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression(int i) {
+			return GetRuleContext<ExpressionContext>(i);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode EXPRESSION() { return GetToken(RenpyParser.EXPRESSION, 0); }
+		public HideContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_hide; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			IRenpyParserListener typedListener = listener as IRenpyParserListener;
+			if (typedListener != null) typedListener.EnterHide(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			IRenpyParserListener typedListener = listener as IRenpyParserListener;
+			if (typedListener != null) typedListener.ExitHide(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IRenpyParserVisitor<TResult> typedVisitor = visitor as IRenpyParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitHide(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public HideContext hide() {
+		HideContext _localctx = new HideContext(Context, State);
+		EnterRule(_localctx, 18, RULE_hide);
+		int _la;
+		try {
+			State = 245;
+			ErrorHandler.Sync(this);
+			switch ( Interpreter.AdaptivePredict(TokenStream,18,Context) ) {
+			case 1:
+				EnterOuterAlt(_localctx, 1);
+				{
+				State = 228;
+				Match(HIDE);
+				State = 230;
+				ErrorHandler.Sync(this);
+				_la = TokenStream.LA(1);
+				do {
+					{
+					{
+					State = 229;
+					Match(NAME);
+					}
+					}
+					State = 232;
+					ErrorHandler.Sync(this);
+					_la = TokenStream.LA(1);
+				} while ( _la==NAME );
+				State = 236;
+				ErrorHandler.Sync(this);
+				_la = TokenStream.LA(1);
+				if (_la==WITH) {
+					{
+					State = 234;
+					Match(WITH);
+					State = 235;
+					expression();
+					}
+				}
+
+				}
+				break;
+			case 2:
+				EnterOuterAlt(_localctx, 2);
+				{
+				State = 238;
+				Match(HIDE);
+				State = 239;
+				Match(EXPRESSION);
+				State = 240;
+				expression();
+				State = 243;
+				ErrorHandler.Sync(this);
+				_la = TokenStream.LA(1);
+				if (_la==WITH) {
+					{
+					State = 241;
+					Match(WITH);
+					State = 242;
+					expression();
+					}
+				}
+
+				}
+				break;
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class Python_one_lineContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode DOLLAR() { return GetToken(RenpyParser.DOLLAR, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public Python_statementContext python_statement() {
+			return GetRuleContext<Python_statementContext>(0);
 		}
 		public Python_one_lineContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -591,28 +1108,79 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public Python_one_lineContext python_one_line() {
 		Python_one_lineContext _localctx = new Python_one_lineContext(Context, State);
-		EnterRule(_localctx, 10, RULE_python_one_line);
+		EnterRule(_localctx, 20, RULE_python_one_line);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 162;
+			State = 247;
 			Match(DOLLAR);
-			State = 165;
+			State = 248;
+			python_statement();
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class Python_statementContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public AssignmentContext assignment() {
+			return GetRuleContext<AssignmentContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression() {
+			return GetRuleContext<ExpressionContext>(0);
+		}
+		public Python_statementContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_python_statement; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			IRenpyParserListener typedListener = listener as IRenpyParserListener;
+			if (typedListener != null) typedListener.EnterPython_statement(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			IRenpyParserListener typedListener = listener as IRenpyParserListener;
+			if (typedListener != null) typedListener.ExitPython_statement(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IRenpyParserVisitor<TResult> typedVisitor = visitor as IRenpyParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitPython_statement(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public Python_statementContext python_statement() {
+		Python_statementContext _localctx = new Python_statementContext(Context, State);
+		EnterRule(_localctx, 22, RULE_python_statement);
+		try {
+			State = 252;
 			ErrorHandler.Sync(this);
-			switch ( Interpreter.AdaptivePredict(TokenStream,6,Context) ) {
+			switch ( Interpreter.AdaptivePredict(TokenStream,19,Context) ) {
 			case 1:
+				EnterOuterAlt(_localctx, 1);
 				{
-				State = 163;
+				State = 250;
 				assignment();
 				}
 				break;
 			case 2:
+				EnterOuterAlt(_localctx, 2);
 				{
-				State = 164;
+				State = 251;
 				expression();
 				}
 				break;
-			}
 			}
 		}
 		catch (RecognitionException re) {
@@ -659,17 +1227,17 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public BlockContext block() {
 		BlockContext _localctx = new BlockContext(Context, State);
-		EnterRule(_localctx, 12, RULE_block);
+		EnterRule(_localctx, 24, RULE_block);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 167;
+			State = 254;
 			Match(NEWLINE);
-			State = 168;
+			State = 255;
 			Match(INDENT);
-			State = 169;
+			State = 256;
 			statements();
-			State = 170;
+			State = 257;
 			Match(DEDENT);
 			}
 		}
@@ -731,56 +1299,56 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public MenuContext menu() {
 		MenuContext _localctx = new MenuContext(Context, State);
-		EnterRule(_localctx, 14, RULE_menu);
+		EnterRule(_localctx, 26, RULE_menu);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 172;
+			State = 259;
 			Match(MENU);
-			State = 174;
+			State = 261;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if (_la==DOT || _la==NAME) {
 				{
-				State = 173;
+				State = 260;
 				label_name();
 				}
 			}
 
-			State = 176;
+			State = 263;
 			Match(COLON);
-			State = 177;
+			State = 264;
 			Match(NEWLINE);
-			State = 178;
+			State = 265;
 			Match(INDENT);
-			State = 182;
+			State = 269;
 			ErrorHandler.Sync(this);
-			switch ( Interpreter.AdaptivePredict(TokenStream,8,Context) ) {
+			switch ( Interpreter.AdaptivePredict(TokenStream,21,Context) ) {
 			case 1:
 				{
-				State = 179;
+				State = 266;
 				say();
-				State = 180;
+				State = 267;
 				Match(NEWLINE);
 				}
 				break;
 			}
-			State = 185;
+			State = 272;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			do {
 				{
 				{
-				State = 184;
+				State = 271;
 				menu_item();
 				}
 				}
-				State = 187;
+				State = 274;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			} while ( _la==STRING );
-			State = 189;
+			State = 276;
 			Match(DEDENT);
 			}
 		}
@@ -827,15 +1395,15 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public Menu_itemContext menu_item() {
 		Menu_itemContext _localctx = new Menu_itemContext(Context, State);
-		EnterRule(_localctx, 16, RULE_menu_item);
+		EnterRule(_localctx, 28, RULE_menu_item);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 191;
+			State = 278;
 			Match(STRING);
-			State = 192;
+			State = 279;
 			Match(COLON);
-			State = 193;
+			State = 280;
 			block();
 			}
 		}
@@ -878,11 +1446,11 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public Pass_statementContext pass_statement() {
 		Pass_statementContext _localctx = new Pass_statementContext(Context, State);
-		EnterRule(_localctx, 18, RULE_pass_statement);
+		EnterRule(_localctx, 30, RULE_pass_statement);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 195;
+			State = 282;
 			Match(PASS);
 			}
 		}
@@ -934,37 +1502,37 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public LabelContext label() {
 		LabelContext _localctx = new LabelContext(Context, State);
-		EnterRule(_localctx, 20, RULE_label);
+		EnterRule(_localctx, 32, RULE_label);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 197;
+			State = 284;
 			Match(LABEL);
-			State = 198;
+			State = 285;
 			label_name();
-			State = 203;
+			State = 290;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if (_la==LPAR) {
 				{
-				State = 199;
+				State = 286;
 				Match(LPAR);
 				{
-				State = 200;
+				State = 287;
 				parameters();
 				}
-				State = 201;
+				State = 288;
 				Match(RPAR);
 				}
 			}
 
-			State = 206;
+			State = 293;
 			ErrorHandler.Sync(this);
-			switch ( Interpreter.AdaptivePredict(TokenStream,11,Context) ) {
+			switch ( Interpreter.AdaptivePredict(TokenStream,24,Context) ) {
 			case 1:
 				{
-				State = 205;
+				State = 292;
 				Match(COLON);
 				}
 				break;
@@ -1011,22 +1579,22 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public Label_nameContext label_name() {
 		Label_nameContext _localctx = new Label_nameContext(Context, State);
-		EnterRule(_localctx, 22, RULE_label_name);
+		EnterRule(_localctx, 34, RULE_label_name);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 209;
+			State = 296;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if (_la==DOT) {
 				{
-				State = 208;
+				State = 295;
 				Match(DOT);
 				}
 			}
 
-			State = 211;
+			State = 298;
 			Match(NAME);
 			}
 		}
@@ -1076,28 +1644,28 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public JumpContext jump() {
 		JumpContext _localctx = new JumpContext(Context, State);
-		EnterRule(_localctx, 24, RULE_jump);
+		EnterRule(_localctx, 36, RULE_jump);
 		try {
-			State = 218;
+			State = 305;
 			ErrorHandler.Sync(this);
-			switch ( Interpreter.AdaptivePredict(TokenStream,13,Context) ) {
+			switch ( Interpreter.AdaptivePredict(TokenStream,26,Context) ) {
 			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 213;
+				State = 300;
 				Match(JUMP);
-				State = 214;
+				State = 301;
 				label_name();
 				}
 				break;
 			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 215;
+				State = 302;
 				Match(JUMP);
-				State = 216;
+				State = 303;
 				Match(EXPRESSION);
-				State = 217;
+				State = 304;
 				expression();
 				}
 				break;
@@ -1150,33 +1718,33 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public CallContext call() {
 		CallContext _localctx = new CallContext(Context, State);
-		EnterRule(_localctx, 26, RULE_call);
+		EnterRule(_localctx, 38, RULE_call);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 220;
+			State = 307;
 			Match(CALL);
-			State = 221;
+			State = 308;
 			label_name();
-			State = 227;
+			State = 314;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if (_la==LPAR) {
 				{
-				State = 222;
+				State = 309;
 				Match(LPAR);
-				State = 224;
+				State = 311;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
-				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 1035827914296801280L) != 0)) {
+				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & -4611686017488002952L) != 0) || ((((_la - 66)) & ~0x3f) == 0 && ((1L << (_la - 66)) & 7L) != 0)) {
 					{
-					State = 223;
+					State = 310;
 					arguments();
 					}
 				}
 
-				State = 226;
+				State = 313;
 				Match(RPAR);
 				}
 			}
@@ -1224,11 +1792,11 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public ReturnContext @return() {
 		ReturnContext _localctx = new ReturnContext(Context, State);
-		EnterRule(_localctx, 28, RULE_return);
+		EnterRule(_localctx, 40, RULE_return);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 229;
+			State = 316;
 			return_simple();
 			}
 		}
@@ -1271,11 +1839,11 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public Return_simpleContext return_simple() {
 		Return_simpleContext _localctx = new Return_simpleContext(Context, State);
-		EnterRule(_localctx, 30, RULE_return_simple);
+		EnterRule(_localctx, 42, RULE_return_simple);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 231;
+			State = 318;
 			Match(RETURN);
 			}
 		}
@@ -1319,24 +1887,24 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public SayContext say() {
 		SayContext _localctx = new SayContext(Context, State);
-		EnterRule(_localctx, 32, RULE_say);
+		EnterRule(_localctx, 44, RULE_say);
 		try {
-			State = 236;
+			State = 323;
 			ErrorHandler.Sync(this);
 			switch (TokenStream.LA(1)) {
 			case NAME:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 233;
+				State = 320;
 				Match(NAME);
-				State = 234;
+				State = 321;
 				Match(STRING);
 				}
 				break;
 			case STRING:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 235;
+				State = 322;
 				Match(STRING);
 				}
 				break;
@@ -1392,30 +1960,30 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public AssignmentContext assignment() {
 		AssignmentContext _localctx = new AssignmentContext(Context, State);
-		EnterRule(_localctx, 34, RULE_assignment);
+		EnterRule(_localctx, 46, RULE_assignment);
 		try {
-			State = 246;
+			State = 333;
 			ErrorHandler.Sync(this);
-			switch ( Interpreter.AdaptivePredict(TokenStream,17,Context) ) {
+			switch ( Interpreter.AdaptivePredict(TokenStream,30,Context) ) {
 			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 238;
+				State = 325;
 				single_target();
-				State = 239;
+				State = 326;
 				Match(EQUALS);
-				State = 240;
+				State = 327;
 				expression();
 				}
 				break;
 			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 242;
+				State = 329;
 				single_target();
-				State = 243;
+				State = 330;
 				augassign();
-				State = 244;
+				State = 331;
 				expression();
 				}
 				break;
@@ -1471,14 +2039,14 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public AugassignContext augassign() {
 		AugassignContext _localctx = new AugassignContext(Context, State);
-		EnterRule(_localctx, 36, RULE_augassign);
+		EnterRule(_localctx, 48, RULE_augassign);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 248;
+			State = 335;
 			_la = TokenStream.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 562812514467840L) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 288160007407534080L) != 0)) ) {
 			ErrorHandler.RecoverInline(this);
 			}
 			else {
@@ -1546,28 +2114,28 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public ParametersContext parameters() {
 		ParametersContext _localctx = new ParametersContext(Context, State);
-		EnterRule(_localctx, 38, RULE_parameters);
+		EnterRule(_localctx, 50, RULE_parameters);
 		int _la;
 		try {
 			int _alt;
-			State = 384;
+			State = 471;
 			ErrorHandler.Sync(this);
-			switch ( Interpreter.AdaptivePredict(TokenStream,48,Context) ) {
+			switch ( Interpreter.AdaptivePredict(TokenStream,61,Context) ) {
 			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 277;
+				State = 364;
 				ErrorHandler.Sync(this);
-				switch ( Interpreter.AdaptivePredict(TokenStream,23,Context) ) {
+				switch ( Interpreter.AdaptivePredict(TokenStream,36,Context) ) {
 				case 1:
 					{
-					State = 272;
+					State = 359;
 					ErrorHandler.Sync(this);
-					switch ( Interpreter.AdaptivePredict(TokenStream,22,Context) ) {
+					switch ( Interpreter.AdaptivePredict(TokenStream,35,Context) ) {
 					case 1:
 						{
 						{
-						State = 251;
+						State = 338;
 						ErrorHandler.Sync(this);
 						_alt = 1;
 						do {
@@ -1575,7 +2143,7 @@ public partial class RenpyParser : RenpyParserBase {
 							case 1:
 								{
 								{
-								State = 250;
+								State = 337;
 								param_no_default();
 								}
 								}
@@ -1583,21 +2151,21 @@ public partial class RenpyParser : RenpyParserBase {
 							default:
 								throw new NoViableAltException(this);
 							}
-							State = 253;
+							State = 340;
 							ErrorHandler.Sync(this);
-							_alt = Interpreter.AdaptivePredict(TokenStream,18,Context);
+							_alt = Interpreter.AdaptivePredict(TokenStream,31,Context);
 						} while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.INVALID_ALT_NUMBER );
-						State = 258;
+						State = 345;
 						ErrorHandler.Sync(this);
 						_la = TokenStream.LA(1);
 						while (_la==NAME) {
 							{
 							{
-							State = 255;
+							State = 342;
 							param_with_default();
 							}
 							}
-							State = 260;
+							State = 347;
 							ErrorHandler.Sync(this);
 							_la = TokenStream.LA(1);
 						}
@@ -1607,33 +2175,33 @@ public partial class RenpyParser : RenpyParserBase {
 					case 2:
 						{
 						{
-						State = 264;
+						State = 351;
 						ErrorHandler.Sync(this);
-						_alt = Interpreter.AdaptivePredict(TokenStream,20,Context);
+						_alt = Interpreter.AdaptivePredict(TokenStream,33,Context);
 						while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.INVALID_ALT_NUMBER ) {
 							if ( _alt==1 ) {
 								{
 								{
-								State = 261;
+								State = 348;
 								param_no_default();
 								}
 								} 
 							}
-							State = 266;
+							State = 353;
 							ErrorHandler.Sync(this);
-							_alt = Interpreter.AdaptivePredict(TokenStream,20,Context);
+							_alt = Interpreter.AdaptivePredict(TokenStream,33,Context);
 						}
-						State = 268;
+						State = 355;
 						ErrorHandler.Sync(this);
 						_la = TokenStream.LA(1);
 						do {
 							{
 							{
-							State = 267;
+							State = 354;
 							param_with_default();
 							}
 							}
-							State = 270;
+							State = 357;
 							ErrorHandler.Sync(this);
 							_la = TokenStream.LA(1);
 						} while ( _la==NAME );
@@ -1642,70 +2210,70 @@ public partial class RenpyParser : RenpyParserBase {
 						break;
 					}
 					{
-					State = 274;
+					State = 361;
 					Match(SLASH);
-					State = 275;
+					State = 362;
 					Match(COMMA);
 					}
 					}
 					break;
 				}
-				State = 282;
+				State = 369;
 				ErrorHandler.Sync(this);
-				_alt = Interpreter.AdaptivePredict(TokenStream,24,Context);
+				_alt = Interpreter.AdaptivePredict(TokenStream,37,Context);
 				while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.INVALID_ALT_NUMBER ) {
 					if ( _alt==1 ) {
 						{
 						{
-						State = 279;
+						State = 366;
 						param_with_default();
 						}
 						} 
 					}
-					State = 284;
+					State = 371;
 					ErrorHandler.Sync(this);
-					_alt = Interpreter.AdaptivePredict(TokenStream,24,Context);
+					_alt = Interpreter.AdaptivePredict(TokenStream,37,Context);
 				}
-				State = 294;
+				State = 381;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 				if (_la==STAR || _la==NAME) {
 					{
-					State = 287;
+					State = 374;
 					ErrorHandler.Sync(this);
 					_la = TokenStream.LA(1);
 					if (_la==STAR) {
 						{
-						State = 285;
+						State = 372;
 						Match(STAR);
-						State = 286;
+						State = 373;
 						Match(COMMA);
 						}
 					}
 
-					State = 290;
+					State = 377;
 					ErrorHandler.Sync(this);
 					_la = TokenStream.LA(1);
 					do {
 						{
 						{
-						State = 289;
+						State = 376;
 						param_with_default();
 						}
 						}
-						State = 292;
+						State = 379;
 						ErrorHandler.Sync(this);
 						_la = TokenStream.LA(1);
 					} while ( _la==NAME );
 					}
 				}
 
-				State = 297;
+				State = 384;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 				if (_la==DOUBLESTAR) {
 					{
-					State = 296;
+					State = 383;
 					kwds();
 					}
 				}
@@ -1715,106 +2283,106 @@ public partial class RenpyParser : RenpyParserBase {
 			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 307;
+				State = 394;
 				ErrorHandler.Sync(this);
-				switch ( Interpreter.AdaptivePredict(TokenStream,30,Context) ) {
+				switch ( Interpreter.AdaptivePredict(TokenStream,43,Context) ) {
 				case 1:
 					{
-					State = 300;
+					State = 387;
 					ErrorHandler.Sync(this);
 					_la = TokenStream.LA(1);
 					do {
 						{
 						{
-						State = 299;
+						State = 386;
 						param_no_default();
 						}
 						}
-						State = 302;
+						State = 389;
 						ErrorHandler.Sync(this);
 						_la = TokenStream.LA(1);
 					} while ( _la==NAME );
 					{
-					State = 304;
+					State = 391;
 					Match(SLASH);
-					State = 305;
+					State = 392;
 					Match(COMMA);
 					}
 					}
 					break;
 				}
-				State = 312;
+				State = 399;
 				ErrorHandler.Sync(this);
-				_alt = Interpreter.AdaptivePredict(TokenStream,31,Context);
+				_alt = Interpreter.AdaptivePredict(TokenStream,44,Context);
 				while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.INVALID_ALT_NUMBER ) {
 					if ( _alt==1 ) {
 						{
 						{
-						State = 309;
+						State = 396;
 						param_no_default();
 						}
 						} 
 					}
-					State = 314;
+					State = 401;
 					ErrorHandler.Sync(this);
-					_alt = Interpreter.AdaptivePredict(TokenStream,31,Context);
+					_alt = Interpreter.AdaptivePredict(TokenStream,44,Context);
 				}
-				State = 318;
+				State = 405;
 				ErrorHandler.Sync(this);
-				_alt = Interpreter.AdaptivePredict(TokenStream,32,Context);
+				_alt = Interpreter.AdaptivePredict(TokenStream,45,Context);
 				while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.INVALID_ALT_NUMBER ) {
 					if ( _alt==1 ) {
 						{
 						{
-						State = 315;
+						State = 402;
 						param_with_default();
 						}
 						} 
 					}
-					State = 320;
+					State = 407;
 					ErrorHandler.Sync(this);
-					_alt = Interpreter.AdaptivePredict(TokenStream,32,Context);
+					_alt = Interpreter.AdaptivePredict(TokenStream,45,Context);
 				}
-				State = 330;
+				State = 417;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 				if (_la==STAR || _la==NAME) {
 					{
-					State = 323;
+					State = 410;
 					ErrorHandler.Sync(this);
 					_la = TokenStream.LA(1);
 					if (_la==STAR) {
 						{
-						State = 321;
+						State = 408;
 						Match(STAR);
-						State = 322;
+						State = 409;
 						Match(COMMA);
 						}
 					}
 
-					State = 326;
+					State = 413;
 					ErrorHandler.Sync(this);
 					_la = TokenStream.LA(1);
 					do {
 						{
 						{
-						State = 325;
+						State = 412;
 						param_with_default();
 						}
 						}
-						State = 328;
+						State = 415;
 						ErrorHandler.Sync(this);
 						_la = TokenStream.LA(1);
 					} while ( _la==NAME );
 					}
 				}
 
-				State = 333;
+				State = 420;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 				if (_la==DOUBLESTAR) {
 					{
-					State = 332;
+					State = 419;
 					kwds();
 					}
 				}
@@ -1824,74 +2392,74 @@ public partial class RenpyParser : RenpyParserBase {
 			case 3:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 343;
+				State = 430;
 				ErrorHandler.Sync(this);
-				switch ( Interpreter.AdaptivePredict(TokenStream,38,Context) ) {
+				switch ( Interpreter.AdaptivePredict(TokenStream,51,Context) ) {
 				case 1:
 					{
-					State = 336;
+					State = 423;
 					ErrorHandler.Sync(this);
 					_la = TokenStream.LA(1);
 					do {
 						{
 						{
-						State = 335;
+						State = 422;
 						param_no_default();
 						}
 						}
-						State = 338;
+						State = 425;
 						ErrorHandler.Sync(this);
 						_la = TokenStream.LA(1);
 					} while ( _la==NAME );
 					{
-					State = 340;
+					State = 427;
 					Match(SLASH);
-					State = 341;
+					State = 428;
 					Match(COMMA);
 					}
 					}
 					break;
 				}
-				State = 348;
+				State = 435;
 				ErrorHandler.Sync(this);
-				_alt = Interpreter.AdaptivePredict(TokenStream,39,Context);
+				_alt = Interpreter.AdaptivePredict(TokenStream,52,Context);
 				while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.INVALID_ALT_NUMBER ) {
 					if ( _alt==1 ) {
 						{
 						{
-						State = 345;
+						State = 432;
 						param_no_default();
 						}
 						} 
 					}
-					State = 350;
+					State = 437;
 					ErrorHandler.Sync(this);
-					_alt = Interpreter.AdaptivePredict(TokenStream,39,Context);
+					_alt = Interpreter.AdaptivePredict(TokenStream,52,Context);
 				}
-				State = 379;
+				State = 466;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 				if (_la==STAR || _la==NAME) {
 					{
-					State = 353;
+					State = 440;
 					ErrorHandler.Sync(this);
 					_la = TokenStream.LA(1);
 					if (_la==STAR) {
 						{
-						State = 351;
+						State = 438;
 						Match(STAR);
-						State = 352;
+						State = 439;
 						Match(COMMA);
 						}
 					}
 
-					State = 377;
+					State = 464;
 					ErrorHandler.Sync(this);
-					switch ( Interpreter.AdaptivePredict(TokenStream,45,Context) ) {
+					switch ( Interpreter.AdaptivePredict(TokenStream,58,Context) ) {
 					case 1:
 						{
 						{
-						State = 356;
+						State = 443;
 						ErrorHandler.Sync(this);
 						_alt = 1;
 						do {
@@ -1899,7 +2467,7 @@ public partial class RenpyParser : RenpyParserBase {
 							case 1:
 								{
 								{
-								State = 355;
+								State = 442;
 								param_no_default();
 								}
 								}
@@ -1907,21 +2475,21 @@ public partial class RenpyParser : RenpyParserBase {
 							default:
 								throw new NoViableAltException(this);
 							}
-							State = 358;
+							State = 445;
 							ErrorHandler.Sync(this);
-							_alt = Interpreter.AdaptivePredict(TokenStream,41,Context);
+							_alt = Interpreter.AdaptivePredict(TokenStream,54,Context);
 						} while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.INVALID_ALT_NUMBER );
-						State = 363;
+						State = 450;
 						ErrorHandler.Sync(this);
 						_la = TokenStream.LA(1);
 						while (_la==NAME) {
 							{
 							{
-							State = 360;
+							State = 447;
 							param_with_default();
 							}
 							}
-							State = 365;
+							State = 452;
 							ErrorHandler.Sync(this);
 							_la = TokenStream.LA(1);
 						}
@@ -1931,33 +2499,33 @@ public partial class RenpyParser : RenpyParserBase {
 					case 2:
 						{
 						{
-						State = 369;
+						State = 456;
 						ErrorHandler.Sync(this);
-						_alt = Interpreter.AdaptivePredict(TokenStream,43,Context);
+						_alt = Interpreter.AdaptivePredict(TokenStream,56,Context);
 						while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.INVALID_ALT_NUMBER ) {
 							if ( _alt==1 ) {
 								{
 								{
-								State = 366;
+								State = 453;
 								param_no_default();
 								}
 								} 
 							}
-							State = 371;
+							State = 458;
 							ErrorHandler.Sync(this);
-							_alt = Interpreter.AdaptivePredict(TokenStream,43,Context);
+							_alt = Interpreter.AdaptivePredict(TokenStream,56,Context);
 						}
-						State = 373;
+						State = 460;
 						ErrorHandler.Sync(this);
 						_la = TokenStream.LA(1);
 						do {
 							{
 							{
-							State = 372;
+							State = 459;
 							param_with_default();
 							}
 							}
-							State = 375;
+							State = 462;
 							ErrorHandler.Sync(this);
 							_la = TokenStream.LA(1);
 						} while ( _la==NAME );
@@ -1968,12 +2536,12 @@ public partial class RenpyParser : RenpyParserBase {
 					}
 				}
 
-				State = 382;
+				State = 469;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 				if (_la==DOUBLESTAR) {
 					{
-					State = 381;
+					State = 468;
 					kwds();
 					}
 				}
@@ -2024,13 +2592,13 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public KwdsContext kwds() {
 		KwdsContext _localctx = new KwdsContext(Context, State);
-		EnterRule(_localctx, 40, RULE_kwds);
+		EnterRule(_localctx, 52, RULE_kwds);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 386;
+			State = 473;
 			Match(DOUBLESTAR);
-			State = 387;
+			State = 474;
 			param_no_default();
 			}
 		}
@@ -2079,29 +2647,29 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public Param_no_defaultContext param_no_default() {
 		Param_no_defaultContext _localctx = new Param_no_defaultContext(Context, State);
-		EnterRule(_localctx, 42, RULE_param_no_default);
+		EnterRule(_localctx, 54, RULE_param_no_default);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 389;
+			State = 476;
 			param();
-			State = 391;
+			State = 478;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if (_la==COMMA) {
 				{
-				State = 390;
+				State = 477;
 				Match(COMMA);
 				}
 			}
 
-			State = 394;
+			State = 481;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if (_la==ARROW) {
 				{
-				State = 393;
+				State = 480;
 				type_comment();
 				}
 			}
@@ -2156,31 +2724,31 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public Param_with_defaultContext param_with_default() {
 		Param_with_defaultContext _localctx = new Param_with_defaultContext(Context, State);
-		EnterRule(_localctx, 44, RULE_param_with_default);
+		EnterRule(_localctx, 56, RULE_param_with_default);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 396;
+			State = 483;
 			param();
-			State = 397;
+			State = 484;
 			default_assignment();
-			State = 399;
+			State = 486;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if (_la==COMMA) {
 				{
-				State = 398;
+				State = 485;
 				Match(COMMA);
 				}
 			}
 
-			State = 402;
+			State = 489;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if (_la==ARROW) {
 				{
-				State = 401;
+				State = 488;
 				type_comment();
 				}
 			}
@@ -2229,19 +2797,19 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public ParamContext param() {
 		ParamContext _localctx = new ParamContext(Context, State);
-		EnterRule(_localctx, 46, RULE_param);
+		EnterRule(_localctx, 58, RULE_param);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 404;
+			State = 491;
 			Match(NAME);
-			State = 406;
+			State = 493;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if (_la==COLON) {
 				{
-				State = 405;
+				State = 492;
 				annotation();
 				}
 			}
@@ -2290,13 +2858,13 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public AnnotationContext annotation() {
 		AnnotationContext _localctx = new AnnotationContext(Context, State);
-		EnterRule(_localctx, 48, RULE_annotation);
+		EnterRule(_localctx, 60, RULE_annotation);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 408;
+			State = 495;
 			Match(COLON);
-			State = 409;
+			State = 496;
 			expression();
 			}
 		}
@@ -2342,13 +2910,13 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public Default_assignmentContext default_assignment() {
 		Default_assignmentContext _localctx = new Default_assignmentContext(Context, State);
-		EnterRule(_localctx, 50, RULE_default_assignment);
+		EnterRule(_localctx, 62, RULE_default_assignment);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 411;
+			State = 498;
 			Match(EQUALS);
-			State = 412;
+			State = 499;
 			expression();
 			}
 		}
@@ -2394,13 +2962,13 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public Type_commentContext type_comment() {
 		Type_commentContext _localctx = new Type_commentContext(Context, State);
-		EnterRule(_localctx, 52, RULE_type_comment);
+		EnterRule(_localctx, 64, RULE_type_comment);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 414;
+			State = 501;
 			Match(ARROW);
-			State = 415;
+			State = 502;
 			expression();
 			}
 		}
@@ -2456,25 +3024,25 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public If_stmtContext if_stmt() {
 		If_stmtContext _localctx = new If_stmtContext(Context, State);
-		EnterRule(_localctx, 54, RULE_if_stmt);
+		EnterRule(_localctx, 66, RULE_if_stmt);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 417;
+			State = 504;
 			Match(IF);
-			State = 418;
+			State = 505;
 			named_expression();
-			State = 419;
+			State = 506;
 			Match(COLON);
-			State = 420;
+			State = 507;
 			block();
-			State = 425;
+			State = 512;
 			ErrorHandler.Sync(this);
 			switch (TokenStream.LA(1)) {
 			case ELIF:
 				{
-				State = 421;
+				State = 508;
 				elif_stmt();
 				}
 				break;
@@ -2483,23 +3051,28 @@ public partial class RenpyParser : RenpyParserBase {
 			case LABEL:
 			case JUMP:
 			case CALL:
+			case IF:
+			case ELSE:
+			case WHILE:
 			case PASS:
 			case RETURN:
 			case MENU:
-			case WHILE:
-			case IF:
-			case ELSE:
+			case WINDOW:
+			case SHOW:
+			case HIDE:
+			case PAUSE:
+			case SCENE:
 			case DOLLAR:
 			case NAME:
 			case STRING:
 			case NEWLINE:
 				{
-				State = 423;
+				State = 510;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 				if (_la==ELSE) {
 					{
-					State = 422;
+					State = 509;
 					else_block();
 					}
 				}
@@ -2563,25 +3136,25 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public Elif_stmtContext elif_stmt() {
 		Elif_stmtContext _localctx = new Elif_stmtContext(Context, State);
-		EnterRule(_localctx, 56, RULE_elif_stmt);
+		EnterRule(_localctx, 68, RULE_elif_stmt);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 427;
+			State = 514;
 			Match(ELIF);
-			State = 428;
+			State = 515;
 			named_expression();
-			State = 429;
+			State = 516;
 			Match(COLON);
-			State = 430;
+			State = 517;
 			block();
-			State = 435;
+			State = 522;
 			ErrorHandler.Sync(this);
 			switch (TokenStream.LA(1)) {
 			case ELIF:
 				{
-				State = 431;
+				State = 518;
 				elif_stmt();
 				}
 				break;
@@ -2590,23 +3163,28 @@ public partial class RenpyParser : RenpyParserBase {
 			case LABEL:
 			case JUMP:
 			case CALL:
+			case IF:
+			case ELSE:
+			case WHILE:
 			case PASS:
 			case RETURN:
 			case MENU:
-			case WHILE:
-			case IF:
-			case ELSE:
+			case WINDOW:
+			case SHOW:
+			case HIDE:
+			case PAUSE:
+			case SCENE:
 			case DOLLAR:
 			case NAME:
 			case STRING:
 			case NEWLINE:
 				{
-				State = 433;
+				State = 520;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 				if (_la==ELSE) {
 					{
-					State = 432;
+					State = 519;
 					else_block();
 					}
 				}
@@ -2661,15 +3239,15 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public Else_blockContext else_block() {
 		Else_blockContext _localctx = new Else_blockContext(Context, State);
-		EnterRule(_localctx, 58, RULE_else_block);
+		EnterRule(_localctx, 70, RULE_else_block);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 437;
+			State = 524;
 			Match(ELSE);
-			State = 438;
+			State = 525;
 			Match(COLON);
-			State = 439;
+			State = 526;
 			block();
 			}
 		}
@@ -2722,25 +3300,25 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public While_stmtContext while_stmt() {
 		While_stmtContext _localctx = new While_stmtContext(Context, State);
-		EnterRule(_localctx, 60, RULE_while_stmt);
+		EnterRule(_localctx, 72, RULE_while_stmt);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 441;
+			State = 528;
 			Match(WHILE);
-			State = 442;
+			State = 529;
 			named_expression();
-			State = 443;
+			State = 530;
 			Match(COLON);
-			State = 444;
+			State = 531;
 			block();
-			State = 446;
+			State = 533;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if (_la==ELSE) {
 				{
-				State = 445;
+				State = 532;
 				else_block();
 				}
 			}
@@ -2790,24 +3368,24 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public ListContext list() {
 		ListContext _localctx = new ListContext(Context, State);
-		EnterRule(_localctx, 62, RULE_list);
+		EnterRule(_localctx, 74, RULE_list);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 448;
+			State = 535;
 			Match(LSQB);
-			State = 450;
+			State = 537;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 1017813515787319296L) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 4611686019366772856L) != 0) || ((((_la - 66)) & ~0x3f) == 0 && ((1L << (_la - 66)) & 7L) != 0)) {
 				{
-				State = 449;
+				State = 536;
 				star_named_expressions();
 				}
 			}
 
-			State = 452;
+			State = 539;
 			Match(RSQB);
 			}
 		}
@@ -2858,28 +3436,28 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public TupleContext tuple() {
 		TupleContext _localctx = new TupleContext(Context, State);
-		EnterRule(_localctx, 64, RULE_tuple);
+		EnterRule(_localctx, 76, RULE_tuple);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 454;
+			State = 541;
 			Match(LPAR);
-			State = 460;
+			State = 547;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 1017813515787319296L) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 4611686019366772856L) != 0) || ((((_la - 66)) & ~0x3f) == 0 && ((1L << (_la - 66)) & 7L) != 0)) {
 				{
-				State = 455;
+				State = 542;
 				star_named_expression();
-				State = 456;
+				State = 543;
 				Match(COMMA);
-				State = 458;
+				State = 545;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
-				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 1017813515787319296L) != 0)) {
+				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 4611686019366772856L) != 0) || ((((_la - 66)) & ~0x3f) == 0 && ((1L << (_la - 66)) & 7L) != 0)) {
 					{
-					State = 457;
+					State = 544;
 					star_named_expressions();
 					}
 				}
@@ -2887,7 +3465,7 @@ public partial class RenpyParser : RenpyParserBase {
 				}
 			}
 
-			State = 462;
+			State = 549;
 			Match(RPAR);
 			}
 		}
@@ -2934,15 +3512,15 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public SetContext set() {
 		SetContext _localctx = new SetContext(Context, State);
-		EnterRule(_localctx, 66, RULE_set);
+		EnterRule(_localctx, 78, RULE_set);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 464;
+			State = 551;
 			Match(LBRACE);
-			State = 465;
+			State = 552;
 			star_named_expressions();
-			State = 466;
+			State = 553;
 			Match(RBRACE);
 			}
 		}
@@ -2989,24 +3567,24 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public DictContext dict() {
 		DictContext _localctx = new DictContext(Context, State);
-		EnterRule(_localctx, 68, RULE_dict);
+		EnterRule(_localctx, 80, RULE_dict);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 468;
+			State = 555;
 			Match(LBRACE);
-			State = 470;
+			State = 557;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 1026820715042060288L) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & -9223372035915390856L) != 0) || ((((_la - 66)) & ~0x3f) == 0 && ((1L << (_la - 66)) & 7L) != 0)) {
 				{
-				State = 469;
+				State = 556;
 				double_starred_kvpairs();
 				}
 			}
 
-			State = 472;
+			State = 559;
 			Match(RBRACE);
 			}
 		}
@@ -3058,38 +3636,38 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public Double_starred_kvpairsContext double_starred_kvpairs() {
 		Double_starred_kvpairsContext _localctx = new Double_starred_kvpairsContext(Context, State);
-		EnterRule(_localctx, 70, RULE_double_starred_kvpairs);
+		EnterRule(_localctx, 82, RULE_double_starred_kvpairs);
 		int _la;
 		try {
 			int _alt;
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 474;
+			State = 561;
 			double_starred_kvpair();
-			State = 479;
+			State = 566;
 			ErrorHandler.Sync(this);
-			_alt = Interpreter.AdaptivePredict(TokenStream,63,Context);
+			_alt = Interpreter.AdaptivePredict(TokenStream,76,Context);
 			while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					{
 					{
-					State = 475;
+					State = 562;
 					Match(COMMA);
-					State = 476;
+					State = 563;
 					double_starred_kvpair();
 					}
 					} 
 				}
-				State = 481;
+				State = 568;
 				ErrorHandler.Sync(this);
-				_alt = Interpreter.AdaptivePredict(TokenStream,63,Context);
+				_alt = Interpreter.AdaptivePredict(TokenStream,76,Context);
 			}
-			State = 483;
+			State = 570;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if (_la==COMMA) {
 				{
-				State = 482;
+				State = 569;
 				Match(COMMA);
 				}
 			}
@@ -3141,23 +3719,37 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public Double_starred_kvpairContext double_starred_kvpair() {
 		Double_starred_kvpairContext _localctx = new Double_starred_kvpairContext(Context, State);
-		EnterRule(_localctx, 72, RULE_double_starred_kvpair);
+		EnterRule(_localctx, 84, RULE_double_starred_kvpair);
 		try {
-			State = 488;
+			State = 575;
 			ErrorHandler.Sync(this);
 			switch (TokenStream.LA(1)) {
 			case DOUBLESTAR:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 485;
+				State = 572;
 				Match(DOUBLESTAR);
-				State = 486;
+				State = 573;
 				sum(0);
 				}
 				break;
+			case LABEL:
+			case JUMP:
+			case EXPRESSION:
+			case CALL:
 			case TRUE:
 			case FALSE:
 			case NONE:
+			case MENU:
+			case WINDOW:
+			case SHOW:
+			case HIDE:
+			case PAUSE:
+			case SCENE:
+			case BEHIND:
+			case ONLAYER:
+			case AS:
+			case AT:
 			case LSQB:
 			case LBRACE:
 			case NAME:
@@ -3165,7 +3757,7 @@ public partial class RenpyParser : RenpyParserBase {
 			case NUMBER:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 487;
+				State = 574;
 				kvpair();
 				}
 				break;
@@ -3218,15 +3810,15 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public KvpairContext kvpair() {
 		KvpairContext _localctx = new KvpairContext(Context, State);
-		EnterRule(_localctx, 74, RULE_kvpair);
+		EnterRule(_localctx, 86, RULE_kvpair);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 490;
+			State = 577;
 			expression();
-			State = 491;
+			State = 578;
 			Match(COLON);
-			State = 492;
+			State = 579;
 			expression();
 			}
 		}
@@ -3275,23 +3867,37 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public Star_expressionContext star_expression() {
 		Star_expressionContext _localctx = new Star_expressionContext(Context, State);
-		EnterRule(_localctx, 76, RULE_star_expression);
+		EnterRule(_localctx, 88, RULE_star_expression);
 		try {
-			State = 497;
+			State = 584;
 			ErrorHandler.Sync(this);
 			switch (TokenStream.LA(1)) {
 			case STAR:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 494;
+				State = 581;
 				Match(STAR);
-				State = 495;
+				State = 582;
 				sum(0);
 				}
 				break;
+			case LABEL:
+			case JUMP:
+			case EXPRESSION:
+			case CALL:
 			case TRUE:
 			case FALSE:
 			case NONE:
+			case MENU:
+			case WINDOW:
+			case SHOW:
+			case HIDE:
+			case PAUSE:
+			case SCENE:
+			case BEHIND:
+			case ONLAYER:
+			case AS:
+			case AT:
 			case LSQB:
 			case LBRACE:
 			case NAME:
@@ -3299,7 +3905,7 @@ public partial class RenpyParser : RenpyParserBase {
 			case NUMBER:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 496;
+				State = 583;
 				expression();
 				}
 				break;
@@ -3348,11 +3954,11 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public ExpressionContext expression() {
 		ExpressionContext _localctx = new ExpressionContext(Context, State);
-		EnterRule(_localctx, 78, RULE_expression);
+		EnterRule(_localctx, 90, RULE_expression);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 499;
+			State = 586;
 			comparison();
 			}
 		}
@@ -3368,47 +3974,14 @@ public partial class RenpyParser : RenpyParserBase {
 	}
 
 	public partial class ComparisonContext : ParserRuleContext {
-		[System.Diagnostics.DebuggerNonUserCode] public Bitwise_orContext[] bitwise_or() {
-			return GetRuleContexts<Bitwise_orContext>();
+		[System.Diagnostics.DebuggerNonUserCode] public Bitwise_orContext bitwise_or() {
+			return GetRuleContext<Bitwise_orContext>(0);
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public Bitwise_orContext bitwise_or(int i) {
-			return GetRuleContext<Bitwise_orContext>(i);
+		[System.Diagnostics.DebuggerNonUserCode] public Comparison_operatorContext comparison_operator() {
+			return GetRuleContext<Comparison_operatorContext>(0);
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] EQEQUAL() { return GetTokens(RenpyParser.EQEQUAL); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode EQEQUAL(int i) {
-			return GetToken(RenpyParser.EQEQUAL, i);
-		}
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] NOTEQUAL() { return GetTokens(RenpyParser.NOTEQUAL); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode NOTEQUAL(int i) {
-			return GetToken(RenpyParser.NOTEQUAL, i);
-		}
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] LESSEQUAL() { return GetTokens(RenpyParser.LESSEQUAL); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode LESSEQUAL(int i) {
-			return GetToken(RenpyParser.LESSEQUAL, i);
-		}
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] LESS() { return GetTokens(RenpyParser.LESS); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode LESS(int i) {
-			return GetToken(RenpyParser.LESS, i);
-		}
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] GREATEREQUAL() { return GetTokens(RenpyParser.GREATEREQUAL); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode GREATEREQUAL(int i) {
-			return GetToken(RenpyParser.GREATEREQUAL, i);
-		}
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] GREATER() { return GetTokens(RenpyParser.GREATER); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode GREATER(int i) {
-			return GetToken(RenpyParser.GREATER, i);
-		}
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] IN() { return GetTokens(RenpyParser.IN); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode IN(int i) {
-			return GetToken(RenpyParser.IN, i);
-		}
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] IS() { return GetTokens(RenpyParser.IS); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode IS(int i) {
-			return GetToken(RenpyParser.IS, i);
-		}
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] NOT() { return GetTokens(RenpyParser.NOT); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode NOT(int i) {
-			return GetToken(RenpyParser.NOT, i);
+		[System.Diagnostics.DebuggerNonUserCode] public ComparisonContext comparison() {
+			return GetRuleContext<ComparisonContext>(0);
 		}
 		public ComparisonContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -3436,106 +4009,159 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public ComparisonContext comparison() {
 		ComparisonContext _localctx = new ComparisonContext(Context, State);
-		EnterRule(_localctx, 80, RULE_comparison);
+		EnterRule(_localctx, 92, RULE_comparison);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 501;
+			State = 588;
 			bitwise_or();
-			State = 521;
+			State = 592;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 137170518016L) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 70231305224192L) != 0)) {
 				{
+				State = 589;
+				comparison_operator();
+				State = 590;
+				comparison();
+				}
+			}
+
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class Comparison_operatorContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode EQEQUAL() { return GetToken(RenpyParser.EQEQUAL, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode NOTEQUAL() { return GetToken(RenpyParser.NOTEQUAL, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode LESSEQUAL() { return GetToken(RenpyParser.LESSEQUAL, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode LESS() { return GetToken(RenpyParser.LESS, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode GREATEREQUAL() { return GetToken(RenpyParser.GREATEREQUAL, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode GREATER() { return GetToken(RenpyParser.GREATER, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode IN() { return GetToken(RenpyParser.IN, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode NOT() { return GetToken(RenpyParser.NOT, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode IS() { return GetToken(RenpyParser.IS, 0); }
+		public Comparison_operatorContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_comparison_operator; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			IRenpyParserListener typedListener = listener as IRenpyParserListener;
+			if (typedListener != null) typedListener.EnterComparison_operator(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			IRenpyParserListener typedListener = listener as IRenpyParserListener;
+			if (typedListener != null) typedListener.ExitComparison_operator(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IRenpyParserVisitor<TResult> typedVisitor = visitor as IRenpyParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitComparison_operator(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public Comparison_operatorContext comparison_operator() {
+		Comparison_operatorContext _localctx = new Comparison_operatorContext(Context, State);
+		EnterRule(_localctx, 94, RULE_comparison_operator);
+		int _la;
+		try {
+			State = 608;
+			ErrorHandler.Sync(this);
+			switch (TokenStream.LA(1)) {
+			case EQEQUAL:
+				EnterOuterAlt(_localctx, 1);
 				{
-				State = 516;
-				ErrorHandler.Sync(this);
-				switch (TokenStream.LA(1)) {
-				case EQEQUAL:
-					{
-					State = 502;
-					Match(EQEQUAL);
-					}
-					break;
-				case NOTEQUAL:
-					{
-					State = 503;
-					Match(NOTEQUAL);
-					}
-					break;
-				case LESSEQUAL:
-					{
-					State = 504;
-					Match(LESSEQUAL);
-					}
-					break;
-				case LESS:
-					{
-					State = 505;
-					Match(LESS);
-					}
-					break;
-				case GREATEREQUAL:
-					{
-					State = 506;
-					Match(GREATEREQUAL);
-					}
-					break;
-				case GREATER:
-					{
-					State = 507;
-					Match(GREATER);
-					}
-					break;
-				case NOT:
-				case IN:
-					{
-					{
-					State = 509;
-					ErrorHandler.Sync(this);
-					_la = TokenStream.LA(1);
-					if (_la==NOT) {
-						{
-						State = 508;
-						Match(NOT);
-						}
-					}
-
-					State = 511;
-					Match(IN);
-					}
-					}
-					break;
-				case IS:
-					{
-					{
-					State = 512;
-					Match(IS);
-					State = 514;
-					ErrorHandler.Sync(this);
-					_la = TokenStream.LA(1);
-					if (_la==NOT) {
-						{
-						State = 513;
-						Match(NOT);
-						}
-					}
-
-					}
-					}
-					break;
-				default:
-					throw new NoViableAltException(this);
+				State = 594;
+				Match(EQEQUAL);
 				}
-				State = 518;
-				bitwise_or();
+				break;
+			case NOTEQUAL:
+				EnterOuterAlt(_localctx, 2);
+				{
+				State = 595;
+				Match(NOTEQUAL);
 				}
+				break;
+			case LESSEQUAL:
+				EnterOuterAlt(_localctx, 3);
+				{
+				State = 596;
+				Match(LESSEQUAL);
 				}
-				State = 523;
+				break;
+			case LESS:
+				EnterOuterAlt(_localctx, 4);
+				{
+				State = 597;
+				Match(LESS);
+				}
+				break;
+			case GREATEREQUAL:
+				EnterOuterAlt(_localctx, 5);
+				{
+				State = 598;
+				Match(GREATEREQUAL);
+				}
+				break;
+			case GREATER:
+				EnterOuterAlt(_localctx, 6);
+				{
+				State = 599;
+				Match(GREATER);
+				}
+				break;
+			case NOT:
+			case IN:
+				EnterOuterAlt(_localctx, 7);
+				{
+				State = 601;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
-			}
+				if (_la==NOT) {
+					{
+					State = 600;
+					Match(NOT);
+					}
+				}
+
+				State = 603;
+				Match(IN);
+				}
+				break;
+			case IS:
+				EnterOuterAlt(_localctx, 8);
+				{
+				State = 604;
+				Match(IS);
+				State = 606;
+				ErrorHandler.Sync(this);
+				_la = TokenStream.LA(1);
+				if (_la==NOT) {
+					{
+					State = 605;
+					Match(NOT);
+					}
+				}
+
+				}
+				break;
+			default:
+				throw new NoViableAltException(this);
 			}
 		}
 		catch (RecognitionException re) {
@@ -3579,11 +4205,11 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public Bitwise_orContext bitwise_or() {
 		Bitwise_orContext _localctx = new Bitwise_orContext(Context, State);
-		EnterRule(_localctx, 82, RULE_bitwise_or);
+		EnterRule(_localctx, 96, RULE_bitwise_or);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 524;
+			State = 610;
 			sum(0);
 			}
 		}
@@ -3640,21 +4266,21 @@ public partial class RenpyParser : RenpyParserBase {
 		int _parentState = State;
 		SumContext _localctx = new SumContext(Context, _parentState);
 		SumContext _prevctx = _localctx;
-		int _startState = 84;
-		EnterRecursionRule(_localctx, 84, RULE_sum, _p);
+		int _startState = 98;
+		EnterRecursionRule(_localctx, 98, RULE_sum, _p);
 		int _la;
 		try {
 			int _alt;
 			EnterOuterAlt(_localctx, 1);
 			{
 			{
-			State = 527;
+			State = 613;
 			primary(0);
 			}
 			Context.Stop = TokenStream.LT(-1);
-			State = 534;
+			State = 620;
 			ErrorHandler.Sync(this);
-			_alt = Interpreter.AdaptivePredict(TokenStream,71,Context);
+			_alt = Interpreter.AdaptivePredict(TokenStream,84,Context);
 			while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					if ( ParseListeners!=null )
@@ -3664,9 +4290,9 @@ public partial class RenpyParser : RenpyParserBase {
 					{
 					_localctx = new SumContext(_parentctx, _parentState);
 					PushNewRecursionContext(_localctx, _startState, RULE_sum);
-					State = 529;
+					State = 615;
 					if (!(Precpred(Context, 2))) throw new FailedPredicateException(this, "Precpred(Context, 2)");
-					State = 530;
+					State = 616;
 					_la = TokenStream.LA(1);
 					if ( !(_la==PLUS || _la==MINUS) ) {
 					ErrorHandler.RecoverInline(this);
@@ -3675,14 +4301,14 @@ public partial class RenpyParser : RenpyParserBase {
 						ErrorHandler.ReportMatch(this);
 					    Consume();
 					}
-					State = 531;
+					State = 617;
 					primary(0);
 					}
 					} 
 				}
-				State = 536;
+				State = 622;
 				ErrorHandler.Sync(this);
-				_alt = Interpreter.AdaptivePredict(TokenStream,71,Context);
+				_alt = Interpreter.AdaptivePredict(TokenStream,84,Context);
 			}
 			}
 		}
@@ -3705,7 +4331,9 @@ public partial class RenpyParser : RenpyParserBase {
 			return GetRuleContext<PrimaryContext>(0);
 		}
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode DOT() { return GetToken(RenpyParser.DOT, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode NAME() { return GetToken(RenpyParser.NAME, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public NameContext name() {
+			return GetRuleContext<NameContext>(0);
+		}
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode LPAR() { return GetToken(RenpyParser.LPAR, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode RPAR() { return GetToken(RenpyParser.RPAR, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode LSQB() { return GetToken(RenpyParser.LSQB, 0); }
@@ -3749,21 +4377,21 @@ public partial class RenpyParser : RenpyParserBase {
 		int _parentState = State;
 		PrimaryContext _localctx = new PrimaryContext(Context, _parentState);
 		PrimaryContext _prevctx = _localctx;
-		int _startState = 86;
-		EnterRecursionRule(_localctx, 86, RULE_primary, _p);
+		int _startState = 100;
+		EnterRecursionRule(_localctx, 100, RULE_primary, _p);
 		int _la;
 		try {
 			int _alt;
 			EnterOuterAlt(_localctx, 1);
 			{
 			{
-			State = 538;
+			State = 624;
 			atom();
 			}
 			Context.Stop = TokenStream.LT(-1);
-			State = 556;
+			State = 642;
 			ErrorHandler.Sync(this);
-			_alt = Interpreter.AdaptivePredict(TokenStream,74,Context);
+			_alt = Interpreter.AdaptivePredict(TokenStream,87,Context);
 			while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					if ( ParseListeners!=null )
@@ -3773,44 +4401,44 @@ public partial class RenpyParser : RenpyParserBase {
 					{
 					_localctx = new PrimaryContext(_parentctx, _parentState);
 					PushNewRecursionContext(_localctx, _startState, RULE_primary);
-					State = 540;
+					State = 626;
 					if (!(Precpred(Context, 2))) throw new FailedPredicateException(this, "Precpred(Context, 2)");
-					State = 552;
+					State = 638;
 					ErrorHandler.Sync(this);
 					switch (TokenStream.LA(1)) {
 					case DOT:
 						{
-						State = 541;
+						State = 627;
 						Match(DOT);
-						State = 542;
-						Match(NAME);
+						State = 628;
+						name();
 						}
 						break;
 					case LPAR:
 						{
-						State = 543;
+						State = 629;
 						Match(LPAR);
-						State = 545;
+						State = 631;
 						ErrorHandler.Sync(this);
 						_la = TokenStream.LA(1);
-						if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 1035827914296801280L) != 0)) {
+						if ((((_la) & ~0x3f) == 0 && ((1L << _la) & -4611686017488002952L) != 0) || ((((_la - 66)) & ~0x3f) == 0 && ((1L << (_la - 66)) & 7L) != 0)) {
 							{
-							State = 544;
+							State = 630;
 							arguments();
 							}
 						}
 
-						State = 547;
+						State = 633;
 						Match(RPAR);
 						}
 						break;
 					case LSQB:
 						{
-						State = 548;
+						State = 634;
 						Match(LSQB);
-						State = 549;
+						State = 635;
 						slices();
-						State = 550;
+						State = 636;
 						Match(RSQB);
 						}
 						break;
@@ -3820,9 +4448,9 @@ public partial class RenpyParser : RenpyParserBase {
 					}
 					} 
 				}
-				State = 558;
+				State = 644;
 				ErrorHandler.Sync(this);
-				_alt = Interpreter.AdaptivePredict(TokenStream,74,Context);
+				_alt = Interpreter.AdaptivePredict(TokenStream,87,Context);
 			}
 			}
 		}
@@ -3847,7 +4475,9 @@ public partial class RenpyParser : RenpyParserBase {
 		[System.Diagnostics.DebuggerNonUserCode] public DictContext dict() {
 			return GetRuleContext<DictContext>(0);
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode NAME() { return GetToken(RenpyParser.NAME, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public NameContext name() {
+			return GetRuleContext<NameContext>(0);
+		}
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode TRUE() { return GetToken(RenpyParser.TRUE, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode FALSE() { return GetToken(RenpyParser.FALSE, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode NONE() { return GetToken(RenpyParser.NONE, 0); }
@@ -3878,69 +4508,152 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public AtomContext atom() {
 		AtomContext _localctx = new AtomContext(Context, State);
-		EnterRule(_localctx, 88, RULE_atom);
+		EnterRule(_localctx, 102, RULE_atom);
 		try {
-			State = 567;
+			State = 653;
 			ErrorHandler.Sync(this);
 			switch (TokenStream.LA(1)) {
 			case STRING:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 559;
+				State = 645;
 				strings();
 				}
 				break;
 			case LSQB:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 560;
+				State = 646;
 				list();
 				}
 				break;
 			case LBRACE:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 561;
+				State = 647;
 				dict();
 				}
 				break;
+			case LABEL:
+			case JUMP:
+			case EXPRESSION:
+			case CALL:
+			case MENU:
+			case WINDOW:
+			case SHOW:
+			case HIDE:
+			case PAUSE:
+			case SCENE:
+			case BEHIND:
+			case ONLAYER:
+			case AS:
+			case AT:
 			case NAME:
 				EnterOuterAlt(_localctx, 4);
 				{
-				State = 562;
-				Match(NAME);
+				State = 648;
+				name();
 				}
 				break;
 			case TRUE:
 				EnterOuterAlt(_localctx, 5);
 				{
-				State = 563;
+				State = 649;
 				Match(TRUE);
 				}
 				break;
 			case FALSE:
 				EnterOuterAlt(_localctx, 6);
 				{
-				State = 564;
+				State = 650;
 				Match(FALSE);
 				}
 				break;
 			case NONE:
 				EnterOuterAlt(_localctx, 7);
 				{
-				State = 565;
+				State = 651;
 				Match(NONE);
 				}
 				break;
 			case NUMBER:
 				EnterOuterAlt(_localctx, 8);
 				{
-				State = 566;
+				State = 652;
 				Match(NUMBER);
 				}
 				break;
 			default:
 				throw new NoViableAltException(this);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class NameContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode NAME() { return GetToken(RenpyParser.NAME, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode PAUSE() { return GetToken(RenpyParser.PAUSE, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode MENU() { return GetToken(RenpyParser.MENU, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode WINDOW() { return GetToken(RenpyParser.WINDOW, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode SHOW() { return GetToken(RenpyParser.SHOW, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode HIDE() { return GetToken(RenpyParser.HIDE, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode EXPRESSION() { return GetToken(RenpyParser.EXPRESSION, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode CALL() { return GetToken(RenpyParser.CALL, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode LABEL() { return GetToken(RenpyParser.LABEL, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode JUMP() { return GetToken(RenpyParser.JUMP, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode SCENE() { return GetToken(RenpyParser.SCENE, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode BEHIND() { return GetToken(RenpyParser.BEHIND, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode ONLAYER() { return GetToken(RenpyParser.ONLAYER, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode AS() { return GetToken(RenpyParser.AS, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode AT() { return GetToken(RenpyParser.AT, 0); }
+		public NameContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_name; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			IRenpyParserListener typedListener = listener as IRenpyParserListener;
+			if (typedListener != null) typedListener.EnterName(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			IRenpyParserListener typedListener = listener as IRenpyParserListener;
+			if (typedListener != null) typedListener.ExitName(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IRenpyParserVisitor<TResult> typedVisitor = visitor as IRenpyParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitName(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public NameContext name() {
+		NameContext _localctx = new NameContext(Context, State);
+		EnterRule(_localctx, 104, RULE_name);
+		int _la;
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 655;
+			_la = TokenStream.LA(1);
+			if ( !(((((_la - 3)) & ~0x3f) == 0 && ((1L << (_la - 3)) & -9223372036838023153L) != 0)) ) {
+			ErrorHandler.RecoverInline(this);
+			}
+			else {
+				ErrorHandler.ReportMatch(this);
+			    Consume();
+			}
 			}
 		}
 		catch (RecognitionException re) {
@@ -3985,12 +4698,12 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public StringsContext strings() {
 		StringsContext _localctx = new StringsContext(Context, State);
-		EnterRule(_localctx, 90, RULE_strings);
+		EnterRule(_localctx, 106, RULE_strings);
 		try {
 			int _alt;
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 570;
+			State = 658;
 			ErrorHandler.Sync(this);
 			_alt = 1;
 			do {
@@ -3998,7 +4711,7 @@ public partial class RenpyParser : RenpyParserBase {
 				case 1:
 					{
 					{
-					State = 569;
+					State = 657;
 					Match(STRING);
 					}
 					}
@@ -4006,9 +4719,9 @@ public partial class RenpyParser : RenpyParserBase {
 				default:
 					throw new NoViableAltException(this);
 				}
-				State = 572;
+				State = 660;
 				ErrorHandler.Sync(this);
-				_alt = Interpreter.AdaptivePredict(TokenStream,76,Context);
+				_alt = Interpreter.AdaptivePredict(TokenStream,89,Context);
 			} while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.INVALID_ALT_NUMBER );
 			}
 		}
@@ -4027,7 +4740,9 @@ public partial class RenpyParser : RenpyParserBase {
 		[System.Diagnostics.DebuggerNonUserCode] public Single_subscript_attribute_targetContext single_subscript_attribute_target() {
 			return GetRuleContext<Single_subscript_attribute_targetContext>(0);
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode NAME() { return GetToken(RenpyParser.NAME, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public NameContext name() {
+			return GetRuleContext<NameContext>(0);
+		}
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode LPAR() { return GetToken(RenpyParser.LPAR, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public Single_targetContext single_target() {
 			return GetRuleContext<Single_targetContext>(0);
@@ -4059,33 +4774,33 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public Single_targetContext single_target() {
 		Single_targetContext _localctx = new Single_targetContext(Context, State);
-		EnterRule(_localctx, 92, RULE_single_target);
+		EnterRule(_localctx, 108, RULE_single_target);
 		try {
-			State = 580;
+			State = 668;
 			ErrorHandler.Sync(this);
-			switch ( Interpreter.AdaptivePredict(TokenStream,77,Context) ) {
+			switch ( Interpreter.AdaptivePredict(TokenStream,90,Context) ) {
 			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 574;
+				State = 662;
 				single_subscript_attribute_target();
 				}
 				break;
 			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 575;
-				Match(NAME);
+				State = 663;
+				name();
 				}
 				break;
 			case 3:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 576;
+				State = 664;
 				Match(LPAR);
-				State = 577;
+				State = 665;
 				single_target();
-				State = 578;
+				State = 666;
 				Match(RPAR);
 				}
 				break;
@@ -4107,7 +4822,9 @@ public partial class RenpyParser : RenpyParserBase {
 			return GetRuleContext<T_primaryContext>(0);
 		}
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode DOT() { return GetToken(RenpyParser.DOT, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode NAME() { return GetToken(RenpyParser.NAME, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public NameContext name() {
+			return GetRuleContext<NameContext>(0);
+		}
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode LSQB() { return GetToken(RenpyParser.LSQB, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public SlicesContext slices() {
 			return GetRuleContext<SlicesContext>(0);
@@ -4139,30 +4856,30 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public Single_subscript_attribute_targetContext single_subscript_attribute_target() {
 		Single_subscript_attribute_targetContext _localctx = new Single_subscript_attribute_targetContext(Context, State);
-		EnterRule(_localctx, 94, RULE_single_subscript_attribute_target);
+		EnterRule(_localctx, 110, RULE_single_subscript_attribute_target);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 582;
+			State = 670;
 			t_primary(0);
-			State = 589;
+			State = 677;
 			ErrorHandler.Sync(this);
 			switch (TokenStream.LA(1)) {
 			case DOT:
 				{
-				State = 583;
+				State = 671;
 				Match(DOT);
-				State = 584;
-				Match(NAME);
+				State = 672;
+				name();
 				}
 				break;
 			case LSQB:
 				{
-				State = 585;
+				State = 673;
 				Match(LSQB);
-				State = 586;
+				State = 674;
 				slices();
-				State = 587;
+				State = 675;
 				Match(RSQB);
 				}
 				break;
@@ -4183,7 +4900,9 @@ public partial class RenpyParser : RenpyParserBase {
 	}
 
 	public partial class T_primaryContext : ParserRuleContext {
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode NAME() { return GetToken(RenpyParser.NAME, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public NameContext name() {
+			return GetRuleContext<NameContext>(0);
+		}
 		[System.Diagnostics.DebuggerNonUserCode] public T_primaryContext t_primary() {
 			return GetRuleContext<T_primaryContext>(0);
 		}
@@ -4234,21 +4953,21 @@ public partial class RenpyParser : RenpyParserBase {
 		int _parentState = State;
 		T_primaryContext _localctx = new T_primaryContext(Context, _parentState);
 		T_primaryContext _prevctx = _localctx;
-		int _startState = 96;
-		EnterRecursionRule(_localctx, 96, RULE_t_primary, _p);
+		int _startState = 112;
+		EnterRecursionRule(_localctx, 112, RULE_t_primary, _p);
 		int _la;
 		try {
 			int _alt;
 			EnterOuterAlt(_localctx, 1);
 			{
 			{
-			State = 592;
-			Match(NAME);
+			State = 680;
+			name();
 			}
 			Context.Stop = TokenStream.LT(-1);
-			State = 611;
+			State = 699;
 			ErrorHandler.Sync(this);
-			_alt = Interpreter.AdaptivePredict(TokenStream,81,Context);
+			_alt = Interpreter.AdaptivePredict(TokenStream,94,Context);
 			while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					if ( ParseListeners!=null )
@@ -4258,50 +4977,50 @@ public partial class RenpyParser : RenpyParserBase {
 					{
 					_localctx = new T_primaryContext(_parentctx, _parentState);
 					PushNewRecursionContext(_localctx, _startState, RULE_t_primary);
-					State = 594;
+					State = 682;
 					if (!(Precpred(Context, 2))) throw new FailedPredicateException(this, "Precpred(Context, 2)");
-					State = 607;
+					State = 695;
 					ErrorHandler.Sync(this);
-					switch ( Interpreter.AdaptivePredict(TokenStream,80,Context) ) {
+					switch ( Interpreter.AdaptivePredict(TokenStream,93,Context) ) {
 					case 1:
 						{
-						State = 595;
+						State = 683;
 						Match(DOT);
-						State = 596;
-						Match(NAME);
+						State = 684;
+						name();
 						}
 						break;
 					case 2:
 						{
-						State = 597;
+						State = 685;
 						genexp();
 						}
 						break;
 					case 3:
 						{
-						State = 598;
+						State = 686;
 						Match(LPAR);
-						State = 600;
+						State = 688;
 						ErrorHandler.Sync(this);
 						_la = TokenStream.LA(1);
-						if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 1035827914296801280L) != 0)) {
+						if ((((_la) & ~0x3f) == 0 && ((1L << _la) & -4611686017488002952L) != 0) || ((((_la - 66)) & ~0x3f) == 0 && ((1L << (_la - 66)) & 7L) != 0)) {
 							{
-							State = 599;
+							State = 687;
 							arguments();
 							}
 						}
 
-						State = 602;
+						State = 690;
 						Match(RPAR);
 						}
 						break;
 					case 4:
 						{
-						State = 603;
+						State = 691;
 						Match(LSQB);
-						State = 604;
+						State = 692;
 						slices();
-						State = 605;
+						State = 693;
 						Match(RSQB);
 						}
 						break;
@@ -4309,9 +5028,9 @@ public partial class RenpyParser : RenpyParserBase {
 					}
 					} 
 				}
-				State = 613;
+				State = 701;
 				ErrorHandler.Sync(this);
-				_alt = Interpreter.AdaptivePredict(TokenStream,81,Context);
+				_alt = Interpreter.AdaptivePredict(TokenStream,94,Context);
 			}
 			}
 		}
@@ -4361,29 +5080,29 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public GenexpContext genexp() {
 		GenexpContext _localctx = new GenexpContext(Context, State);
-		EnterRule(_localctx, 98, RULE_genexp);
+		EnterRule(_localctx, 114, RULE_genexp);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 614;
+			State = 702;
 			Match(LPAR);
-			State = 617;
+			State = 705;
 			ErrorHandler.Sync(this);
-			switch ( Interpreter.AdaptivePredict(TokenStream,82,Context) ) {
+			switch ( Interpreter.AdaptivePredict(TokenStream,95,Context) ) {
 			case 1:
 				{
-				State = 615;
+				State = 703;
 				assignment_expression();
 				}
 				break;
 			case 2:
 				{
-				State = 616;
+				State = 704;
 				expression();
 				}
 				break;
 			}
-			State = 619;
+			State = 707;
 			Match(RPAR);
 			}
 		}
@@ -4429,19 +5148,19 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public ArgumentsContext arguments() {
 		ArgumentsContext _localctx = new ArgumentsContext(Context, State);
-		EnterRule(_localctx, 100, RULE_arguments);
+		EnterRule(_localctx, 116, RULE_arguments);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 621;
+			State = 709;
 			args();
-			State = 623;
+			State = 711;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if (_la==COMMA) {
 				{
-				State = 622;
+				State = 710;
 				Match(COMMA);
 				}
 			}
@@ -4511,45 +5230,59 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public ArgsContext args() {
 		ArgsContext _localctx = new ArgsContext(Context, State);
-		EnterRule(_localctx, 102, RULE_args);
+		EnterRule(_localctx, 118, RULE_args);
 		try {
 			int _alt;
-			State = 650;
+			State = 738;
 			ErrorHandler.Sync(this);
-			switch ( Interpreter.AdaptivePredict(TokenStream,90,Context) ) {
+			switch ( Interpreter.AdaptivePredict(TokenStream,103,Context) ) {
 			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 630;
+				State = 718;
 				ErrorHandler.Sync(this);
 				switch (TokenStream.LA(1)) {
 				case STAR:
 					{
-					State = 625;
+					State = 713;
 					starred_expression();
 					}
 					break;
+				case LABEL:
+				case JUMP:
+				case EXPRESSION:
+				case CALL:
 				case TRUE:
 				case FALSE:
 				case NONE:
+				case MENU:
+				case WINDOW:
+				case SHOW:
+				case HIDE:
+				case PAUSE:
+				case SCENE:
+				case BEHIND:
+				case ONLAYER:
+				case AS:
+				case AT:
 				case LSQB:
 				case LBRACE:
 				case NAME:
 				case STRING:
 				case NUMBER:
 					{
-					State = 628;
+					State = 716;
 					ErrorHandler.Sync(this);
-					switch ( Interpreter.AdaptivePredict(TokenStream,84,Context) ) {
+					switch ( Interpreter.AdaptivePredict(TokenStream,97,Context) ) {
 					case 1:
 						{
-						State = 626;
+						State = 714;
 						assignment_expression();
 						}
 						break;
 					case 2:
 						{
-						State = 627;
+						State = 715;
 						expression();
 						}
 						break;
@@ -4559,45 +5292,59 @@ public partial class RenpyParser : RenpyParserBase {
 				default:
 					throw new NoViableAltException(this);
 				}
-				State = 642;
+				State = 730;
 				ErrorHandler.Sync(this);
-				_alt = Interpreter.AdaptivePredict(TokenStream,88,Context);
+				_alt = Interpreter.AdaptivePredict(TokenStream,101,Context);
 				while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.INVALID_ALT_NUMBER ) {
 					if ( _alt==1 ) {
 						{
 						{
-						State = 632;
+						State = 720;
 						Match(COMMA);
-						State = 638;
+						State = 726;
 						ErrorHandler.Sync(this);
 						switch (TokenStream.LA(1)) {
 						case STAR:
 							{
-							State = 633;
+							State = 721;
 							starred_expression();
 							}
 							break;
+						case LABEL:
+						case JUMP:
+						case EXPRESSION:
+						case CALL:
 						case TRUE:
 						case FALSE:
 						case NONE:
+						case MENU:
+						case WINDOW:
+						case SHOW:
+						case HIDE:
+						case PAUSE:
+						case SCENE:
+						case BEHIND:
+						case ONLAYER:
+						case AS:
+						case AT:
 						case LSQB:
 						case LBRACE:
 						case NAME:
 						case STRING:
 						case NUMBER:
 							{
-							State = 636;
+							State = 724;
 							ErrorHandler.Sync(this);
-							switch ( Interpreter.AdaptivePredict(TokenStream,86,Context) ) {
+							switch ( Interpreter.AdaptivePredict(TokenStream,99,Context) ) {
 							case 1:
 								{
-								State = 634;
+								State = 722;
 								assignment_expression();
 								}
 								break;
 							case 2:
 								{
-								State = 635;
+								State = 723;
 								expression();
 								}
 								break;
@@ -4610,18 +5357,18 @@ public partial class RenpyParser : RenpyParserBase {
 						}
 						} 
 					}
-					State = 644;
+					State = 732;
 					ErrorHandler.Sync(this);
-					_alt = Interpreter.AdaptivePredict(TokenStream,88,Context);
+					_alt = Interpreter.AdaptivePredict(TokenStream,101,Context);
 				}
-				State = 647;
+				State = 735;
 				ErrorHandler.Sync(this);
-				switch ( Interpreter.AdaptivePredict(TokenStream,89,Context) ) {
+				switch ( Interpreter.AdaptivePredict(TokenStream,102,Context) ) {
 				case 1:
 					{
-					State = 645;
+					State = 733;
 					Match(COMMA);
-					State = 646;
+					State = 734;
 					kwargs();
 					}
 					break;
@@ -4631,7 +5378,7 @@ public partial class RenpyParser : RenpyParserBase {
 			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 649;
+				State = 737;
 				kwargs();
 				}
 				break;
@@ -4691,61 +5438,61 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public KwargsContext kwargs() {
 		KwargsContext _localctx = new KwargsContext(Context, State);
-		EnterRule(_localctx, 104, RULE_kwargs);
+		EnterRule(_localctx, 120, RULE_kwargs);
 		try {
 			int _alt;
-			State = 679;
+			State = 767;
 			ErrorHandler.Sync(this);
-			switch ( Interpreter.AdaptivePredict(TokenStream,95,Context) ) {
+			switch ( Interpreter.AdaptivePredict(TokenStream,108,Context) ) {
 			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 652;
+				State = 740;
 				kwarg_or_starred();
-				State = 657;
+				State = 745;
 				ErrorHandler.Sync(this);
-				_alt = Interpreter.AdaptivePredict(TokenStream,91,Context);
+				_alt = Interpreter.AdaptivePredict(TokenStream,104,Context);
 				while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.INVALID_ALT_NUMBER ) {
 					if ( _alt==1 ) {
 						{
 						{
-						State = 653;
+						State = 741;
 						Match(COMMA);
-						State = 654;
+						State = 742;
 						kwarg_or_starred();
 						}
 						} 
 					}
-					State = 659;
+					State = 747;
 					ErrorHandler.Sync(this);
-					_alt = Interpreter.AdaptivePredict(TokenStream,91,Context);
+					_alt = Interpreter.AdaptivePredict(TokenStream,104,Context);
 				}
-				State = 669;
+				State = 757;
 				ErrorHandler.Sync(this);
-				switch ( Interpreter.AdaptivePredict(TokenStream,93,Context) ) {
+				switch ( Interpreter.AdaptivePredict(TokenStream,106,Context) ) {
 				case 1:
 					{
-					State = 660;
+					State = 748;
 					Match(COMMA);
-					State = 661;
+					State = 749;
 					kwarg_or_double_starred();
-					State = 666;
+					State = 754;
 					ErrorHandler.Sync(this);
-					_alt = Interpreter.AdaptivePredict(TokenStream,92,Context);
+					_alt = Interpreter.AdaptivePredict(TokenStream,105,Context);
 					while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.INVALID_ALT_NUMBER ) {
 						if ( _alt==1 ) {
 							{
 							{
-							State = 662;
+							State = 750;
 							Match(COMMA);
-							State = 663;
+							State = 751;
 							kwarg_or_double_starred();
 							}
 							} 
 						}
-						State = 668;
+						State = 756;
 						ErrorHandler.Sync(this);
-						_alt = Interpreter.AdaptivePredict(TokenStream,92,Context);
+						_alt = Interpreter.AdaptivePredict(TokenStream,105,Context);
 					}
 					}
 					break;
@@ -4755,25 +5502,25 @@ public partial class RenpyParser : RenpyParserBase {
 			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 671;
+				State = 759;
 				kwarg_or_double_starred();
-				State = 676;
+				State = 764;
 				ErrorHandler.Sync(this);
-				_alt = Interpreter.AdaptivePredict(TokenStream,94,Context);
+				_alt = Interpreter.AdaptivePredict(TokenStream,107,Context);
 				while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.INVALID_ALT_NUMBER ) {
 					if ( _alt==1 ) {
 						{
 						{
-						State = 672;
+						State = 760;
 						Match(COMMA);
-						State = 673;
+						State = 761;
 						kwarg_or_double_starred();
 						}
 						} 
 					}
-					State = 678;
+					State = 766;
 					ErrorHandler.Sync(this);
-					_alt = Interpreter.AdaptivePredict(TokenStream,94,Context);
+					_alt = Interpreter.AdaptivePredict(TokenStream,107,Context);
 				}
 				}
 				break;
@@ -4821,13 +5568,13 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public Starred_expressionContext starred_expression() {
 		Starred_expressionContext _localctx = new Starred_expressionContext(Context, State);
-		EnterRule(_localctx, 106, RULE_starred_expression);
+		EnterRule(_localctx, 122, RULE_starred_expression);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 681;
+			State = 769;
 			Match(STAR);
-			State = 682;
+			State = 770;
 			expression();
 			}
 		}
@@ -4843,7 +5590,9 @@ public partial class RenpyParser : RenpyParserBase {
 	}
 
 	public partial class Kwarg_or_double_starredContext : ParserRuleContext {
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode NAME() { return GetToken(RenpyParser.NAME, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public NameContext name() {
+			return GetRuleContext<NameContext>(0);
+		}
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode EQUALS() { return GetToken(RenpyParser.EQUALS, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression() {
 			return GetRuleContext<ExpressionContext>(0);
@@ -4875,28 +5624,42 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public Kwarg_or_double_starredContext kwarg_or_double_starred() {
 		Kwarg_or_double_starredContext _localctx = new Kwarg_or_double_starredContext(Context, State);
-		EnterRule(_localctx, 108, RULE_kwarg_or_double_starred);
+		EnterRule(_localctx, 124, RULE_kwarg_or_double_starred);
 		try {
-			State = 689;
+			State = 778;
 			ErrorHandler.Sync(this);
 			switch (TokenStream.LA(1)) {
+			case LABEL:
+			case JUMP:
+			case EXPRESSION:
+			case CALL:
+			case MENU:
+			case WINDOW:
+			case SHOW:
+			case HIDE:
+			case PAUSE:
+			case SCENE:
+			case BEHIND:
+			case ONLAYER:
+			case AS:
+			case AT:
 			case NAME:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 684;
-				Match(NAME);
-				State = 685;
+				State = 772;
+				name();
+				State = 773;
 				Match(EQUALS);
-				State = 686;
+				State = 774;
 				expression();
 				}
 				break;
 			case DOUBLESTAR:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 687;
+				State = 776;
 				Match(DOUBLESTAR);
-				State = 688;
+				State = 777;
 				expression();
 				}
 				break;
@@ -4916,7 +5679,9 @@ public partial class RenpyParser : RenpyParserBase {
 	}
 
 	public partial class Kwarg_or_starredContext : ParserRuleContext {
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode NAME() { return GetToken(RenpyParser.NAME, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public NameContext name() {
+			return GetRuleContext<NameContext>(0);
+		}
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode EQUALS() { return GetToken(RenpyParser.EQUALS, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression() {
 			return GetRuleContext<ExpressionContext>(0);
@@ -4950,26 +5715,40 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public Kwarg_or_starredContext kwarg_or_starred() {
 		Kwarg_or_starredContext _localctx = new Kwarg_or_starredContext(Context, State);
-		EnterRule(_localctx, 110, RULE_kwarg_or_starred);
+		EnterRule(_localctx, 126, RULE_kwarg_or_starred);
 		try {
-			State = 695;
+			State = 785;
 			ErrorHandler.Sync(this);
 			switch (TokenStream.LA(1)) {
+			case LABEL:
+			case JUMP:
+			case EXPRESSION:
+			case CALL:
+			case MENU:
+			case WINDOW:
+			case SHOW:
+			case HIDE:
+			case PAUSE:
+			case SCENE:
+			case BEHIND:
+			case ONLAYER:
+			case AS:
+			case AT:
 			case NAME:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 691;
-				Match(NAME);
-				State = 692;
+				State = 780;
+				name();
+				State = 781;
 				Match(EQUALS);
-				State = 693;
+				State = 782;
 				expression();
 				}
 				break;
 			case STAR:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 694;
+				State = 784;
 				starred_expression();
 				}
 				break;
@@ -5018,11 +5797,11 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public SlicesContext slices() {
 		SlicesContext _localctx = new SlicesContext(Context, State);
-		EnterRule(_localctx, 112, RULE_slices);
+		EnterRule(_localctx, 128, RULE_slices);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 697;
+			State = 787;
 			named_expression();
 			}
 		}
@@ -5074,38 +5853,38 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public Star_named_expressionsContext star_named_expressions() {
 		Star_named_expressionsContext _localctx = new Star_named_expressionsContext(Context, State);
-		EnterRule(_localctx, 114, RULE_star_named_expressions);
+		EnterRule(_localctx, 130, RULE_star_named_expressions);
 		int _la;
 		try {
 			int _alt;
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 699;
+			State = 789;
 			star_named_expression();
-			State = 704;
+			State = 794;
 			ErrorHandler.Sync(this);
-			_alt = Interpreter.AdaptivePredict(TokenStream,98,Context);
+			_alt = Interpreter.AdaptivePredict(TokenStream,111,Context);
 			while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					{
 					{
-					State = 700;
+					State = 790;
 					Match(COMMA);
-					State = 701;
+					State = 791;
 					star_named_expression();
 					}
 					} 
 				}
-				State = 706;
+				State = 796;
 				ErrorHandler.Sync(this);
-				_alt = Interpreter.AdaptivePredict(TokenStream,98,Context);
+				_alt = Interpreter.AdaptivePredict(TokenStream,111,Context);
 			}
-			State = 708;
+			State = 798;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if (_la==COMMA) {
 				{
-				State = 707;
+				State = 797;
 				Match(COMMA);
 				}
 			}
@@ -5157,23 +5936,37 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public Star_named_expressionContext star_named_expression() {
 		Star_named_expressionContext _localctx = new Star_named_expressionContext(Context, State);
-		EnterRule(_localctx, 116, RULE_star_named_expression);
+		EnterRule(_localctx, 132, RULE_star_named_expression);
 		try {
-			State = 713;
+			State = 803;
 			ErrorHandler.Sync(this);
 			switch (TokenStream.LA(1)) {
 			case STAR:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 710;
+				State = 800;
 				Match(STAR);
-				State = 711;
+				State = 801;
 				sum(0);
 				}
 				break;
+			case LABEL:
+			case JUMP:
+			case EXPRESSION:
+			case CALL:
 			case TRUE:
 			case FALSE:
 			case NONE:
+			case MENU:
+			case WINDOW:
+			case SHOW:
+			case HIDE:
+			case PAUSE:
+			case SCENE:
+			case BEHIND:
+			case ONLAYER:
+			case AS:
+			case AT:
 			case LSQB:
 			case LBRACE:
 			case NAME:
@@ -5181,7 +5974,7 @@ public partial class RenpyParser : RenpyParserBase {
 			case NUMBER:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 712;
+				State = 802;
 				named_expression();
 				}
 				break;
@@ -5201,7 +5994,9 @@ public partial class RenpyParser : RenpyParserBase {
 	}
 
 	public partial class Assignment_expressionContext : ParserRuleContext {
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode NAME() { return GetToken(RenpyParser.NAME, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public NameContext name() {
+			return GetRuleContext<NameContext>(0);
+		}
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode COLONEQUAL() { return GetToken(RenpyParser.COLONEQUAL, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression() {
 			return GetRuleContext<ExpressionContext>(0);
@@ -5232,15 +6027,15 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public Assignment_expressionContext assignment_expression() {
 		Assignment_expressionContext _localctx = new Assignment_expressionContext(Context, State);
-		EnterRule(_localctx, 118, RULE_assignment_expression);
+		EnterRule(_localctx, 134, RULE_assignment_expression);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 715;
-			Match(NAME);
-			State = 716;
+			State = 805;
+			name();
+			State = 806;
 			Match(COLONEQUAL);
-			State = 717;
+			State = 807;
 			expression();
 			}
 		}
@@ -5288,22 +6083,22 @@ public partial class RenpyParser : RenpyParserBase {
 	[RuleVersion(0)]
 	public Named_expressionContext named_expression() {
 		Named_expressionContext _localctx = new Named_expressionContext(Context, State);
-		EnterRule(_localctx, 120, RULE_named_expression);
+		EnterRule(_localctx, 136, RULE_named_expression);
 		try {
-			State = 721;
+			State = 811;
 			ErrorHandler.Sync(this);
-			switch ( Interpreter.AdaptivePredict(TokenStream,101,Context) ) {
+			switch ( Interpreter.AdaptivePredict(TokenStream,114,Context) ) {
 			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 719;
+				State = 809;
 				assignment_expression();
 				}
 				break;
 			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 720;
+				State = 810;
 				expression();
 				}
 				break;
@@ -5322,9 +6117,9 @@ public partial class RenpyParser : RenpyParserBase {
 
 	public override bool Sempred(RuleContext _localctx, int ruleIndex, int predIndex) {
 		switch (ruleIndex) {
-		case 42: return sum_sempred((SumContext)_localctx, predIndex);
-		case 43: return primary_sempred((PrimaryContext)_localctx, predIndex);
-		case 48: return t_primary_sempred((T_primaryContext)_localctx, predIndex);
+		case 49: return sum_sempred((SumContext)_localctx, predIndex);
+		case 50: return primary_sempred((PrimaryContext)_localctx, predIndex);
+		case 56: return t_primary_sempred((T_primaryContext)_localctx, predIndex);
 		}
 		return true;
 	}
@@ -5348,7 +6143,7 @@ public partial class RenpyParser : RenpyParserBase {
 	}
 
 	private static int[] _serializedATN = {
-		4,1,64,724,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
+		4,1,73,814,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
 		7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,2,13,7,13,2,14,7,14,
 		2,15,7,15,2,16,7,16,2,17,7,17,2,18,7,18,2,19,7,19,2,20,7,20,2,21,7,21,
 		2,22,7,22,2,23,7,23,2,24,7,24,2,25,7,25,2,26,7,26,2,27,7,27,2,28,7,28,
@@ -5356,248 +6151,280 @@ public partial class RenpyParser : RenpyParserBase {
 		2,36,7,36,2,37,7,37,2,38,7,38,2,39,7,39,2,40,7,40,2,41,7,41,2,42,7,42,
 		2,43,7,43,2,44,7,44,2,45,7,45,2,46,7,46,2,47,7,47,2,48,7,48,2,49,7,49,
 		2,50,7,50,2,51,7,51,2,52,7,52,2,53,7,53,2,54,7,54,2,55,7,55,2,56,7,56,
-		2,57,7,57,2,58,7,58,2,59,7,59,2,60,7,60,1,0,3,0,124,8,0,1,0,5,0,127,8,
-		0,10,0,12,0,130,9,0,1,0,1,0,1,1,4,1,135,8,1,11,1,12,1,136,1,2,1,2,1,2,
-		1,2,3,2,143,8,2,1,3,1,3,1,3,1,3,1,3,1,3,1,3,3,3,152,8,3,1,4,1,4,1,4,1,
-		4,1,4,1,4,1,4,3,4,161,8,4,1,5,1,5,1,5,3,5,166,8,5,1,6,1,6,1,6,1,6,1,6,
-		1,7,1,7,3,7,175,8,7,1,7,1,7,1,7,1,7,1,7,1,7,3,7,183,8,7,1,7,4,7,186,8,
-		7,11,7,12,7,187,1,7,1,7,1,8,1,8,1,8,1,8,1,9,1,9,1,10,1,10,1,10,1,10,1,
-		10,1,10,3,10,204,8,10,1,10,3,10,207,8,10,1,11,3,11,210,8,11,1,11,1,11,
-		1,12,1,12,1,12,1,12,1,12,3,12,219,8,12,1,13,1,13,1,13,1,13,3,13,225,8,
-		13,1,13,3,13,228,8,13,1,14,1,14,1,15,1,15,1,16,1,16,1,16,3,16,237,8,16,
-		1,17,1,17,1,17,1,17,1,17,1,17,1,17,1,17,3,17,247,8,17,1,18,1,18,1,19,4,
-		19,252,8,19,11,19,12,19,253,1,19,5,19,257,8,19,10,19,12,19,260,9,19,1,
-		19,5,19,263,8,19,10,19,12,19,266,9,19,1,19,4,19,269,8,19,11,19,12,19,270,
-		3,19,273,8,19,1,19,1,19,1,19,3,19,278,8,19,1,19,5,19,281,8,19,10,19,12,
-		19,284,9,19,1,19,1,19,3,19,288,8,19,1,19,4,19,291,8,19,11,19,12,19,292,
-		3,19,295,8,19,1,19,3,19,298,8,19,1,19,4,19,301,8,19,11,19,12,19,302,1,
-		19,1,19,1,19,3,19,308,8,19,1,19,5,19,311,8,19,10,19,12,19,314,9,19,1,19,
-		5,19,317,8,19,10,19,12,19,320,9,19,1,19,1,19,3,19,324,8,19,1,19,4,19,327,
-		8,19,11,19,12,19,328,3,19,331,8,19,1,19,3,19,334,8,19,1,19,4,19,337,8,
-		19,11,19,12,19,338,1,19,1,19,1,19,3,19,344,8,19,1,19,5,19,347,8,19,10,
-		19,12,19,350,9,19,1,19,1,19,3,19,354,8,19,1,19,4,19,357,8,19,11,19,12,
-		19,358,1,19,5,19,362,8,19,10,19,12,19,365,9,19,1,19,5,19,368,8,19,10,19,
-		12,19,371,9,19,1,19,4,19,374,8,19,11,19,12,19,375,3,19,378,8,19,3,19,380,
-		8,19,1,19,3,19,383,8,19,3,19,385,8,19,1,20,1,20,1,20,1,21,1,21,3,21,392,
-		8,21,1,21,3,21,395,8,21,1,22,1,22,1,22,3,22,400,8,22,1,22,3,22,403,8,22,
-		1,23,1,23,3,23,407,8,23,1,24,1,24,1,24,1,25,1,25,1,25,1,26,1,26,1,26,1,
-		27,1,27,1,27,1,27,1,27,1,27,3,27,424,8,27,3,27,426,8,27,1,28,1,28,1,28,
-		1,28,1,28,1,28,3,28,434,8,28,3,28,436,8,28,1,29,1,29,1,29,1,29,1,30,1,
-		30,1,30,1,30,1,30,3,30,447,8,30,1,31,1,31,3,31,451,8,31,1,31,1,31,1,32,
-		1,32,1,32,1,32,3,32,459,8,32,3,32,461,8,32,1,32,1,32,1,33,1,33,1,33,1,
-		33,1,34,1,34,3,34,471,8,34,1,34,1,34,1,35,1,35,1,35,5,35,478,8,35,10,35,
-		12,35,481,9,35,1,35,3,35,484,8,35,1,36,1,36,1,36,3,36,489,8,36,1,37,1,
-		37,1,37,1,37,1,38,1,38,1,38,3,38,498,8,38,1,39,1,39,1,40,1,40,1,40,1,40,
-		1,40,1,40,1,40,1,40,3,40,510,8,40,1,40,1,40,1,40,3,40,515,8,40,3,40,517,
-		8,40,1,40,5,40,520,8,40,10,40,12,40,523,9,40,1,41,1,41,1,42,1,42,1,42,
-		1,42,1,42,1,42,5,42,533,8,42,10,42,12,42,536,9,42,1,43,1,43,1,43,1,43,
-		1,43,1,43,1,43,1,43,3,43,546,8,43,1,43,1,43,1,43,1,43,1,43,3,43,553,8,
-		43,5,43,555,8,43,10,43,12,43,558,9,43,1,44,1,44,1,44,1,44,1,44,1,44,1,
-		44,1,44,3,44,568,8,44,1,45,4,45,571,8,45,11,45,12,45,572,1,46,1,46,1,46,
-		1,46,1,46,1,46,3,46,581,8,46,1,47,1,47,1,47,1,47,1,47,1,47,1,47,3,47,590,
-		8,47,1,48,1,48,1,48,1,48,1,48,1,48,1,48,1,48,1,48,3,48,601,8,48,1,48,1,
-		48,1,48,1,48,1,48,3,48,608,8,48,5,48,610,8,48,10,48,12,48,613,9,48,1,49,
-		1,49,1,49,3,49,618,8,49,1,49,1,49,1,50,1,50,3,50,624,8,50,1,51,1,51,1,
-		51,3,51,629,8,51,3,51,631,8,51,1,51,1,51,1,51,1,51,3,51,637,8,51,3,51,
-		639,8,51,5,51,641,8,51,10,51,12,51,644,9,51,1,51,1,51,3,51,648,8,51,1,
-		51,3,51,651,8,51,1,52,1,52,1,52,5,52,656,8,52,10,52,12,52,659,9,52,1,52,
-		1,52,1,52,1,52,5,52,665,8,52,10,52,12,52,668,9,52,3,52,670,8,52,1,52,1,
-		52,1,52,5,52,675,8,52,10,52,12,52,678,9,52,3,52,680,8,52,1,53,1,53,1,53,
-		1,54,1,54,1,54,1,54,1,54,3,54,690,8,54,1,55,1,55,1,55,1,55,3,55,696,8,
-		55,1,56,1,56,1,57,1,57,1,57,5,57,703,8,57,10,57,12,57,706,9,57,1,57,3,
-		57,709,8,57,1,58,1,58,1,58,3,58,714,8,58,1,59,1,59,1,59,1,59,1,60,1,60,
-		3,60,722,8,60,1,60,0,3,84,86,96,61,0,2,4,6,8,10,12,14,16,18,20,22,24,26,
-		28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,
-		76,78,80,82,84,86,88,90,92,94,96,98,100,102,104,106,108,110,112,114,116,
-		118,120,0,2,1,0,37,48,1,0,24,25,788,0,123,1,0,0,0,2,134,1,0,0,0,4,142,
-		1,0,0,0,6,151,1,0,0,0,8,160,1,0,0,0,10,162,1,0,0,0,12,167,1,0,0,0,14,172,
-		1,0,0,0,16,191,1,0,0,0,18,195,1,0,0,0,20,197,1,0,0,0,22,209,1,0,0,0,24,
-		218,1,0,0,0,26,220,1,0,0,0,28,229,1,0,0,0,30,231,1,0,0,0,32,236,1,0,0,
-		0,34,246,1,0,0,0,36,248,1,0,0,0,38,384,1,0,0,0,40,386,1,0,0,0,42,389,1,
-		0,0,0,44,396,1,0,0,0,46,404,1,0,0,0,48,408,1,0,0,0,50,411,1,0,0,0,52,414,
-		1,0,0,0,54,417,1,0,0,0,56,427,1,0,0,0,58,437,1,0,0,0,60,441,1,0,0,0,62,
-		448,1,0,0,0,64,454,1,0,0,0,66,464,1,0,0,0,68,468,1,0,0,0,70,474,1,0,0,
-		0,72,488,1,0,0,0,74,490,1,0,0,0,76,497,1,0,0,0,78,499,1,0,0,0,80,501,1,
-		0,0,0,82,524,1,0,0,0,84,526,1,0,0,0,86,537,1,0,0,0,88,567,1,0,0,0,90,570,
-		1,0,0,0,92,580,1,0,0,0,94,582,1,0,0,0,96,591,1,0,0,0,98,614,1,0,0,0,100,
-		621,1,0,0,0,102,650,1,0,0,0,104,679,1,0,0,0,106,681,1,0,0,0,108,689,1,
-		0,0,0,110,695,1,0,0,0,112,697,1,0,0,0,114,699,1,0,0,0,116,713,1,0,0,0,
-		118,715,1,0,0,0,120,721,1,0,0,0,122,124,3,2,1,0,123,122,1,0,0,0,123,124,
-		1,0,0,0,124,128,1,0,0,0,125,127,5,60,0,0,126,125,1,0,0,0,127,130,1,0,0,
-		0,128,126,1,0,0,0,128,129,1,0,0,0,129,131,1,0,0,0,130,128,1,0,0,0,131,
-		132,5,0,0,1,132,1,1,0,0,0,133,135,3,4,2,0,134,133,1,0,0,0,135,136,1,0,
-		0,0,136,134,1,0,0,0,136,137,1,0,0,0,137,3,1,0,0,0,138,139,3,8,4,0,139,
-		140,5,60,0,0,140,143,1,0,0,0,141,143,3,6,3,0,142,138,1,0,0,0,142,141,1,
-		0,0,0,143,5,1,0,0,0,144,152,3,14,7,0,145,152,3,54,27,0,146,152,3,60,30,
-		0,147,148,3,20,10,0,148,149,5,50,0,0,149,150,3,12,6,0,150,152,1,0,0,0,
-		151,144,1,0,0,0,151,145,1,0,0,0,151,146,1,0,0,0,151,147,1,0,0,0,152,7,
-		1,0,0,0,153,161,3,18,9,0,154,161,3,24,12,0,155,161,3,20,10,0,156,161,3,
-		26,13,0,157,161,3,28,14,0,158,161,3,32,16,0,159,161,3,10,5,0,160,153,1,
-		0,0,0,160,154,1,0,0,0,160,155,1,0,0,0,160,156,1,0,0,0,160,157,1,0,0,0,
-		160,158,1,0,0,0,160,159,1,0,0,0,161,9,1,0,0,0,162,165,5,56,0,0,163,166,
-		3,34,17,0,164,166,3,78,39,0,165,163,1,0,0,0,165,164,1,0,0,0,166,11,1,0,
-		0,0,167,168,5,60,0,0,168,169,5,1,0,0,169,170,3,2,1,0,170,171,5,2,0,0,171,
-		13,1,0,0,0,172,174,5,10,0,0,173,175,3,22,11,0,174,173,1,0,0,0,174,175,
-		1,0,0,0,175,176,1,0,0,0,176,177,5,50,0,0,177,178,5,60,0,0,178,182,5,1,
-		0,0,179,180,3,32,16,0,180,181,5,60,0,0,181,183,1,0,0,0,182,179,1,0,0,0,
-		182,183,1,0,0,0,183,185,1,0,0,0,184,186,3,16,8,0,185,184,1,0,0,0,186,187,
-		1,0,0,0,187,185,1,0,0,0,187,188,1,0,0,0,188,189,1,0,0,0,189,190,5,2,0,
-		0,190,15,1,0,0,0,191,192,5,58,0,0,192,193,5,50,0,0,193,194,3,12,6,0,194,
-		17,1,0,0,0,195,196,5,7,0,0,196,19,1,0,0,0,197,198,5,3,0,0,198,203,3,22,
-		11,0,199,200,5,18,0,0,200,201,3,38,19,0,201,202,5,21,0,0,202,204,1,0,0,
-		0,203,199,1,0,0,0,203,204,1,0,0,0,204,206,1,0,0,0,205,207,5,50,0,0,206,
-		205,1,0,0,0,206,207,1,0,0,0,207,21,1,0,0,0,208,210,5,49,0,0,209,208,1,
-		0,0,0,209,210,1,0,0,0,210,211,1,0,0,0,211,212,5,57,0,0,212,23,1,0,0,0,
-		213,214,5,4,0,0,214,219,3,22,11,0,215,216,5,4,0,0,216,217,5,5,0,0,217,
-		219,3,78,39,0,218,213,1,0,0,0,218,215,1,0,0,0,219,25,1,0,0,0,220,221,5,
-		6,0,0,221,227,3,22,11,0,222,224,5,18,0,0,223,225,3,100,50,0,224,223,1,
-		0,0,0,224,225,1,0,0,0,225,226,1,0,0,0,226,228,5,21,0,0,227,222,1,0,0,0,
-		227,228,1,0,0,0,228,27,1,0,0,0,229,230,3,30,15,0,230,29,1,0,0,0,231,232,
-		5,8,0,0,232,31,1,0,0,0,233,234,5,57,0,0,234,237,5,58,0,0,235,237,5,58,
-		0,0,236,233,1,0,0,0,236,235,1,0,0,0,237,33,1,0,0,0,238,239,3,92,46,0,239,
-		240,5,51,0,0,240,241,3,78,39,0,241,247,1,0,0,0,242,243,3,92,46,0,243,244,
-		3,36,18,0,244,245,3,78,39,0,245,247,1,0,0,0,246,238,1,0,0,0,246,242,1,
-		0,0,0,247,35,1,0,0,0,248,249,7,0,0,0,249,37,1,0,0,0,250,252,3,42,21,0,
-		251,250,1,0,0,0,252,253,1,0,0,0,253,251,1,0,0,0,253,254,1,0,0,0,254,258,
-		1,0,0,0,255,257,3,44,22,0,256,255,1,0,0,0,257,260,1,0,0,0,258,256,1,0,
-		0,0,258,259,1,0,0,0,259,273,1,0,0,0,260,258,1,0,0,0,261,263,3,42,21,0,
-		262,261,1,0,0,0,263,266,1,0,0,0,264,262,1,0,0,0,264,265,1,0,0,0,265,268,
-		1,0,0,0,266,264,1,0,0,0,267,269,3,44,22,0,268,267,1,0,0,0,269,270,1,0,
-		0,0,270,268,1,0,0,0,270,271,1,0,0,0,271,273,1,0,0,0,272,251,1,0,0,0,272,
-		264,1,0,0,0,273,274,1,0,0,0,274,275,5,27,0,0,275,276,5,52,0,0,276,278,
-		1,0,0,0,277,272,1,0,0,0,277,278,1,0,0,0,278,282,1,0,0,0,279,281,3,44,22,
-		0,280,279,1,0,0,0,281,284,1,0,0,0,282,280,1,0,0,0,282,283,1,0,0,0,283,
-		294,1,0,0,0,284,282,1,0,0,0,285,286,5,53,0,0,286,288,5,52,0,0,287,285,
-		1,0,0,0,287,288,1,0,0,0,288,290,1,0,0,0,289,291,3,44,22,0,290,289,1,0,
-		0,0,291,292,1,0,0,0,292,290,1,0,0,0,292,293,1,0,0,0,293,295,1,0,0,0,294,
-		287,1,0,0,0,294,295,1,0,0,0,295,297,1,0,0,0,296,298,3,40,20,0,297,296,
-		1,0,0,0,297,298,1,0,0,0,298,385,1,0,0,0,299,301,3,42,21,0,300,299,1,0,
-		0,0,301,302,1,0,0,0,302,300,1,0,0,0,302,303,1,0,0,0,303,304,1,0,0,0,304,
-		305,5,27,0,0,305,306,5,52,0,0,306,308,1,0,0,0,307,300,1,0,0,0,307,308,
-		1,0,0,0,308,312,1,0,0,0,309,311,3,42,21,0,310,309,1,0,0,0,311,314,1,0,
-		0,0,312,310,1,0,0,0,312,313,1,0,0,0,313,318,1,0,0,0,314,312,1,0,0,0,315,
-		317,3,44,22,0,316,315,1,0,0,0,317,320,1,0,0,0,318,316,1,0,0,0,318,319,
-		1,0,0,0,319,330,1,0,0,0,320,318,1,0,0,0,321,322,5,53,0,0,322,324,5,52,
-		0,0,323,321,1,0,0,0,323,324,1,0,0,0,324,326,1,0,0,0,325,327,3,44,22,0,
-		326,325,1,0,0,0,327,328,1,0,0,0,328,326,1,0,0,0,328,329,1,0,0,0,329,331,
-		1,0,0,0,330,323,1,0,0,0,330,331,1,0,0,0,331,333,1,0,0,0,332,334,3,40,20,
-		0,333,332,1,0,0,0,333,334,1,0,0,0,334,385,1,0,0,0,335,337,3,42,21,0,336,
-		335,1,0,0,0,337,338,1,0,0,0,338,336,1,0,0,0,338,339,1,0,0,0,339,340,1,
-		0,0,0,340,341,5,27,0,0,341,342,5,52,0,0,342,344,1,0,0,0,343,336,1,0,0,
-		0,343,344,1,0,0,0,344,348,1,0,0,0,345,347,3,42,21,0,346,345,1,0,0,0,347,
-		350,1,0,0,0,348,346,1,0,0,0,348,349,1,0,0,0,349,379,1,0,0,0,350,348,1,
-		0,0,0,351,352,5,53,0,0,352,354,5,52,0,0,353,351,1,0,0,0,353,354,1,0,0,
-		0,354,377,1,0,0,0,355,357,3,42,21,0,356,355,1,0,0,0,357,358,1,0,0,0,358,
-		356,1,0,0,0,358,359,1,0,0,0,359,363,1,0,0,0,360,362,3,44,22,0,361,360,
-		1,0,0,0,362,365,1,0,0,0,363,361,1,0,0,0,363,364,1,0,0,0,364,378,1,0,0,
-		0,365,363,1,0,0,0,366,368,3,42,21,0,367,366,1,0,0,0,368,371,1,0,0,0,369,
-		367,1,0,0,0,369,370,1,0,0,0,370,373,1,0,0,0,371,369,1,0,0,0,372,374,3,
-		44,22,0,373,372,1,0,0,0,374,375,1,0,0,0,375,373,1,0,0,0,375,376,1,0,0,
-		0,376,378,1,0,0,0,377,356,1,0,0,0,377,369,1,0,0,0,378,380,1,0,0,0,379,
-		353,1,0,0,0,379,380,1,0,0,0,380,382,1,0,0,0,381,383,3,40,20,0,382,381,
-		1,0,0,0,382,383,1,0,0,0,383,385,1,0,0,0,384,277,1,0,0,0,384,307,1,0,0,
-		0,384,343,1,0,0,0,385,39,1,0,0,0,386,387,5,54,0,0,387,388,3,42,21,0,388,
-		41,1,0,0,0,389,391,3,46,23,0,390,392,5,52,0,0,391,390,1,0,0,0,391,392,
-		1,0,0,0,392,394,1,0,0,0,393,395,3,52,26,0,394,393,1,0,0,0,394,395,1,0,
-		0,0,395,43,1,0,0,0,396,397,3,46,23,0,397,399,3,50,25,0,398,400,5,52,0,
-		0,399,398,1,0,0,0,399,400,1,0,0,0,400,402,1,0,0,0,401,403,3,52,26,0,402,
-		401,1,0,0,0,402,403,1,0,0,0,403,45,1,0,0,0,404,406,5,57,0,0,405,407,3,
-		48,24,0,406,405,1,0,0,0,406,407,1,0,0,0,407,47,1,0,0,0,408,409,5,50,0,
-		0,409,410,3,78,39,0,410,49,1,0,0,0,411,412,5,51,0,0,412,413,3,78,39,0,
-		413,51,1,0,0,0,414,415,5,26,0,0,415,416,3,78,39,0,416,53,1,0,0,0,417,418,
-		5,15,0,0,418,419,3,120,60,0,419,420,5,50,0,0,420,425,3,12,6,0,421,426,
-		3,56,28,0,422,424,3,58,29,0,423,422,1,0,0,0,423,424,1,0,0,0,424,426,1,
-		0,0,0,425,421,1,0,0,0,425,423,1,0,0,0,426,55,1,0,0,0,427,428,5,16,0,0,
-		428,429,3,120,60,0,429,430,5,50,0,0,430,435,3,12,6,0,431,436,3,56,28,0,
-		432,434,3,58,29,0,433,432,1,0,0,0,433,434,1,0,0,0,434,436,1,0,0,0,435,
-		431,1,0,0,0,435,433,1,0,0,0,436,57,1,0,0,0,437,438,5,17,0,0,438,439,5,
-		50,0,0,439,440,3,12,6,0,440,59,1,0,0,0,441,442,5,14,0,0,442,443,3,120,
-		60,0,443,444,5,50,0,0,444,446,3,12,6,0,445,447,3,58,29,0,446,445,1,0,0,
-		0,446,447,1,0,0,0,447,61,1,0,0,0,448,450,5,19,0,0,449,451,3,114,57,0,450,
-		449,1,0,0,0,450,451,1,0,0,0,451,452,1,0,0,0,452,453,5,22,0,0,453,63,1,
-		0,0,0,454,460,5,18,0,0,455,456,3,116,58,0,456,458,5,52,0,0,457,459,3,114,
-		57,0,458,457,1,0,0,0,458,459,1,0,0,0,459,461,1,0,0,0,460,455,1,0,0,0,460,
-		461,1,0,0,0,461,462,1,0,0,0,462,463,5,21,0,0,463,65,1,0,0,0,464,465,5,
-		20,0,0,465,466,3,114,57,0,466,467,5,23,0,0,467,67,1,0,0,0,468,470,5,20,
-		0,0,469,471,3,70,35,0,470,469,1,0,0,0,470,471,1,0,0,0,471,472,1,0,0,0,
-		472,473,5,23,0,0,473,69,1,0,0,0,474,479,3,72,36,0,475,476,5,52,0,0,476,
-		478,3,72,36,0,477,475,1,0,0,0,478,481,1,0,0,0,479,477,1,0,0,0,479,480,
-		1,0,0,0,480,483,1,0,0,0,481,479,1,0,0,0,482,484,5,52,0,0,483,482,1,0,0,
-		0,483,484,1,0,0,0,484,71,1,0,0,0,485,486,5,54,0,0,486,489,3,84,42,0,487,
-		489,3,74,37,0,488,485,1,0,0,0,488,487,1,0,0,0,489,73,1,0,0,0,490,491,3,
-		78,39,0,491,492,5,50,0,0,492,493,3,78,39,0,493,75,1,0,0,0,494,495,5,53,
-		0,0,495,498,3,84,42,0,496,498,3,78,39,0,497,494,1,0,0,0,497,496,1,0,0,
-		0,498,77,1,0,0,0,499,500,3,80,40,0,500,79,1,0,0,0,501,521,3,82,41,0,502,
-		517,5,28,0,0,503,517,5,29,0,0,504,517,5,30,0,0,505,517,5,31,0,0,506,517,
-		5,32,0,0,507,517,5,33,0,0,508,510,5,34,0,0,509,508,1,0,0,0,509,510,1,0,
-		0,0,510,511,1,0,0,0,511,517,5,35,0,0,512,514,5,36,0,0,513,515,5,34,0,0,
-		514,513,1,0,0,0,514,515,1,0,0,0,515,517,1,0,0,0,516,502,1,0,0,0,516,503,
-		1,0,0,0,516,504,1,0,0,0,516,505,1,0,0,0,516,506,1,0,0,0,516,507,1,0,0,
-		0,516,509,1,0,0,0,516,512,1,0,0,0,517,518,1,0,0,0,518,520,3,82,41,0,519,
-		516,1,0,0,0,520,523,1,0,0,0,521,519,1,0,0,0,521,522,1,0,0,0,522,81,1,0,
-		0,0,523,521,1,0,0,0,524,525,3,84,42,0,525,83,1,0,0,0,526,527,6,42,-1,0,
-		527,528,3,86,43,0,528,534,1,0,0,0,529,530,10,2,0,0,530,531,7,1,0,0,531,
-		533,3,86,43,0,532,529,1,0,0,0,533,536,1,0,0,0,534,532,1,0,0,0,534,535,
-		1,0,0,0,535,85,1,0,0,0,536,534,1,0,0,0,537,538,6,43,-1,0,538,539,3,88,
-		44,0,539,556,1,0,0,0,540,552,10,2,0,0,541,542,5,49,0,0,542,553,5,57,0,
-		0,543,545,5,18,0,0,544,546,3,100,50,0,545,544,1,0,0,0,545,546,1,0,0,0,
-		546,547,1,0,0,0,547,553,5,21,0,0,548,549,5,19,0,0,549,550,3,112,56,0,550,
-		551,5,22,0,0,551,553,1,0,0,0,552,541,1,0,0,0,552,543,1,0,0,0,552,548,1,
-		0,0,0,553,555,1,0,0,0,554,540,1,0,0,0,555,558,1,0,0,0,556,554,1,0,0,0,
-		556,557,1,0,0,0,557,87,1,0,0,0,558,556,1,0,0,0,559,568,3,90,45,0,560,568,
-		3,62,31,0,561,568,3,68,34,0,562,568,5,57,0,0,563,568,5,11,0,0,564,568,
-		5,12,0,0,565,568,5,13,0,0,566,568,5,59,0,0,567,559,1,0,0,0,567,560,1,0,
-		0,0,567,561,1,0,0,0,567,562,1,0,0,0,567,563,1,0,0,0,567,564,1,0,0,0,567,
-		565,1,0,0,0,567,566,1,0,0,0,568,89,1,0,0,0,569,571,5,58,0,0,570,569,1,
-		0,0,0,571,572,1,0,0,0,572,570,1,0,0,0,572,573,1,0,0,0,573,91,1,0,0,0,574,
-		581,3,94,47,0,575,581,5,57,0,0,576,577,5,18,0,0,577,578,3,92,46,0,578,
-		579,5,21,0,0,579,581,1,0,0,0,580,574,1,0,0,0,580,575,1,0,0,0,580,576,1,
-		0,0,0,581,93,1,0,0,0,582,589,3,96,48,0,583,584,5,49,0,0,584,590,5,57,0,
-		0,585,586,5,19,0,0,586,587,3,112,56,0,587,588,5,22,0,0,588,590,1,0,0,0,
-		589,583,1,0,0,0,589,585,1,0,0,0,590,95,1,0,0,0,591,592,6,48,-1,0,592,593,
-		5,57,0,0,593,611,1,0,0,0,594,607,10,2,0,0,595,596,5,49,0,0,596,608,5,57,
-		0,0,597,608,3,98,49,0,598,600,5,18,0,0,599,601,3,100,50,0,600,599,1,0,
-		0,0,600,601,1,0,0,0,601,602,1,0,0,0,602,608,5,21,0,0,603,604,5,19,0,0,
-		604,605,3,112,56,0,605,606,5,22,0,0,606,608,1,0,0,0,607,595,1,0,0,0,607,
-		597,1,0,0,0,607,598,1,0,0,0,607,603,1,0,0,0,608,610,1,0,0,0,609,594,1,
-		0,0,0,610,613,1,0,0,0,611,609,1,0,0,0,611,612,1,0,0,0,612,97,1,0,0,0,613,
-		611,1,0,0,0,614,617,5,18,0,0,615,618,3,118,59,0,616,618,3,78,39,0,617,
-		615,1,0,0,0,617,616,1,0,0,0,618,619,1,0,0,0,619,620,5,21,0,0,620,99,1,
-		0,0,0,621,623,3,102,51,0,622,624,5,52,0,0,623,622,1,0,0,0,623,624,1,0,
-		0,0,624,101,1,0,0,0,625,631,3,106,53,0,626,629,3,118,59,0,627,629,3,78,
-		39,0,628,626,1,0,0,0,628,627,1,0,0,0,629,631,1,0,0,0,630,625,1,0,0,0,630,
-		628,1,0,0,0,631,642,1,0,0,0,632,638,5,52,0,0,633,639,3,106,53,0,634,637,
-		3,118,59,0,635,637,3,78,39,0,636,634,1,0,0,0,636,635,1,0,0,0,637,639,1,
-		0,0,0,638,633,1,0,0,0,638,636,1,0,0,0,639,641,1,0,0,0,640,632,1,0,0,0,
-		641,644,1,0,0,0,642,640,1,0,0,0,642,643,1,0,0,0,643,647,1,0,0,0,644,642,
-		1,0,0,0,645,646,5,52,0,0,646,648,3,104,52,0,647,645,1,0,0,0,647,648,1,
-		0,0,0,648,651,1,0,0,0,649,651,3,104,52,0,650,630,1,0,0,0,650,649,1,0,0,
-		0,651,103,1,0,0,0,652,657,3,110,55,0,653,654,5,52,0,0,654,656,3,110,55,
-		0,655,653,1,0,0,0,656,659,1,0,0,0,657,655,1,0,0,0,657,658,1,0,0,0,658,
-		669,1,0,0,0,659,657,1,0,0,0,660,661,5,52,0,0,661,666,3,108,54,0,662,663,
-		5,52,0,0,663,665,3,108,54,0,664,662,1,0,0,0,665,668,1,0,0,0,666,664,1,
-		0,0,0,666,667,1,0,0,0,667,670,1,0,0,0,668,666,1,0,0,0,669,660,1,0,0,0,
-		669,670,1,0,0,0,670,680,1,0,0,0,671,676,3,108,54,0,672,673,5,52,0,0,673,
-		675,3,108,54,0,674,672,1,0,0,0,675,678,1,0,0,0,676,674,1,0,0,0,676,677,
-		1,0,0,0,677,680,1,0,0,0,678,676,1,0,0,0,679,652,1,0,0,0,679,671,1,0,0,
-		0,680,105,1,0,0,0,681,682,5,53,0,0,682,683,3,78,39,0,683,107,1,0,0,0,684,
-		685,5,57,0,0,685,686,5,51,0,0,686,690,3,78,39,0,687,688,5,54,0,0,688,690,
-		3,78,39,0,689,684,1,0,0,0,689,687,1,0,0,0,690,109,1,0,0,0,691,692,5,57,
-		0,0,692,693,5,51,0,0,693,696,3,78,39,0,694,696,3,106,53,0,695,691,1,0,
-		0,0,695,694,1,0,0,0,696,111,1,0,0,0,697,698,3,120,60,0,698,113,1,0,0,0,
-		699,704,3,116,58,0,700,701,5,52,0,0,701,703,3,116,58,0,702,700,1,0,0,0,
-		703,706,1,0,0,0,704,702,1,0,0,0,704,705,1,0,0,0,705,708,1,0,0,0,706,704,
-		1,0,0,0,707,709,5,52,0,0,708,707,1,0,0,0,708,709,1,0,0,0,709,115,1,0,0,
-		0,710,711,5,53,0,0,711,714,3,84,42,0,712,714,3,120,60,0,713,710,1,0,0,
-		0,713,712,1,0,0,0,714,117,1,0,0,0,715,716,5,57,0,0,716,717,5,55,0,0,717,
-		718,3,78,39,0,718,119,1,0,0,0,719,722,3,118,59,0,720,722,3,78,39,0,721,
-		719,1,0,0,0,721,720,1,0,0,0,722,121,1,0,0,0,102,123,128,136,142,151,160,
-		165,174,182,187,203,206,209,218,224,227,236,246,253,258,264,270,272,277,
-		282,287,292,294,297,302,307,312,318,323,328,330,333,338,343,348,353,358,
-		363,369,375,377,379,382,384,391,394,399,402,406,423,425,433,435,446,450,
-		458,460,470,479,483,488,497,509,514,516,521,534,545,552,556,567,572,580,
-		589,600,607,611,617,623,628,630,636,638,642,647,650,657,666,669,676,679,
-		689,695,704,708,713,721
+		2,57,7,57,2,58,7,58,2,59,7,59,2,60,7,60,2,61,7,61,2,62,7,62,2,63,7,63,
+		2,64,7,64,2,65,7,65,2,66,7,66,2,67,7,67,2,68,7,68,1,0,3,0,140,8,0,1,0,
+		5,0,143,8,0,10,0,12,0,146,9,0,1,0,1,0,1,1,4,1,151,8,1,11,1,12,1,152,1,
+		2,1,2,1,2,1,2,3,2,159,8,2,1,3,1,3,1,3,1,3,1,3,1,3,1,3,3,3,168,8,3,1,4,
+		1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,3,4,182,8,4,1,5,1,5,1,5,3,
+		5,187,8,5,1,6,1,6,4,6,191,8,6,11,6,12,6,192,1,6,1,6,3,6,197,8,6,1,6,1,
+		6,1,6,1,6,1,6,3,6,204,8,6,3,6,206,8,6,1,7,1,7,1,8,1,8,4,8,212,8,8,11,8,
+		12,8,213,1,8,1,8,3,8,218,8,8,1,8,1,8,1,8,1,8,1,8,3,8,225,8,8,3,8,227,8,
+		8,1,9,1,9,4,9,231,8,9,11,9,12,9,232,1,9,1,9,3,9,237,8,9,1,9,1,9,1,9,1,
+		9,1,9,3,9,244,8,9,3,9,246,8,9,1,10,1,10,1,10,1,11,1,11,3,11,253,8,11,1,
+		12,1,12,1,12,1,12,1,12,1,13,1,13,3,13,262,8,13,1,13,1,13,1,13,1,13,1,13,
+		1,13,3,13,270,8,13,1,13,4,13,273,8,13,11,13,12,13,274,1,13,1,13,1,14,1,
+		14,1,14,1,14,1,15,1,15,1,16,1,16,1,16,1,16,1,16,1,16,3,16,291,8,16,1,16,
+		3,16,294,8,16,1,17,3,17,297,8,17,1,17,1,17,1,18,1,18,1,18,1,18,1,18,3,
+		18,306,8,18,1,19,1,19,1,19,1,19,3,19,312,8,19,1,19,3,19,315,8,19,1,20,
+		1,20,1,21,1,21,1,22,1,22,1,22,3,22,324,8,22,1,23,1,23,1,23,1,23,1,23,1,
+		23,1,23,1,23,3,23,334,8,23,1,24,1,24,1,25,4,25,339,8,25,11,25,12,25,340,
+		1,25,5,25,344,8,25,10,25,12,25,347,9,25,1,25,5,25,350,8,25,10,25,12,25,
+		353,9,25,1,25,4,25,356,8,25,11,25,12,25,357,3,25,360,8,25,1,25,1,25,1,
+		25,3,25,365,8,25,1,25,5,25,368,8,25,10,25,12,25,371,9,25,1,25,1,25,3,25,
+		375,8,25,1,25,4,25,378,8,25,11,25,12,25,379,3,25,382,8,25,1,25,3,25,385,
+		8,25,1,25,4,25,388,8,25,11,25,12,25,389,1,25,1,25,1,25,3,25,395,8,25,1,
+		25,5,25,398,8,25,10,25,12,25,401,9,25,1,25,5,25,404,8,25,10,25,12,25,407,
+		9,25,1,25,1,25,3,25,411,8,25,1,25,4,25,414,8,25,11,25,12,25,415,3,25,418,
+		8,25,1,25,3,25,421,8,25,1,25,4,25,424,8,25,11,25,12,25,425,1,25,1,25,1,
+		25,3,25,431,8,25,1,25,5,25,434,8,25,10,25,12,25,437,9,25,1,25,1,25,3,25,
+		441,8,25,1,25,4,25,444,8,25,11,25,12,25,445,1,25,5,25,449,8,25,10,25,12,
+		25,452,9,25,1,25,5,25,455,8,25,10,25,12,25,458,9,25,1,25,4,25,461,8,25,
+		11,25,12,25,462,3,25,465,8,25,3,25,467,8,25,1,25,3,25,470,8,25,3,25,472,
+		8,25,1,26,1,26,1,26,1,27,1,27,3,27,479,8,27,1,27,3,27,482,8,27,1,28,1,
+		28,1,28,3,28,487,8,28,1,28,3,28,490,8,28,1,29,1,29,3,29,494,8,29,1,30,
+		1,30,1,30,1,31,1,31,1,31,1,32,1,32,1,32,1,33,1,33,1,33,1,33,1,33,1,33,
+		3,33,511,8,33,3,33,513,8,33,1,34,1,34,1,34,1,34,1,34,1,34,3,34,521,8,34,
+		3,34,523,8,34,1,35,1,35,1,35,1,35,1,36,1,36,1,36,1,36,1,36,3,36,534,8,
+		36,1,37,1,37,3,37,538,8,37,1,37,1,37,1,38,1,38,1,38,1,38,3,38,546,8,38,
+		3,38,548,8,38,1,38,1,38,1,39,1,39,1,39,1,39,1,40,1,40,3,40,558,8,40,1,
+		40,1,40,1,41,1,41,1,41,5,41,565,8,41,10,41,12,41,568,9,41,1,41,3,41,571,
+		8,41,1,42,1,42,1,42,3,42,576,8,42,1,43,1,43,1,43,1,43,1,44,1,44,1,44,3,
+		44,585,8,44,1,45,1,45,1,46,1,46,1,46,1,46,3,46,593,8,46,1,47,1,47,1,47,
+		1,47,1,47,1,47,1,47,3,47,602,8,47,1,47,1,47,1,47,3,47,607,8,47,3,47,609,
+		8,47,1,48,1,48,1,49,1,49,1,49,1,49,1,49,1,49,5,49,619,8,49,10,49,12,49,
+		622,9,49,1,50,1,50,1,50,1,50,1,50,1,50,1,50,1,50,3,50,632,8,50,1,50,1,
+		50,1,50,1,50,1,50,3,50,639,8,50,5,50,641,8,50,10,50,12,50,644,9,50,1,51,
+		1,51,1,51,1,51,1,51,1,51,1,51,1,51,3,51,654,8,51,1,52,1,52,1,53,4,53,659,
+		8,53,11,53,12,53,660,1,54,1,54,1,54,1,54,1,54,1,54,3,54,669,8,54,1,55,
+		1,55,1,55,1,55,1,55,1,55,1,55,3,55,678,8,55,1,56,1,56,1,56,1,56,1,56,1,
+		56,1,56,1,56,1,56,3,56,689,8,56,1,56,1,56,1,56,1,56,1,56,3,56,696,8,56,
+		5,56,698,8,56,10,56,12,56,701,9,56,1,57,1,57,1,57,3,57,706,8,57,1,57,1,
+		57,1,58,1,58,3,58,712,8,58,1,59,1,59,1,59,3,59,717,8,59,3,59,719,8,59,
+		1,59,1,59,1,59,1,59,3,59,725,8,59,3,59,727,8,59,5,59,729,8,59,10,59,12,
+		59,732,9,59,1,59,1,59,3,59,736,8,59,1,59,3,59,739,8,59,1,60,1,60,1,60,
+		5,60,744,8,60,10,60,12,60,747,9,60,1,60,1,60,1,60,1,60,5,60,753,8,60,10,
+		60,12,60,756,9,60,3,60,758,8,60,1,60,1,60,1,60,5,60,763,8,60,10,60,12,
+		60,766,9,60,3,60,768,8,60,1,61,1,61,1,61,1,62,1,62,1,62,1,62,1,62,1,62,
+		3,62,779,8,62,1,63,1,63,1,63,1,63,1,63,3,63,786,8,63,1,64,1,64,1,65,1,
+		65,1,65,5,65,793,8,65,10,65,12,65,796,9,65,1,65,3,65,799,8,65,1,66,1,66,
+		1,66,3,66,804,8,66,1,67,1,67,1,67,1,67,1,68,1,68,3,68,812,8,68,1,68,0,
+		3,98,100,112,69,0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,
+		40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,
+		88,90,92,94,96,98,100,102,104,106,108,110,112,114,116,118,120,122,124,
+		126,128,130,132,134,136,0,4,1,0,19,20,1,0,46,57,1,0,33,34,4,0,3,6,16,16,
+		18,26,66,66,888,0,139,1,0,0,0,2,150,1,0,0,0,4,158,1,0,0,0,6,167,1,0,0,
+		0,8,181,1,0,0,0,10,183,1,0,0,0,12,205,1,0,0,0,14,207,1,0,0,0,16,226,1,
+		0,0,0,18,245,1,0,0,0,20,247,1,0,0,0,22,252,1,0,0,0,24,254,1,0,0,0,26,259,
+		1,0,0,0,28,278,1,0,0,0,30,282,1,0,0,0,32,284,1,0,0,0,34,296,1,0,0,0,36,
+		305,1,0,0,0,38,307,1,0,0,0,40,316,1,0,0,0,42,318,1,0,0,0,44,323,1,0,0,
+		0,46,333,1,0,0,0,48,335,1,0,0,0,50,471,1,0,0,0,52,473,1,0,0,0,54,476,1,
+		0,0,0,56,483,1,0,0,0,58,491,1,0,0,0,60,495,1,0,0,0,62,498,1,0,0,0,64,501,
+		1,0,0,0,66,504,1,0,0,0,68,514,1,0,0,0,70,524,1,0,0,0,72,528,1,0,0,0,74,
+		535,1,0,0,0,76,541,1,0,0,0,78,551,1,0,0,0,80,555,1,0,0,0,82,561,1,0,0,
+		0,84,575,1,0,0,0,86,577,1,0,0,0,88,584,1,0,0,0,90,586,1,0,0,0,92,588,1,
+		0,0,0,94,608,1,0,0,0,96,610,1,0,0,0,98,612,1,0,0,0,100,623,1,0,0,0,102,
+		653,1,0,0,0,104,655,1,0,0,0,106,658,1,0,0,0,108,668,1,0,0,0,110,670,1,
+		0,0,0,112,679,1,0,0,0,114,702,1,0,0,0,116,709,1,0,0,0,118,738,1,0,0,0,
+		120,767,1,0,0,0,122,769,1,0,0,0,124,778,1,0,0,0,126,785,1,0,0,0,128,787,
+		1,0,0,0,130,789,1,0,0,0,132,803,1,0,0,0,134,805,1,0,0,0,136,811,1,0,0,
+		0,138,140,3,2,1,0,139,138,1,0,0,0,139,140,1,0,0,0,140,144,1,0,0,0,141,
+		143,5,69,0,0,142,141,1,0,0,0,143,146,1,0,0,0,144,142,1,0,0,0,144,145,1,
+		0,0,0,145,147,1,0,0,0,146,144,1,0,0,0,147,148,5,0,0,1,148,1,1,0,0,0,149,
+		151,3,4,2,0,150,149,1,0,0,0,151,152,1,0,0,0,152,150,1,0,0,0,152,153,1,
+		0,0,0,153,3,1,0,0,0,154,155,3,8,4,0,155,156,5,69,0,0,156,159,1,0,0,0,157,
+		159,3,6,3,0,158,154,1,0,0,0,158,157,1,0,0,0,159,5,1,0,0,0,160,168,3,26,
+		13,0,161,168,3,66,33,0,162,168,3,72,36,0,163,164,3,32,16,0,164,165,5,59,
+		0,0,165,166,3,24,12,0,166,168,1,0,0,0,167,160,1,0,0,0,167,161,1,0,0,0,
+		167,162,1,0,0,0,167,163,1,0,0,0,168,7,1,0,0,0,169,182,3,30,15,0,170,182,
+		3,36,18,0,171,182,3,32,16,0,172,182,3,38,19,0,173,182,3,40,20,0,174,182,
+		3,44,22,0,175,182,3,20,10,0,176,182,3,10,5,0,177,182,3,12,6,0,178,182,
+		3,14,7,0,179,182,3,16,8,0,180,182,3,18,9,0,181,169,1,0,0,0,181,170,1,0,
+		0,0,181,171,1,0,0,0,181,172,1,0,0,0,181,173,1,0,0,0,181,174,1,0,0,0,181,
+		175,1,0,0,0,181,176,1,0,0,0,181,177,1,0,0,0,181,178,1,0,0,0,181,179,1,
+		0,0,0,181,180,1,0,0,0,182,9,1,0,0,0,183,184,5,18,0,0,184,186,7,0,0,0,185,
+		187,3,90,45,0,186,185,1,0,0,0,186,187,1,0,0,0,187,11,1,0,0,0,188,190,5,
+		22,0,0,189,191,5,66,0,0,190,189,1,0,0,0,191,192,1,0,0,0,192,190,1,0,0,
+		0,192,193,1,0,0,0,193,196,1,0,0,0,194,195,5,17,0,0,195,197,3,90,45,0,196,
+		194,1,0,0,0,196,197,1,0,0,0,197,206,1,0,0,0,198,199,5,22,0,0,199,200,5,
+		5,0,0,200,203,3,90,45,0,201,202,5,17,0,0,202,204,3,90,45,0,203,201,1,0,
+		0,0,203,204,1,0,0,0,204,206,1,0,0,0,205,188,1,0,0,0,205,198,1,0,0,0,206,
+		13,1,0,0,0,207,208,5,21,0,0,208,15,1,0,0,0,209,211,5,19,0,0,210,212,5,
+		66,0,0,211,210,1,0,0,0,212,213,1,0,0,0,213,211,1,0,0,0,213,214,1,0,0,0,
+		214,217,1,0,0,0,215,216,5,17,0,0,216,218,3,90,45,0,217,215,1,0,0,0,217,
+		218,1,0,0,0,218,227,1,0,0,0,219,220,5,19,0,0,220,221,5,5,0,0,221,224,3,
+		90,45,0,222,223,5,17,0,0,223,225,3,90,45,0,224,222,1,0,0,0,224,225,1,0,
+		0,0,225,227,1,0,0,0,226,209,1,0,0,0,226,219,1,0,0,0,227,17,1,0,0,0,228,
+		230,5,20,0,0,229,231,5,66,0,0,230,229,1,0,0,0,231,232,1,0,0,0,232,230,
+		1,0,0,0,232,233,1,0,0,0,233,236,1,0,0,0,234,235,5,17,0,0,235,237,3,90,
+		45,0,236,234,1,0,0,0,236,237,1,0,0,0,237,246,1,0,0,0,238,239,5,20,0,0,
+		239,240,5,5,0,0,240,243,3,90,45,0,241,242,5,17,0,0,242,244,3,90,45,0,243,
+		241,1,0,0,0,243,244,1,0,0,0,244,246,1,0,0,0,245,228,1,0,0,0,245,238,1,
+		0,0,0,246,19,1,0,0,0,247,248,5,65,0,0,248,249,3,22,11,0,249,21,1,0,0,0,
+		250,253,3,46,23,0,251,253,3,90,45,0,252,250,1,0,0,0,252,251,1,0,0,0,253,
+		23,1,0,0,0,254,255,5,69,0,0,255,256,5,1,0,0,256,257,3,2,1,0,257,258,5,
+		2,0,0,258,25,1,0,0,0,259,261,5,16,0,0,260,262,3,34,17,0,261,260,1,0,0,
+		0,261,262,1,0,0,0,262,263,1,0,0,0,263,264,5,59,0,0,264,265,5,69,0,0,265,
+		269,5,1,0,0,266,267,3,44,22,0,267,268,5,69,0,0,268,270,1,0,0,0,269,266,
+		1,0,0,0,269,270,1,0,0,0,270,272,1,0,0,0,271,273,3,28,14,0,272,271,1,0,
+		0,0,273,274,1,0,0,0,274,272,1,0,0,0,274,275,1,0,0,0,275,276,1,0,0,0,276,
+		277,5,2,0,0,277,27,1,0,0,0,278,279,5,67,0,0,279,280,5,59,0,0,280,281,3,
+		24,12,0,281,29,1,0,0,0,282,283,5,11,0,0,283,31,1,0,0,0,284,285,5,3,0,0,
+		285,290,3,34,17,0,286,287,5,27,0,0,287,288,3,50,25,0,288,289,5,30,0,0,
+		289,291,1,0,0,0,290,286,1,0,0,0,290,291,1,0,0,0,291,293,1,0,0,0,292,294,
+		5,59,0,0,293,292,1,0,0,0,293,294,1,0,0,0,294,33,1,0,0,0,295,297,5,58,0,
+		0,296,295,1,0,0,0,296,297,1,0,0,0,297,298,1,0,0,0,298,299,5,66,0,0,299,
+		35,1,0,0,0,300,301,5,4,0,0,301,306,3,34,17,0,302,303,5,4,0,0,303,304,5,
+		5,0,0,304,306,3,90,45,0,305,300,1,0,0,0,305,302,1,0,0,0,306,37,1,0,0,0,
+		307,308,5,6,0,0,308,314,3,34,17,0,309,311,5,27,0,0,310,312,3,116,58,0,
+		311,310,1,0,0,0,311,312,1,0,0,0,312,313,1,0,0,0,313,315,5,30,0,0,314,309,
+		1,0,0,0,314,315,1,0,0,0,315,39,1,0,0,0,316,317,3,42,21,0,317,41,1,0,0,
+		0,318,319,5,12,0,0,319,43,1,0,0,0,320,321,5,66,0,0,321,324,5,67,0,0,322,
+		324,5,67,0,0,323,320,1,0,0,0,323,322,1,0,0,0,324,45,1,0,0,0,325,326,3,
+		108,54,0,326,327,5,60,0,0,327,328,3,90,45,0,328,334,1,0,0,0,329,330,3,
+		108,54,0,330,331,3,48,24,0,331,332,3,90,45,0,332,334,1,0,0,0,333,325,1,
+		0,0,0,333,329,1,0,0,0,334,47,1,0,0,0,335,336,7,1,0,0,336,49,1,0,0,0,337,
+		339,3,54,27,0,338,337,1,0,0,0,339,340,1,0,0,0,340,338,1,0,0,0,340,341,
+		1,0,0,0,341,345,1,0,0,0,342,344,3,56,28,0,343,342,1,0,0,0,344,347,1,0,
+		0,0,345,343,1,0,0,0,345,346,1,0,0,0,346,360,1,0,0,0,347,345,1,0,0,0,348,
+		350,3,54,27,0,349,348,1,0,0,0,350,353,1,0,0,0,351,349,1,0,0,0,351,352,
+		1,0,0,0,352,355,1,0,0,0,353,351,1,0,0,0,354,356,3,56,28,0,355,354,1,0,
+		0,0,356,357,1,0,0,0,357,355,1,0,0,0,357,358,1,0,0,0,358,360,1,0,0,0,359,
+		338,1,0,0,0,359,351,1,0,0,0,360,361,1,0,0,0,361,362,5,36,0,0,362,363,5,
+		61,0,0,363,365,1,0,0,0,364,359,1,0,0,0,364,365,1,0,0,0,365,369,1,0,0,0,
+		366,368,3,56,28,0,367,366,1,0,0,0,368,371,1,0,0,0,369,367,1,0,0,0,369,
+		370,1,0,0,0,370,381,1,0,0,0,371,369,1,0,0,0,372,373,5,62,0,0,373,375,5,
+		61,0,0,374,372,1,0,0,0,374,375,1,0,0,0,375,377,1,0,0,0,376,378,3,56,28,
+		0,377,376,1,0,0,0,378,379,1,0,0,0,379,377,1,0,0,0,379,380,1,0,0,0,380,
+		382,1,0,0,0,381,374,1,0,0,0,381,382,1,0,0,0,382,384,1,0,0,0,383,385,3,
+		52,26,0,384,383,1,0,0,0,384,385,1,0,0,0,385,472,1,0,0,0,386,388,3,54,27,
+		0,387,386,1,0,0,0,388,389,1,0,0,0,389,387,1,0,0,0,389,390,1,0,0,0,390,
+		391,1,0,0,0,391,392,5,36,0,0,392,393,5,61,0,0,393,395,1,0,0,0,394,387,
+		1,0,0,0,394,395,1,0,0,0,395,399,1,0,0,0,396,398,3,54,27,0,397,396,1,0,
+		0,0,398,401,1,0,0,0,399,397,1,0,0,0,399,400,1,0,0,0,400,405,1,0,0,0,401,
+		399,1,0,0,0,402,404,3,56,28,0,403,402,1,0,0,0,404,407,1,0,0,0,405,403,
+		1,0,0,0,405,406,1,0,0,0,406,417,1,0,0,0,407,405,1,0,0,0,408,409,5,62,0,
+		0,409,411,5,61,0,0,410,408,1,0,0,0,410,411,1,0,0,0,411,413,1,0,0,0,412,
+		414,3,56,28,0,413,412,1,0,0,0,414,415,1,0,0,0,415,413,1,0,0,0,415,416,
+		1,0,0,0,416,418,1,0,0,0,417,410,1,0,0,0,417,418,1,0,0,0,418,420,1,0,0,
+		0,419,421,3,52,26,0,420,419,1,0,0,0,420,421,1,0,0,0,421,472,1,0,0,0,422,
+		424,3,54,27,0,423,422,1,0,0,0,424,425,1,0,0,0,425,423,1,0,0,0,425,426,
+		1,0,0,0,426,427,1,0,0,0,427,428,5,36,0,0,428,429,5,61,0,0,429,431,1,0,
+		0,0,430,423,1,0,0,0,430,431,1,0,0,0,431,435,1,0,0,0,432,434,3,54,27,0,
+		433,432,1,0,0,0,434,437,1,0,0,0,435,433,1,0,0,0,435,436,1,0,0,0,436,466,
+		1,0,0,0,437,435,1,0,0,0,438,439,5,62,0,0,439,441,5,61,0,0,440,438,1,0,
+		0,0,440,441,1,0,0,0,441,464,1,0,0,0,442,444,3,54,27,0,443,442,1,0,0,0,
+		444,445,1,0,0,0,445,443,1,0,0,0,445,446,1,0,0,0,446,450,1,0,0,0,447,449,
+		3,56,28,0,448,447,1,0,0,0,449,452,1,0,0,0,450,448,1,0,0,0,450,451,1,0,
+		0,0,451,465,1,0,0,0,452,450,1,0,0,0,453,455,3,54,27,0,454,453,1,0,0,0,
+		455,458,1,0,0,0,456,454,1,0,0,0,456,457,1,0,0,0,457,460,1,0,0,0,458,456,
+		1,0,0,0,459,461,3,56,28,0,460,459,1,0,0,0,461,462,1,0,0,0,462,460,1,0,
+		0,0,462,463,1,0,0,0,463,465,1,0,0,0,464,443,1,0,0,0,464,456,1,0,0,0,465,
+		467,1,0,0,0,466,440,1,0,0,0,466,467,1,0,0,0,467,469,1,0,0,0,468,470,3,
+		52,26,0,469,468,1,0,0,0,469,470,1,0,0,0,470,472,1,0,0,0,471,364,1,0,0,
+		0,471,394,1,0,0,0,471,430,1,0,0,0,472,51,1,0,0,0,473,474,5,63,0,0,474,
+		475,3,54,27,0,475,53,1,0,0,0,476,478,3,58,29,0,477,479,5,61,0,0,478,477,
+		1,0,0,0,478,479,1,0,0,0,479,481,1,0,0,0,480,482,3,64,32,0,481,480,1,0,
+		0,0,481,482,1,0,0,0,482,55,1,0,0,0,483,484,3,58,29,0,484,486,3,62,31,0,
+		485,487,5,61,0,0,486,485,1,0,0,0,486,487,1,0,0,0,487,489,1,0,0,0,488,490,
+		3,64,32,0,489,488,1,0,0,0,489,490,1,0,0,0,490,57,1,0,0,0,491,493,5,66,
+		0,0,492,494,3,60,30,0,493,492,1,0,0,0,493,494,1,0,0,0,494,59,1,0,0,0,495,
+		496,5,59,0,0,496,497,3,90,45,0,497,61,1,0,0,0,498,499,5,60,0,0,499,500,
+		3,90,45,0,500,63,1,0,0,0,501,502,5,35,0,0,502,503,3,90,45,0,503,65,1,0,
+		0,0,504,505,5,7,0,0,505,506,3,136,68,0,506,507,5,59,0,0,507,512,3,24,12,
+		0,508,513,3,68,34,0,509,511,3,70,35,0,510,509,1,0,0,0,510,511,1,0,0,0,
+		511,513,1,0,0,0,512,508,1,0,0,0,512,510,1,0,0,0,513,67,1,0,0,0,514,515,
+		5,8,0,0,515,516,3,136,68,0,516,517,5,59,0,0,517,522,3,24,12,0,518,523,
+		3,68,34,0,519,521,3,70,35,0,520,519,1,0,0,0,520,521,1,0,0,0,521,523,1,
+		0,0,0,522,518,1,0,0,0,522,520,1,0,0,0,523,69,1,0,0,0,524,525,5,9,0,0,525,
+		526,5,59,0,0,526,527,3,24,12,0,527,71,1,0,0,0,528,529,5,10,0,0,529,530,
+		3,136,68,0,530,531,5,59,0,0,531,533,3,24,12,0,532,534,3,70,35,0,533,532,
+		1,0,0,0,533,534,1,0,0,0,534,73,1,0,0,0,535,537,5,28,0,0,536,538,3,130,
+		65,0,537,536,1,0,0,0,537,538,1,0,0,0,538,539,1,0,0,0,539,540,5,31,0,0,
+		540,75,1,0,0,0,541,547,5,27,0,0,542,543,3,132,66,0,543,545,5,61,0,0,544,
+		546,3,130,65,0,545,544,1,0,0,0,545,546,1,0,0,0,546,548,1,0,0,0,547,542,
+		1,0,0,0,547,548,1,0,0,0,548,549,1,0,0,0,549,550,5,30,0,0,550,77,1,0,0,
+		0,551,552,5,29,0,0,552,553,3,130,65,0,553,554,5,32,0,0,554,79,1,0,0,0,
+		555,557,5,29,0,0,556,558,3,82,41,0,557,556,1,0,0,0,557,558,1,0,0,0,558,
+		559,1,0,0,0,559,560,5,32,0,0,560,81,1,0,0,0,561,566,3,84,42,0,562,563,
+		5,61,0,0,563,565,3,84,42,0,564,562,1,0,0,0,565,568,1,0,0,0,566,564,1,0,
+		0,0,566,567,1,0,0,0,567,570,1,0,0,0,568,566,1,0,0,0,569,571,5,61,0,0,570,
+		569,1,0,0,0,570,571,1,0,0,0,571,83,1,0,0,0,572,573,5,63,0,0,573,576,3,
+		98,49,0,574,576,3,86,43,0,575,572,1,0,0,0,575,574,1,0,0,0,576,85,1,0,0,
+		0,577,578,3,90,45,0,578,579,5,59,0,0,579,580,3,90,45,0,580,87,1,0,0,0,
+		581,582,5,62,0,0,582,585,3,98,49,0,583,585,3,90,45,0,584,581,1,0,0,0,584,
+		583,1,0,0,0,585,89,1,0,0,0,586,587,3,92,46,0,587,91,1,0,0,0,588,592,3,
+		96,48,0,589,590,3,94,47,0,590,591,3,92,46,0,591,593,1,0,0,0,592,589,1,
+		0,0,0,592,593,1,0,0,0,593,93,1,0,0,0,594,609,5,37,0,0,595,609,5,38,0,0,
+		596,609,5,39,0,0,597,609,5,40,0,0,598,609,5,41,0,0,599,609,5,42,0,0,600,
+		602,5,43,0,0,601,600,1,0,0,0,601,602,1,0,0,0,602,603,1,0,0,0,603,609,5,
+		44,0,0,604,606,5,45,0,0,605,607,5,43,0,0,606,605,1,0,0,0,606,607,1,0,0,
+		0,607,609,1,0,0,0,608,594,1,0,0,0,608,595,1,0,0,0,608,596,1,0,0,0,608,
+		597,1,0,0,0,608,598,1,0,0,0,608,599,1,0,0,0,608,601,1,0,0,0,608,604,1,
+		0,0,0,609,95,1,0,0,0,610,611,3,98,49,0,611,97,1,0,0,0,612,613,6,49,-1,
+		0,613,614,3,100,50,0,614,620,1,0,0,0,615,616,10,2,0,0,616,617,7,2,0,0,
+		617,619,3,100,50,0,618,615,1,0,0,0,619,622,1,0,0,0,620,618,1,0,0,0,620,
+		621,1,0,0,0,621,99,1,0,0,0,622,620,1,0,0,0,623,624,6,50,-1,0,624,625,3,
+		102,51,0,625,642,1,0,0,0,626,638,10,2,0,0,627,628,5,58,0,0,628,639,3,104,
+		52,0,629,631,5,27,0,0,630,632,3,116,58,0,631,630,1,0,0,0,631,632,1,0,0,
+		0,632,633,1,0,0,0,633,639,5,30,0,0,634,635,5,28,0,0,635,636,3,128,64,0,
+		636,637,5,31,0,0,637,639,1,0,0,0,638,627,1,0,0,0,638,629,1,0,0,0,638,634,
+		1,0,0,0,639,641,1,0,0,0,640,626,1,0,0,0,641,644,1,0,0,0,642,640,1,0,0,
+		0,642,643,1,0,0,0,643,101,1,0,0,0,644,642,1,0,0,0,645,654,3,106,53,0,646,
+		654,3,74,37,0,647,654,3,80,40,0,648,654,3,104,52,0,649,654,5,13,0,0,650,
+		654,5,14,0,0,651,654,5,15,0,0,652,654,5,68,0,0,653,645,1,0,0,0,653,646,
+		1,0,0,0,653,647,1,0,0,0,653,648,1,0,0,0,653,649,1,0,0,0,653,650,1,0,0,
+		0,653,651,1,0,0,0,653,652,1,0,0,0,654,103,1,0,0,0,655,656,7,3,0,0,656,
+		105,1,0,0,0,657,659,5,67,0,0,658,657,1,0,0,0,659,660,1,0,0,0,660,658,1,
+		0,0,0,660,661,1,0,0,0,661,107,1,0,0,0,662,669,3,110,55,0,663,669,3,104,
+		52,0,664,665,5,27,0,0,665,666,3,108,54,0,666,667,5,30,0,0,667,669,1,0,
+		0,0,668,662,1,0,0,0,668,663,1,0,0,0,668,664,1,0,0,0,669,109,1,0,0,0,670,
+		677,3,112,56,0,671,672,5,58,0,0,672,678,3,104,52,0,673,674,5,28,0,0,674,
+		675,3,128,64,0,675,676,5,31,0,0,676,678,1,0,0,0,677,671,1,0,0,0,677,673,
+		1,0,0,0,678,111,1,0,0,0,679,680,6,56,-1,0,680,681,3,104,52,0,681,699,1,
+		0,0,0,682,695,10,2,0,0,683,684,5,58,0,0,684,696,3,104,52,0,685,696,3,114,
+		57,0,686,688,5,27,0,0,687,689,3,116,58,0,688,687,1,0,0,0,688,689,1,0,0,
+		0,689,690,1,0,0,0,690,696,5,30,0,0,691,692,5,28,0,0,692,693,3,128,64,0,
+		693,694,5,31,0,0,694,696,1,0,0,0,695,683,1,0,0,0,695,685,1,0,0,0,695,686,
+		1,0,0,0,695,691,1,0,0,0,696,698,1,0,0,0,697,682,1,0,0,0,698,701,1,0,0,
+		0,699,697,1,0,0,0,699,700,1,0,0,0,700,113,1,0,0,0,701,699,1,0,0,0,702,
+		705,5,27,0,0,703,706,3,134,67,0,704,706,3,90,45,0,705,703,1,0,0,0,705,
+		704,1,0,0,0,706,707,1,0,0,0,707,708,5,30,0,0,708,115,1,0,0,0,709,711,3,
+		118,59,0,710,712,5,61,0,0,711,710,1,0,0,0,711,712,1,0,0,0,712,117,1,0,
+		0,0,713,719,3,122,61,0,714,717,3,134,67,0,715,717,3,90,45,0,716,714,1,
+		0,0,0,716,715,1,0,0,0,717,719,1,0,0,0,718,713,1,0,0,0,718,716,1,0,0,0,
+		719,730,1,0,0,0,720,726,5,61,0,0,721,727,3,122,61,0,722,725,3,134,67,0,
+		723,725,3,90,45,0,724,722,1,0,0,0,724,723,1,0,0,0,725,727,1,0,0,0,726,
+		721,1,0,0,0,726,724,1,0,0,0,727,729,1,0,0,0,728,720,1,0,0,0,729,732,1,
+		0,0,0,730,728,1,0,0,0,730,731,1,0,0,0,731,735,1,0,0,0,732,730,1,0,0,0,
+		733,734,5,61,0,0,734,736,3,120,60,0,735,733,1,0,0,0,735,736,1,0,0,0,736,
+		739,1,0,0,0,737,739,3,120,60,0,738,718,1,0,0,0,738,737,1,0,0,0,739,119,
+		1,0,0,0,740,745,3,126,63,0,741,742,5,61,0,0,742,744,3,126,63,0,743,741,
+		1,0,0,0,744,747,1,0,0,0,745,743,1,0,0,0,745,746,1,0,0,0,746,757,1,0,0,
+		0,747,745,1,0,0,0,748,749,5,61,0,0,749,754,3,124,62,0,750,751,5,61,0,0,
+		751,753,3,124,62,0,752,750,1,0,0,0,753,756,1,0,0,0,754,752,1,0,0,0,754,
+		755,1,0,0,0,755,758,1,0,0,0,756,754,1,0,0,0,757,748,1,0,0,0,757,758,1,
+		0,0,0,758,768,1,0,0,0,759,764,3,124,62,0,760,761,5,61,0,0,761,763,3,124,
+		62,0,762,760,1,0,0,0,763,766,1,0,0,0,764,762,1,0,0,0,764,765,1,0,0,0,765,
+		768,1,0,0,0,766,764,1,0,0,0,767,740,1,0,0,0,767,759,1,0,0,0,768,121,1,
+		0,0,0,769,770,5,62,0,0,770,771,3,90,45,0,771,123,1,0,0,0,772,773,3,104,
+		52,0,773,774,5,60,0,0,774,775,3,90,45,0,775,779,1,0,0,0,776,777,5,63,0,
+		0,777,779,3,90,45,0,778,772,1,0,0,0,778,776,1,0,0,0,779,125,1,0,0,0,780,
+		781,3,104,52,0,781,782,5,60,0,0,782,783,3,90,45,0,783,786,1,0,0,0,784,
+		786,3,122,61,0,785,780,1,0,0,0,785,784,1,0,0,0,786,127,1,0,0,0,787,788,
+		3,136,68,0,788,129,1,0,0,0,789,794,3,132,66,0,790,791,5,61,0,0,791,793,
+		3,132,66,0,792,790,1,0,0,0,793,796,1,0,0,0,794,792,1,0,0,0,794,795,1,0,
+		0,0,795,798,1,0,0,0,796,794,1,0,0,0,797,799,5,61,0,0,798,797,1,0,0,0,798,
+		799,1,0,0,0,799,131,1,0,0,0,800,801,5,62,0,0,801,804,3,98,49,0,802,804,
+		3,136,68,0,803,800,1,0,0,0,803,802,1,0,0,0,804,133,1,0,0,0,805,806,3,104,
+		52,0,806,807,5,64,0,0,807,808,3,90,45,0,808,135,1,0,0,0,809,812,3,134,
+		67,0,810,812,3,90,45,0,811,809,1,0,0,0,811,810,1,0,0,0,812,137,1,0,0,0,
+		115,139,144,152,158,167,181,186,192,196,203,205,213,217,224,226,232,236,
+		243,245,252,261,269,274,290,293,296,305,311,314,323,333,340,345,351,357,
+		359,364,369,374,379,381,384,389,394,399,405,410,415,417,420,425,430,435,
+		440,445,450,456,462,464,466,469,471,478,481,486,489,493,510,512,520,522,
+		533,537,545,547,557,566,570,575,584,592,601,606,608,620,631,638,642,653,
+		660,668,677,688,695,699,705,711,716,718,724,726,730,735,738,745,754,757,
+		764,767,778,785,794,798,803,811
 	};
 
 	public static readonly ATN _ATN =

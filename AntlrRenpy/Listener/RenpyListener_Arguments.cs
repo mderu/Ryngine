@@ -55,18 +55,18 @@ namespace AntlrRenpy.Listener
 
         public override void ExitKwarg_or_starred([NotNull] Kwarg_or_starredContext context)
         {
-            if (context.NAME() is ITerminalNode node)
+            if (context.name() is NameContext nameContext)
             {
-                expressionStack.Push(new NamedArgument(node.GetText(), expressionStack.Pop()));
+                expressionStack.Push(new NamedArgument(nameContext.GetText(), expressionStack.Pop()));
             }
             // starred_expression can remain in the stack.
         }
 
         public override void ExitKwarg_or_double_starred([NotNull] Kwarg_or_double_starredContext context)
         {
-            if (context.NAME() is ITerminalNode node)
+            if (context.name() is NameContext nameContext)
             {
-                expressionStack.Push(new NamedArgument(node.GetText(), expressionStack.Pop()));
+                expressionStack.Push(new NamedArgument(nameContext.GetText(), expressionStack.Pop()));
             }
             else if (context.DOUBLESTAR() is not null)
             {

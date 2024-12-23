@@ -62,11 +62,47 @@ public interface IRenpyParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitSimple_statements([NotNull] RenpyParser.Simple_statementsContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="RenpyParser.window"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitWindow([NotNull] RenpyParser.WindowContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="RenpyParser.scene"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitScene([NotNull] RenpyParser.SceneContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="RenpyParser.pause"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitPause([NotNull] RenpyParser.PauseContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="RenpyParser.show"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitShow([NotNull] RenpyParser.ShowContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="RenpyParser.hide"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitHide([NotNull] RenpyParser.HideContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="RenpyParser.python_one_line"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitPython_one_line([NotNull] RenpyParser.Python_one_lineContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="RenpyParser.python_statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitPython_statement([NotNull] RenpyParser.Python_statementContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="RenpyParser.block"/>.
 	/// </summary>
@@ -278,6 +314,12 @@ public interface IRenpyParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitComparison([NotNull] RenpyParser.ComparisonContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="RenpyParser.comparison_operator"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitComparison_operator([NotNull] RenpyParser.Comparison_operatorContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="RenpyParser.bitwise_or"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -301,6 +343,12 @@ public interface IRenpyParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitAtom([NotNull] RenpyParser.AtomContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="RenpyParser.name"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitName([NotNull] RenpyParser.NameContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="RenpyParser.strings"/>.
 	/// </summary>

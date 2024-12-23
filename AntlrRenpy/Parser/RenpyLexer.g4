@@ -14,18 +14,30 @@ JUMP       : 'jump';
 EXPRESSION : 'expression';
 CALL       : 'call';
 
-PASS   : 'pass';
-RETURN : 'return';
-WITH   : 'with';
-MENU   : 'menu';
-TRUE   : 'True';
-FALSE  : 'False';
-NONE   : 'None';
-WHILE  : 'while';
-
 IF     : 'if';
 ELIF   : 'elif';
 ELSE   : 'else';
+WHILE  : 'while';
+PASS   : 'pass';
+RETURN : 'return';
+
+TRUE   : 'True';
+FALSE  : 'False';
+NONE   : 'None';
+
+MENU   : 'menu';  // https://www.renpy.org/doc/html/menus.html
+WITH   : 'with';  // https://www.renpy.org/doc/html/displaying_images.html#with-statement
+
+WINDOW : 'window';  //https://www.renpy.org/doc/html/displaying_images.html#hide-and-show-window
+SHOW   : 'show';  // https://www.renpy.org/doc/html/displaying_images.html#show-statement
+HIDE   : 'hide';
+PAUSE  : 'pause';
+
+SCENE   : 'scene';  // https://www.renpy.org/doc/html/displaying_images.html#scene-statement
+BEHIND  : 'behind';
+ONLAYER : 'onlayer';
+AS      : 'as';
+AT      : 'at';
 
 LPAR       : '('; // OPEN_PAREN
 LSQB       : '['; // OPEN_BRACK

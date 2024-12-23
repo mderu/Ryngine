@@ -31,10 +31,47 @@ simple_statements
     | return
     | say
     | python_one_line
+    | window
+    | scene
+    | pause
+    | show
+    | hide
+    ;
+
+// https://www.renpy.org/doc/html/displaying_images.html#hide-and-show-window
+window
+    : WINDOW (SHOW | HIDE) expression?
+    ;
+
+scene
+    : SCENE NAME+ (WITH expression)?
+    | SCENE EXPRESSION expression (WITH expression)?
+    ;
+
+pause
+    : PAUSE
+    ;
+
+// https://www.renpy.org/doc/html/displaying_images.html#show-statement
+// TODO: A ton of missing clauses here.
+show
+    : SHOW NAME+ (WITH expression)?
+    | SHOW EXPRESSION expression (WITH expression)?
+    ;
+
+// https://www.renpy.org/doc/html/displaying_images.html#hide-statement
+hide
+    : HIDE NAME+ (WITH expression)?
+    | HIDE EXPRESSION expression (WITH expression)?
     ;
 
 python_one_line
-    : DOLLAR (assignment | expression)
+    : DOLLAR python_statement
+    ;
+
+python_statement
+    : assignment
+    | expression
     ;
 
 block
@@ -204,7 +241,18 @@ expression
 
 // disjunction > conjunction > inversion > comparison >
 comparison
-    : bitwise_or ( (EQEQUAL | NOTEQUAL | LESSEQUAL | LESS | GREATEREQUAL | GREATER | (NOT? IN) | (IS NOT?) ) bitwise_or)*;
+    : bitwise_or (comparison_operator comparison)?;
+
+comparison_operator
+    : EQEQUAL
+    | NOTEQUAL
+    | LESSEQUAL
+    | LESS
+    | GREATEREQUAL
+    | GREATER
+    | NOT? IN
+    | IS NOT?
+    ;
 
 bitwise_or
     //: bitwise_or '|' bitwise_xor
@@ -221,7 +269,7 @@ sum
 // term > factor > power > await primary > primary
 primary
     //: primary ('.' NAME | genexp | '(' arguments? ')' | '[' slices ']')
-    : primary ('.' NAME | '(' arguments? ')' | '[' slices ']')
+    : primary ('.' name | '(' arguments? ')' | '[' slices ']')
     | atom
     ;
 
@@ -229,12 +277,30 @@ atom
     : strings
     | list
     | dict
-    | NAME
+    | name
     | TRUE
     | FALSE
     | NONE
     | NUMBER
     ;
+
+name
+    : NAME
+    | PAUSE
+    | MENU
+    | WINDOW
+    | SHOW
+    | HIDE
+    | PAUSE
+    | EXPRESSION
+    | CALL
+    | LABEL
+    | JUMP
+    | SCENE
+    | BEHIND
+    | ONLAYER
+    | AS
+    | AT;
 
 strings
     : (STRING)+
@@ -242,16 +308,16 @@ strings
 
 single_target
     : single_subscript_attribute_target
-    | NAME
+    | name
     | '(' single_target ')';
 
 single_subscript_attribute_target
-    : t_primary ('.' NAME | '[' slices ']')
+    : t_primary ('.' name | '[' slices ']')
     ;
 
 t_primary
-    : t_primary  ('.' NAME | genexp | '(' arguments? ')' | '[' slices ']')
-    | NAME
+    : t_primary  ('.' name | genexp | '(' arguments? ')' | '[' slices ']')
+    | name
     ;
 
 genexp
@@ -279,11 +345,11 @@ starred_expression
     : '*' expression;
 
 kwarg_or_double_starred
-    : NAME '=' expression
+    : name '=' expression
     | '**' expression;
 
 kwarg_or_starred
-    : NAME '=' expression
+    : name '=' expression
     | starred_expression;
 
 slices
@@ -301,7 +367,7 @@ star_named_expression
 
 // Would have expected NAME to be a single_target to allow for assignment to any data store.
 assignment_expression
-    : NAME ':=' expression;
+    : name ':=' expression;
 
 named_expression
     : assignment_expression

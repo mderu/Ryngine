@@ -1,12 +1,14 @@
 using Antlr4.Runtime.Misc;
-using Antlr4.Runtime.Tree;
 using AntlrRenpy.Program;
 using AntlrRenpy.Program.ControlFlows;
 using AntlrRenpy.Program.Expressions;
 using AntlrRenpy.Program.Expressions.Operators;
 using AntlrRenpy.Program.Instructions;
+using AntlrRenpy.Program.Clauses;
 using System.Text;
 using static RenpyParser;
+using System.Runtime.CompilerServices;
+using Antlr4.Runtime.Tree;
 
 namespace AntlrRenpy.Listener
 {
@@ -111,9 +113,9 @@ namespace AntlrRenpy.Listener
             {
                 // handled by EnterStrings.
             }
-            else if (context.NAME() is not null)
+            else if (context.name() is not null)
             {
-                expressionStack.Push(new NamedStore(context.NAME().GetText()));
+                expressionStack.Push(new NamedStore(context.name().GetText()));
             }
             else if (context.TRUE() is not null)
             {
@@ -148,14 +150,14 @@ namespace AntlrRenpy.Listener
 
         public override void ExitT_primary([NotNull] T_primaryContext context)
         {
-            if (context.ChildCount == 1 && context.NAME() is not null)
+            if (context.ChildCount == 1 && context.name() is not null)
             {
-                expressionStack.Push(new NamedStore(context.NAME().GetText()));
+                expressionStack.Push(new NamedStore(context.name().GetText()));
             }
-            else if (context.NAME() is not null)
+            else if (context.name() is not null)
             {
                 IExpression baseExpression = expressionStack.Pop();
-                expressionStack.Push(new MemberAccess(baseExpression, context.NAME().GetText()));
+                expressionStack.Push(new MemberAccess(baseExpression, context.name().GetText()));
             }
             else if (context.arguments() is not null)
             {
@@ -188,10 +190,10 @@ namespace AntlrRenpy.Listener
             {
                 // Covered by ExitAtom.
             }
-            else if (context.NAME() is not null)
+            else if (context.name() is not null)
             {
                 IExpression baseExpression = expressionStack.Pop();
-                expressionStack.Push(new MemberAccess(baseExpression, context.NAME().GetText()));
+                expressionStack.Push(new MemberAccess(baseExpression, context.name().GetText()));
             }
             else if (context.arguments() is not null)
             {
@@ -253,7 +255,7 @@ namespace AntlrRenpy.Listener
 
         public override void ExitAssignment_expression([NotNull] Assignment_expressionContext context)
         {
-            expressionStack.Push(new AssignmentExpression(context.NAME().GetText(), expressionStack.Pop()));
+            expressionStack.Push(new AssignmentExpression(context.name().GetText(), expressionStack.Pop()));
         }
 
         public override void ExitStrings([NotNull] StringsContext context)
@@ -272,18 +274,18 @@ namespace AntlrRenpy.Listener
             {
                 //Handled by ExitSingle_subscript_attribute_target.
             }
-            else if (context.NAME() is not null)
+            else if (context.name() is not null)
             {
-                expressionStack.Push(new NamedStore(context.NAME().GetText()));
+                expressionStack.Push(new NamedStore(context.name().GetText()));
             }
         }
 
         public override void ExitSingle_subscript_attribute_target(
             [NotNull] Single_subscript_attribute_targetContext context)
         {
-            if (context.NAME() is not null)
+            if (context.name() is not null)
             {
-                expressionStack.Push(new MemberAccess(expressionStack.Pop(), context.NAME().GetText()));
+                expressionStack.Push(new MemberAccess(expressionStack.Pop(), context.name().GetText()));
             }
             else if (context.slices() is not null)
             {
@@ -333,19 +335,18 @@ namespace AntlrRenpy.Listener
 
         public override void ExitComparison([NotNull] ComparisonContext context)
         {
-            if (context.bitwise_or().Length == 2)
+            if (context.comparison() is not null)
             {
-                Comparison.Type comparisonType = context.children[1].GetText() switch
+                Comparison.Type comparisonType = context.comparison_operator().GetText() switch
                 {
-                    "not" => Comparison.Type.NotIn,
+                    "isnot" => Comparison.Type.IsNot,
+                    "notin" => Comparison.Type.NotIn,
                     "==" => Comparison.Type.IsEqualTo,
                     "!=" => Comparison.Type.IsNotEqualTo,
                     "<=" => Comparison.Type.LessThanOrEqual,
                     ">=" => Comparison.Type.GreaterThanOrEqual,
                     "in" => Comparison.Type.In,
-                    "is" => context.children.Count == 3
-                        ? Comparison.Type.Is
-                        : Comparison.Type.IsNot,
+                    "is" => Comparison.Type.Is,
                     "<" => Comparison.Type.LessThan,
                     ">" => Comparison.Type.GreaterThan,
                     _ => throw new NotImplementedException(),
@@ -356,6 +357,92 @@ namespace AntlrRenpy.Listener
 
                 expressionStack.Push(new Comparison(lhs, comparisonType, rhs));
             }
+        }
+
+        public override void ExitWindow([NotNull] WindowContext context)
+        {
+            Transition? transition = null;
+            if (context.expression() is not null)
+            {
+                transition = new Transition(expressionStack.Pop());
+            }
+
+
+            bool show = false;
+            if (context.SHOW() is not null)
+            {
+                if (context.HIDE() is not null)
+                {
+                    throw new InvalidOperationException("`show` and `hide` are both not present.");
+                }
+                show = true;
+            }
+
+            AppendInstruction(new Window(show, transition));
+        }
+
+        public override void ExitScene([NotNull] SceneContext context)
+        {
+            (IExpression displayableExpression, Transition? transition) = GetDisplayableChange(
+                names: context.NAME(),
+                hasWithClause: context.WITH() is not null,
+                hasExpressionClause: context.EXPRESSION() is not null);
+            
+            AppendInstruction(new Scene(displayableExpression, transition));
+        }
+
+        public override void ExitShow([NotNull] ShowContext context)
+        {
+            (IExpression displayableExpression, Transition? transition) = GetDisplayableChange(
+                names: context.NAME(),
+                hasWithClause: context.WITH() is not null,
+                hasExpressionClause: context.EXPRESSION() is not null);
+
+            AppendInstruction(new Show(displayableExpression, transition));
+        }
+
+        public override void ExitHide([NotNull] HideContext context)
+        {
+            (IExpression displayableExpression, Transition? transition) = GetDisplayableChange(
+                names: context.NAME(),
+                hasWithClause: context.WITH() is not null,
+                hasExpressionClause: context.EXPRESSION() is not null);
+
+            AppendInstruction(new Hide(displayableExpression, transition));
+        }
+
+        private (IExpression displayableExpression, Transition? transistion) 
+            GetDisplayableChange(ITerminalNode[] names, bool hasWithClause, bool hasExpressionClause)
+        {
+            Transition? transition = null;
+            if (hasWithClause)
+            {
+                transition = new(expressionStack.Pop());
+            }
+
+            IExpression displayableExpression;
+            if (names.Length > 0)
+            {
+                displayableExpression = new Displayable(
+                    Name: names[0].GetText(),
+                    Properties: names.Skip(1).Select(item => item.GetText()).ToArray()
+                );
+            }
+            else if (hasExpressionClause)
+            {
+                displayableExpression = expressionStack.Pop();
+            }
+            else
+            {
+                throw new InvalidOperationException("Unhandled `scene` statement case.");
+            }
+
+            return (displayableExpression, transition);
+        }
+
+        public override void ExitPause([NotNull] PauseContext context)
+        {
+            AppendInstruction(new Pause());
         }
 
         private void InsertLabel(
