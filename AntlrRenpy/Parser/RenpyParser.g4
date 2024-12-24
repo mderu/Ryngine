@@ -10,6 +10,10 @@ statements
     : statement+
     ;
 
+atl_statements
+    : atl_statement+
+    ;
+
 python_statements
     : python_statement+
     ;
@@ -17,6 +21,10 @@ python_statements
 statement
     : simple_statements NEWLINE
     | block_statements
+    ;
+
+atl_statement
+    : atl_simple_statements NEWLINE
     ;
 
 python_statement
@@ -59,10 +67,18 @@ simple_statements
     | window
     | scene
     | pause
+    | play
+    | stop
     | show
     | hide
     | define
     | default
+    | with
+    ;
+
+atl_simple_statements
+    : 
+    |
     ;
 
 python_simple_statements
@@ -81,26 +97,52 @@ window
     : WINDOW (SHOW | HIDE) expression?
     ;
 
+// https://www.renpy.org/doc/html/displaying_images.html#scene-statement
 scene
-    : SCENE NAME+ (WITH expression)?
+    : SCENE name+ (WITH expression)?
     | SCENE EXPRESSION expression (WITH expression)?
     ;
 
-pause
-    : PAUSE
+// https://www.renpy.org/doc/html/transforms.html#scene-and-show-statements-with-atl-block
+scene_atl
+    : SCENE name+ COLON atl_block
     ;
 
 // https://www.renpy.org/doc/html/displaying_images.html#show-statement
 // TODO: A ton of missing clauses here.
 show
-    : SHOW NAME+ (WITH expression)?
+    : SHOW name+ (WITH expression)?
     | SHOW EXPRESSION expression (WITH expression)?
+    ;
+
+// https://www.renpy.org/doc/html/transforms.html#scene-and-show-statements-with-atl-block
+show_atl
+    : SHOW name+ COLON atl_block
     ;
 
 // https://www.renpy.org/doc/html/displaying_images.html#hide-statement
 hide
-    : HIDE NAME+ (WITH expression)?
+    : HIDE name+ (WITH expression)?
     | HIDE EXPRESSION expression (WITH expression)?
+    ;
+
+// https://www.renpy.org/doc/html/displaying_images.html#with-statement
+with
+    : WITH expression
+    ;
+
+// https://www.renpy.org/doc/html/audio.html#play-statement
+play
+    // NAME can either be a default ("sound", "music", "voice", or "audio") or a custom channel.
+    : PLAY name expression (FADEIN NUMBER)? (FADEOUT NUMBER)?
+    ;
+
+stop
+    : STOP name (FADEOUT NUMBER)?
+    ;
+
+pause
+    : PAUSE
     ;
 
 // https://www.renpy.org/doc/html/python.html#define-statement
@@ -121,6 +163,10 @@ block
     : NEWLINE INDENT statements DEDENT
     ;
 
+atl_block
+    : NEWLINE INDENT atl_statements DEDENT
+    ;
+
 python_block
     : NEWLINE INDENT python_statements DEDENT
     ;
@@ -130,7 +176,7 @@ menu
     ;
 
 menu_item
-    : STRING COLON block
+    : STRING ('(' arguments? ')')? (IF expression)? COLON block
     ;
 
 pass_statement
@@ -152,7 +198,17 @@ jump
     ;
 
 call
-    : CALL label_name ( '(' arguments? ')')?
+    : CALL label_name ( '(' arguments? ')')? (FROM label_name)?
+    ;
+
+// https://www.renpy.org/doc/html/screens.html#call-screen
+call_screen
+    : CALL SCREEN (NAME | EXPRESSION expression) (AS NAME)? (ONLAYER NUMBER)? (ZORDER NUMBER)? (NOPREDICT)? (WITH expression)?
+    ;
+
+// https://www.renpy.org/doc/html/screens.html#show-screen-statement
+show_screen
+    : SHOW SCREEN
     ;
 
 return
@@ -280,13 +336,28 @@ star_expression
     | expression;
 
 expression
-    : comparison
+    // : disjunction ('if' disjunction 'else' expression)?
+    // | lambdef
+    : disjunction
     ;
 
 // Comparison operators
 // --------------------
 
-// disjunction > conjunction > inversion > comparison >
+disjunction
+    : conjunction (OR disjunction)?
+    ;
+
+conjunction
+    : inversion (AND conjunction)?
+    ;
+
+// disjunction > conjunction > inversion
+inversion
+    : NOT inversion
+    | comparison
+    ;
+
 comparison
     : bitwise_or (comparison_operator comparison)?;
 
@@ -353,6 +424,12 @@ name
     | SET
     | DEFAULT
     | DEFINE
+    | PLAY
+    | STOP
+    | FADEIN
+    | FADEOUT
+    | SCREEN
+    | ZORDER
     ;
 
 strings

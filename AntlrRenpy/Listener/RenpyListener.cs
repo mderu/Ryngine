@@ -7,8 +7,7 @@ using AntlrRenpy.Program.Instructions;
 using AntlrRenpy.Program.Clauses;
 using System.Text;
 using static RenpyParser;
-using System.Runtime.CompilerServices;
-using Antlr4.Runtime.Tree;
+using Antlr4.Runtime;
 
 namespace AntlrRenpy.Listener
 {
@@ -51,6 +50,11 @@ namespace AntlrRenpy.Listener
             }
         }
 
+        public override void ExitWith([NotNull] WithContext context)
+        {
+            AppendInstruction(new With(expressionStack.Pop()));
+        }
+
         public override void ExitExpression_as_statement([NotNull] Expression_as_statementContext context)
         {
             AppendInstruction(new ExpressionAsInstruction(expressionStack.Pop()));
@@ -84,13 +88,40 @@ namespace AntlrRenpy.Listener
             }
         }
 
+        public override void ExitPlay([NotNull] PlayContext context)
+        {
+            string channelName = context.name().GetText();
+            IExpression expression = expressionStack.Pop();
+
+            ConstantNumber? fadeInTime = null;
+            if (context.FADEIN() is not null)
+            {
+                fadeInTime = new ConstantNumber(context.NUMBER().First().GetText());
+            }
+            ConstantNumber? fadeOutTime = null;
+            if (context.FADEOUT() is not null)
+            {
+                fadeOutTime = new ConstantNumber(context.NUMBER().Last().GetText());
+            }
+
+            AppendInstruction(new Play(channelName, expression, fadeInTime, fadeOutTime));
+        }
+
         public override void ExitCall([NotNull] CallContext context)
         {
             Arguments arguments = context.arguments() is not null
                     ? (Arguments)expressionStack.Pop()
                     : new();
-            string labelName = context.label_name().GetText();
-            AppendInstruction(new PushFrame(labelName, arguments));
+            string labelName = context.label_name()[0].GetText();
+
+            PushFrame pushFrame = new(labelName, arguments);
+            AppendInstruction(pushFrame);
+
+            if (context.FROM() is not null)
+            {
+                string newLabelName = context.label_name()[1].GetText();
+                InsertLabel(newLabelName, pushFrame, null, jumpToAfterInstruction: true);
+            }
         }
 
         public override void ExitLabel([NotNull] LabelContext context)
@@ -354,6 +385,36 @@ namespace AntlrRenpy.Listener
             AppendInstruction(new Define(lhs, rhs));
         }
 
+        public override void ExitDisjunction([NotNull] DisjunctionContext context)
+        {
+            if (context.OR() is not null)
+            {
+                IExpression rhs = expressionStack.Pop();
+                IExpression lhs = expressionStack.Pop();
+
+                expressionStack.Push(new Or(lhs, rhs));
+            }
+        }
+
+        public override void ExitConjunction([NotNull] ConjunctionContext context)
+        {
+            if (context.AND() is not null)
+            {
+                IExpression rhs = expressionStack.Pop();
+                IExpression lhs = expressionStack.Pop();
+
+                expressionStack.Push(new And(lhs, rhs));
+            }
+        }
+
+        public override void ExitInversion([NotNull] InversionContext context)
+        {
+            if (context.NOT() is not null)
+            {
+                expressionStack.Push(new Not(expressionStack.Pop()));
+            }
+        }
+
         public override void ExitComparison([NotNull] ComparisonContext context)
         {
             if (context.comparison() is not null)
@@ -405,7 +466,7 @@ namespace AntlrRenpy.Listener
         public override void ExitScene([NotNull] SceneContext context)
         {
             (IExpression displayableExpression, Transition? transition) = GetDisplayableChange(
-                names: context.NAME(),
+                names: context.name(),
                 hasWithClause: context.WITH() is not null,
                 hasExpressionClause: context.EXPRESSION() is not null);
             
@@ -415,7 +476,7 @@ namespace AntlrRenpy.Listener
         public override void ExitShow([NotNull] ShowContext context)
         {
             (IExpression displayableExpression, Transition? transition) = GetDisplayableChange(
-                names: context.NAME(),
+                names: context.name(),
                 hasWithClause: context.WITH() is not null,
                 hasExpressionClause: context.EXPRESSION() is not null);
 
@@ -425,7 +486,7 @@ namespace AntlrRenpy.Listener
         public override void ExitHide([NotNull] HideContext context)
         {
             (IExpression displayableExpression, Transition? transition) = GetDisplayableChange(
-                names: context.NAME(),
+                names: context.name(),
                 hasWithClause: context.WITH() is not null,
                 hasExpressionClause: context.EXPRESSION() is not null);
 
@@ -433,7 +494,7 @@ namespace AntlrRenpy.Listener
         }
 
         private (IExpression displayableExpression, Transition? transistion) 
-            GetDisplayableChange(ITerminalNode[] names, bool hasWithClause, bool hasExpressionClause)
+            GetDisplayableChange(ParserRuleContext[] names, bool hasWithClause, bool hasExpressionClause)
         {
             Transition? transition = null;
             if (hasWithClause)

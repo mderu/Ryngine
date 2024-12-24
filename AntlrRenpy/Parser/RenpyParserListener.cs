@@ -51,6 +51,16 @@ public interface IRenpyParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitStatements([NotNull] RenpyParser.StatementsContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="RenpyParser.atl_statements"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterAtl_statements([NotNull] RenpyParser.Atl_statementsContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RenpyParser.atl_statements"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitAtl_statements([NotNull] RenpyParser.Atl_statementsContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="RenpyParser.python_statements"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -70,6 +80,16 @@ public interface IRenpyParserListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitStatement([NotNull] RenpyParser.StatementContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="RenpyParser.atl_statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterAtl_statement([NotNull] RenpyParser.Atl_statementContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RenpyParser.atl_statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitAtl_statement([NotNull] RenpyParser.Atl_statementContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="RenpyParser.python_statement"/>.
 	/// </summary>
@@ -121,6 +141,16 @@ public interface IRenpyParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitSimple_statements([NotNull] RenpyParser.Simple_statementsContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="RenpyParser.atl_simple_statements"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterAtl_simple_statements([NotNull] RenpyParser.Atl_simple_statementsContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RenpyParser.atl_simple_statements"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitAtl_simple_statements([NotNull] RenpyParser.Atl_simple_statementsContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="RenpyParser.python_simple_statements"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -161,15 +191,15 @@ public interface IRenpyParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitScene([NotNull] RenpyParser.SceneContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="RenpyParser.pause"/>.
+	/// Enter a parse tree produced by <see cref="RenpyParser.scene_atl"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterPause([NotNull] RenpyParser.PauseContext context);
+	void EnterScene_atl([NotNull] RenpyParser.Scene_atlContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="RenpyParser.pause"/>.
+	/// Exit a parse tree produced by <see cref="RenpyParser.scene_atl"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitPause([NotNull] RenpyParser.PauseContext context);
+	void ExitScene_atl([NotNull] RenpyParser.Scene_atlContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="RenpyParser.show"/>.
 	/// </summary>
@@ -181,6 +211,16 @@ public interface IRenpyParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitShow([NotNull] RenpyParser.ShowContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="RenpyParser.show_atl"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterShow_atl([NotNull] RenpyParser.Show_atlContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RenpyParser.show_atl"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitShow_atl([NotNull] RenpyParser.Show_atlContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="RenpyParser.hide"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -190,6 +230,46 @@ public interface IRenpyParserListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitHide([NotNull] RenpyParser.HideContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="RenpyParser.with"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterWith([NotNull] RenpyParser.WithContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RenpyParser.with"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitWith([NotNull] RenpyParser.WithContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="RenpyParser.play"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterPlay([NotNull] RenpyParser.PlayContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RenpyParser.play"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitPlay([NotNull] RenpyParser.PlayContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="RenpyParser.stop"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterStop([NotNull] RenpyParser.StopContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RenpyParser.stop"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitStop([NotNull] RenpyParser.StopContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="RenpyParser.pause"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterPause([NotNull] RenpyParser.PauseContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RenpyParser.pause"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitPause([NotNull] RenpyParser.PauseContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="RenpyParser.define"/>.
 	/// </summary>
@@ -230,6 +310,16 @@ public interface IRenpyParserListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitBlock([NotNull] RenpyParser.BlockContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="RenpyParser.atl_block"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterAtl_block([NotNull] RenpyParser.Atl_blockContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RenpyParser.atl_block"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitAtl_block([NotNull] RenpyParser.Atl_blockContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="RenpyParser.python_block"/>.
 	/// </summary>
@@ -310,6 +400,26 @@ public interface IRenpyParserListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitCall([NotNull] RenpyParser.CallContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="RenpyParser.call_screen"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterCall_screen([NotNull] RenpyParser.Call_screenContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RenpyParser.call_screen"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitCall_screen([NotNull] RenpyParser.Call_screenContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="RenpyParser.show_screen"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterShow_screen([NotNull] RenpyParser.Show_screenContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RenpyParser.show_screen"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitShow_screen([NotNull] RenpyParser.Show_screenContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="RenpyParser.return"/>.
 	/// </summary>
@@ -570,6 +680,36 @@ public interface IRenpyParserListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitExpression([NotNull] RenpyParser.ExpressionContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="RenpyParser.disjunction"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterDisjunction([NotNull] RenpyParser.DisjunctionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RenpyParser.disjunction"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitDisjunction([NotNull] RenpyParser.DisjunctionContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="RenpyParser.conjunction"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterConjunction([NotNull] RenpyParser.ConjunctionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RenpyParser.conjunction"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitConjunction([NotNull] RenpyParser.ConjunctionContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="RenpyParser.inversion"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterInversion([NotNull] RenpyParser.InversionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="RenpyParser.inversion"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitInversion([NotNull] RenpyParser.InversionContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="RenpyParser.comparison"/>.
 	/// </summary>

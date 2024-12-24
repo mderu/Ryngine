@@ -13,34 +13,43 @@ LABEL      : 'label';
 JUMP       : 'jump';
 EXPRESSION : 'expression';
 CALL       : 'call';
+FROM       : 'from';
 
 IF     : 'if';
 ELIF   : 'elif';
 ELSE   : 'else';
 WHILE  : 'while';
 PASS   : 'pass';
+WITH   : 'with';
 RETURN : 'return';
 
 TRUE   : 'True';
 FALSE  : 'False';
 NONE   : 'None';
 
-MENU    : 'menu';  // https://www.renpy.org/doc/html/menus.html
+MENU    : 'menu';
 SET     : 'set';
-WITH    : 'with';  // https://www.renpy.org/doc/html/displaying_images.html#with-statement
 DEFINE  : 'define';
 DEFAULT : 'default';
 
-WINDOW : 'window';  //https://www.renpy.org/doc/html/displaying_images.html#hide-and-show-window
+WINDOW : 'window'; 
 SHOW   : 'show';
 HIDE   : 'hide';
+SCREEN : 'screen';
 PAUSE  : 'pause';
 
-SCENE   : 'scene';  // https://www.renpy.org/doc/html/displaying_images.html#scene-statement
-BEHIND  : 'behind';
-ONLAYER : 'onlayer';
-AS      : 'as';
-AT      : 'at';
+SCENE     : 'scene';  
+BEHIND    : 'behind';
+ONLAYER   : 'onlayer';
+ZORDER    : 'zorder';
+NOPREDICT : 'nopredict';
+AS        : 'as';
+AT        : 'at';
+
+PLAY    : 'play';
+STOP    : 'stop';
+FADEIN  : 'fadein';
+FADEOUT : 'fadeout';
 
 INIT   : 'init';
 PYTHON : 'python';
@@ -65,6 +74,9 @@ GREATER      : '>';
 NOT          : 'not';
 IN           : 'in';
 IS           : 'is';
+
+AND : 'and';
+OR  : 'or';
 
 PLUSEQUAL        : '+=';
 MINEQUAL         : '-=';

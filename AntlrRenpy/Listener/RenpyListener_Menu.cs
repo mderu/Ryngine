@@ -38,17 +38,24 @@ namespace AntlrRenpy.Listener
 
         public override void EnterMenu_item([NotNull] Menu_itemContext context)
         {
-            string caption = StringParser.Parse(context.STRING().GetText());
-            Block innerBlock = new([]);
-            MenuItem menuItem = new(caption, innerBlock);
-
-            blockStack.Push(innerBlock);
-            menuItemsStack.Peek().Add(menuItem);
+            blockStack.Push(new([]));
         }
 
         public override void ExitMenu_item([NotNull] Menu_itemContext context)
         {
-            blockStack.Pop();
+            string caption = StringParser.Parse(context.STRING().GetText());
+            Block innerBlock = blockStack.Pop();
+
+            IExpression? conditional = context.IF() is not null
+                ? expressionStack.Pop()
+                : null;
+
+            Arguments? arguments = context.arguments() is not null
+                ? (Arguments)expressionStack.Pop()
+                : null;
+
+            MenuItem menuItem = new(caption, innerBlock, arguments, conditional);
+            menuItemsStack.Peek().Add(menuItem);
         }
     }
 }
