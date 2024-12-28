@@ -1,7 +1,6 @@
-﻿namespace AntlrRenpy.Program.Expressions
+﻿namespace AntlrRenpy.Program.Expressions;
+
+public record class Null() : Atomic(InnerValue: null)
 {
-    public record class Null() : Atomic(InnerValue: null)
-    {
-        public override AtomicType Type => AtomicType.Null;
-    }
+    public override AtomicType Type => AtomicType.Null;
 }

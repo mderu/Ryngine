@@ -1,45 +1,44 @@
 ﻿using AntlrRenpy.Program.ControlFlows;
 using AntlrRenpy.Program.Instructions;
 
-namespace AntlrRenpy.Program
+namespace AntlrRenpy.Program;
+
+public class Script
 {
-    public class Script
+    private readonly Dictionary<string, Label> labels = [];
+    private readonly List<IInstruction> instructions = [];
+    private readonly Dictionary<object, int> placeholderIndexes = [];
+
+    public IReadOnlyDictionary<string, Label> Labels => labels.AsReadOnly();
+    public IReadOnlyList<IInstruction> Instructions => instructions.AsReadOnly();
+
+    public void AppendInstruction(IInstruction instruction)
     {
-        private readonly Dictionary<string, Label> labels = [];
-        private readonly List<IInstruction> instructions = [];
-        private readonly Dictionary<object, int> placeholderIndexes = [];
+        instructions.Add(instruction);
+    }
 
-        public IReadOnlyDictionary<string, Label> Labels => labels.AsReadOnly();
-        public IReadOnlyList<IInstruction> Instructions => instructions.AsReadOnly();
 
-        public void AppendInstruction(IInstruction instruction)
+    public int NextInstructionIndex => instructions.Count;
+
+    public IInstruction FirstInstruction => Instructions[0];
+    public IInstruction LastInstruction => Instructions[^1];
+
+    public void InsertLabel(Label label)
+    {
+        labels[label.Name] = label;
+    }
+
+    public void ReplacePlaceholder<T>(Placeholder<T> placeholder, T replacement)
+        where T : IInstruction
+    {
+        if (placeholderIndexes.TryGetValue(placeholder, out int index))
         {
-            instructions.Add(instruction);
+            instructions[index] = replacement;
         }
-
-
-        public int NextInstructionIndex => instructions.Count;
-
-        public IInstruction FirstInstruction => Instructions[0];
-        public IInstruction LastInstruction => Instructions[^1];
-
-        public void InsertLabel(Label label)
+        else
         {
-            labels[label.Name] = label;
-        }
-
-        public void ReplacePlaceholder<T>(Placeholder<T> placeholder, T replacement)
-            where T : IInstruction
-        {
-            if (placeholderIndexes.TryGetValue(placeholder, out int index))
-            {
-                instructions[index] = replacement;
-            }
-            else
-            {
-                throw new InvalidOperationException(
-                    $"Placeholder<{replacement.GetType()}> was not found in the script.");
-            }
+            throw new InvalidOperationException(
+                $"Placeholder<{replacement.GetType()}> was not found in the script.");
         }
     }
 }

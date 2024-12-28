@@ -132,9 +132,18 @@
     <ClCompile Include="UnrealBindings.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <CopyFileToFolders Include="..\Ryngine\bin\Release\net8.0\win-x64\native\Ryngine.dll">
+    <CopyFileToFolders Include="..\Ryngine\bin\Release\net9.0\win-x64\native\Ryngine.dll">
       <FileType>Document</FileType>
     </CopyFileToFolders>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="UnrealBindings.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\Ryngine\bin\Release\net9.0\win-x64\native\Ryngine.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,6 +1,5 @@
-﻿namespace AntlrRenpy.Program
+﻿namespace AntlrRenpy.Program;
+
+public interface IInstruction : IPositional
 {
-    public interface IInstruction : IPositional
-    {
-    }
 }

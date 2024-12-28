@@ -1,9 +1,8 @@
-﻿namespace RynVM.Instructions.Expressions
+﻿namespace RynVM.Instructions.Expressions;
+
+public interface IExpression
 {
-    public interface IExpression
-    {
-        // TODO:
-        //IExpression EvaluateAddress();
-        IAtomic EvaluateValue();
-    }
+    // TODO:
+    //IExpression EvaluateAddress();
+    IAtomic EvaluateValue();
 }

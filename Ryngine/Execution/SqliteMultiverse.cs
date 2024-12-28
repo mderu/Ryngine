@@ -2,80 +2,79 @@
 using Newtonsoft.Json.Linq;
 using Ryngine.DataStructures;
 
-namespace Ryngine.Execution
+namespace Ryngine.Execution;
+
+public class SqliteMultiverse(SqliteConnection sqliteConnection) : IMultiverse
 {
-    public class SqliteMultiverse(SqliteConnection sqliteConnection) : IMultiverse
+    private const int PersistentDataCacheKey = 0;
+
+    private readonly SqliteConnection sqliteConnection = sqliteConnection;
+    
+    private readonly DbCache<string, Snapshot> allSavesDbCache = new(
+        sqliteConnection,
+        tableName: "AllSaves",
+        keyName: "Id",
+        valueName: "Snapshot");
+
+    private readonly DbCache<UndoRecordId, UndoRecord> undoRecordsDbCache = new(
+        sqliteConnection,
+        tableName: "UndoRecords",
+        keyName: "Id",
+        valueName: "UndoRecord");
+
+    private readonly DbCache<int, JObject> persistentDataCache = new(
+        sqliteConnection,
+        tableName: "PersistentDatas",
+        keyName: "Id",
+        valueName: "PersistentData");
+
+    public IDict<string, Snapshot> AllSaves
     {
-        private const int PersistentDataCacheKey = 0;
-
-        private readonly SqliteConnection sqliteConnection = sqliteConnection;
-        
-        private readonly DbCache<string, Snapshot> allSavesDbCache = new(
-            sqliteConnection,
-            tableName: "AllSaves",
-            keyName: "Id",
-            valueName: "Snapshot");
-
-        private readonly DbCache<UndoRecordId, UndoRecord> undoRecordsDbCache = new(
-            sqliteConnection,
-            tableName: "UndoRecords",
-            keyName: "Id",
-            valueName: "UndoRecord");
-
-        private readonly DbCache<int, JObject> persistentDataCache = new(
-            sqliteConnection,
-            tableName: "PersistentDatas",
-            keyName: "Id",
-            valueName: "PersistentData");
-
-        public IDict<string, Snapshot> AllSaves
+        get
         {
-            get
-            {
-                EnsureInitialized();
-                return allSavesDbCache;
-            }
+            EnsureInitialized();
+            return allSavesDbCache;
         }
+    }
 
-        public JObject PersistentData
+    public JObject PersistentData
+    {
+        get
         {
-            get
-            {
-                EnsureInitialized();
+            EnsureInitialized();
 
-                // A bit of a hack, but not worth persuing optimization for now.
-                if (persistentDataCache.TryGet(PersistentDataCacheKey, out JObject? persistentData))
-                {
-                    return persistentData;
-                }
-                persistentDataCache[PersistentDataCacheKey] = [];
-
-                return persistentDataCache[PersistentDataCacheKey];
-            }
-            set
+            // A bit of a hack, but not worth persuing optimization for now.
+            if (persistentDataCache.TryGet(PersistentDataCacheKey, out JObject? persistentData))
             {
-                EnsureInitialized();
-                persistentDataCache[PersistentDataCacheKey] = value;
+                return persistentData;
             }
+            persistentDataCache[PersistentDataCacheKey] = [];
+
+            return persistentDataCache[PersistentDataCacheKey];
         }
-
-        public IDict<UndoRecordId, UndoRecord> UndoRecords
+        set
         {
-            get
-            {
-                EnsureInitialized();
-                return undoRecordsDbCache;
-            }
+            EnsureInitialized();
+            persistentDataCache[PersistentDataCacheKey] = value;
         }
+    }
 
-        public Snapshot CurrentSave { get; set; } = new(UndoRecord.RootRecord);
-
-        private void EnsureInitialized()
+    public IDict<UndoRecordId, UndoRecord> UndoRecords
+    {
+        get
         {
-            if (sqliteConnection.State == System.Data.ConnectionState.Closed)
-            {
-                sqliteConnection.Open();
-            }
+            EnsureInitialized();
+            return undoRecordsDbCache;
+        }
+    }
+
+    public Snapshot CurrentSave { get; set; } = new(UndoRecord.RootRecord);
+
+    private void EnsureInitialized()
+    {
+        if (sqliteConnection.State == System.Data.ConnectionState.Closed)
+        {
+            sqliteConnection.Open();
         }
     }
 }

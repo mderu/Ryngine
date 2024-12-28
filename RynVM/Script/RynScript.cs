@@ -1,10 +1,9 @@
 ﻿using RynVM.Instructions;
 
-namespace RynVM.Script
+namespace RynVM.Script;
+
+public class RynScript
 {
-    public class RynScript
-    {
-        private string[] resources;
-        private Dictionary<string, IInstruction> labels;
-    }
+    private string[] resources;
+    private Dictionary<string, IInstruction> labels;
 }

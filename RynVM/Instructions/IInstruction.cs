@@ -1,6 +1,5 @@
-﻿namespace RynVM.Instructions
+﻿namespace RynVM.Instructions;
+
+public interface IInstruction
 {
-    public interface IInstruction
-    {
-    }
 }

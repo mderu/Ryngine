@@ -1,6 +1,5 @@
-﻿namespace AntlrRenpy.Program.Instructions
+﻿namespace AntlrRenpy.Program.Instructions;
+
+public class ReturnSimple : IInstruction
 {
-    public class ReturnSimple : IInstruction
-    {
-    }
 }

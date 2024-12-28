@@ -1,6 +1,5 @@
-﻿namespace AntlrRenpy.Program.Instructions
+﻿namespace AntlrRenpy.Program.Instructions;
+
+public record struct Pass : IInstruction
 {
-    public record struct Pass : IInstruction
-    {
-    }
 }
