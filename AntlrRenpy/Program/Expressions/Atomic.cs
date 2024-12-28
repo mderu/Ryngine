@@ -33,14 +33,9 @@ public static class AtomicTypes
     }
 }
 
-public abstract record class Atomic(object? InnerValue) : IExpression, IAtomic
+public abstract record class Atomic(object? InnerValue) : IAtomic
 {
     public abstract AtomicType Type { get; }
-
-    public IExpression EvaluateAddress()
-    {
-        throw new InvalidOperationException("Cannot evaluate the address of a constant value.");
-    }
 
     public IAtomic EvaluateValue()
     {
