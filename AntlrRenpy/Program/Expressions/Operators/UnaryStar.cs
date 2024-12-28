@@ -1,5 +1,6 @@
 ﻿using RynVM.Instructions;
 using RynVM.Instructions.Expressions;
+using RynVM.Script;
 
 namespace AntlrRenpy.Program.Expressions.Operators;
 
@@ -8,9 +9,9 @@ namespace AntlrRenpy.Program.Expressions.Operators;
 /// </summary>
 public record class UnaryStar(IExpression InnerExpression) : IAtomic
 {
-    IAtomic IExpression.EvaluateValue()
+    IAtomic IExpression.EvaluateValue(Store<string, IAtomic> store)
     {
         // The container (args, list definition, etc) needs to handle unpacking the values.
-        return new UnaryStar(InnerExpression.EvaluateValue());
+        return new UnaryStar(InnerExpression.EvaluateValue(store));
     }
 }

@@ -1,18 +1,18 @@
 ﻿using RynVM.Instructions;
 using RynVM.Instructions.Expressions;
-using System.Collections.Generic;
+using RynVM.Script;
 
 namespace AntlrRenpy.Program.Expressions.Operators;
 
 public record class Comparison(IExpression Lhs, Comparison.Type ComparisonType, IExpression Rhs) : IExpression
 {
-    IAtomic IExpression.EvaluateValue()
+    IAtomic IExpression.EvaluateValue(Store<string, IAtomic> store)
     {
-        IAtomic lhsAtomic = Lhs.EvaluateValue();
+        IAtomic lhsAtomic = Lhs.EvaluateValue(store);
         if (lhsAtomic is Null)
         {
             // Note: even though Python does not support comparisons with NoneType, rhs is still evaluated.
-            string rhsType = ((Atomic)Rhs.EvaluateValue()).Type.GetName();
+            string rhsType = ((Atomic)Rhs.EvaluateValue(store)).Type.GetName();
             throw new InvalidOperationException(
                 $"TypeError: '<' not supported between instances of 'NoneType' and '{rhsType}'");
         }
@@ -26,7 +26,7 @@ public record class Comparison(IExpression Lhs, Comparison.Type ComparisonType, 
                     : throw new InvalidProgramException("Unreachable exception.");
 
             // TODO: Only perform these on equality checks, not `is` and `in` operators.
-            IAtomic rhsAtomic = Rhs.EvaluateValue();
+            IAtomic rhsAtomic = Rhs.EvaluateValue(store);
             decimal rhsParsed = rhsAtomic is AtomicNumber rhsNumber
                 ? decimal.Parse(rhsNumber.Value)
                 : rhsAtomic is Atomic<bool> rhsBool
@@ -58,7 +58,7 @@ public record class Comparison(IExpression Lhs, Comparison.Type ComparisonType, 
         }
         else if (lhsAtomic is Atomic<string> lhsString)
         {
-            Atomic rhsAtomic = (Atomic)Rhs.EvaluateValue();
+            Atomic rhsAtomic = (Atomic)Rhs.EvaluateValue(store);
 
             if (rhsAtomic.Type != AtomicType.String)
             {

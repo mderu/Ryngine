@@ -1,6 +1,7 @@
 ﻿using AntlrRenpy.Program.Expressions.Operators;
 using RynVM.Instructions;
 using RynVM.Instructions.Expressions;
+using RynVM.Script;
 
 namespace AntlrRenpy.Program.Expressions;
 
@@ -38,17 +39,12 @@ public record class Arguments(
     IEnumerable<IExpression> KeywordArguments)
         : IAtomic
 {
-    public IExpression EvaluateAddress()
-    {
-        throw new InvalidOperationException($"Cannot evaluate the address of {nameof(Arguments)}.");
-    }
-
-    public IAtomic EvaluateValue()
+    IAtomic IExpression.EvaluateValue(Store<string, IAtomic> store)
     {
         // https://docs.python.org/3/reference/expressions.html#evaluation-order
         return new Arguments(
-            OrderedArguments: OrderedArguments.Select(expr => expr.EvaluateValue()),
-            KeywordArguments: KeywordArguments.Select(kwarg => kwarg.EvaluateValue())
+            OrderedArguments: OrderedArguments.Select(expr => expr.EvaluateValue(store)),
+            KeywordArguments: KeywordArguments.Select(kwarg => kwarg.EvaluateValue(store))
         );
     }
 }

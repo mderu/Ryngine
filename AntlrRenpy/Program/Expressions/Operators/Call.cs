@@ -1,11 +1,12 @@
 ﻿using RynVM.Instructions;
 using RynVM.Instructions.Expressions;
+using RynVM.Script;
 
 namespace AntlrRenpy.Program.Expressions.Operators;
 
 public record class Call(IExpression Callee, IExpression Arguments) : IExpression
 {
-    IAtomic IExpression.EvaluateValue()
+    IAtomic IExpression.EvaluateValue(Store<string, IAtomic> store)
     {
         // TODO: Call expressions are not Ren'Py Call instructions.
         // We don't have functions implemented yet, so we don't have anything to do here.

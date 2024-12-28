@@ -1,5 +1,6 @@
 ﻿using RynVM.Instructions;
 using RynVM.Instructions.Expressions;
+using RynVM.Script;
 using System.Collections.Generic;
 
 namespace AntlrRenpy.Program;
@@ -46,13 +47,13 @@ public class Parameters(
         return HashCode.Combine(ParamNames, DefaultValues, NumPositionalOnlyParams, NumNameOnlyParams);
     }
 
-    IAtomic IExpression.EvaluateValue()
+    IAtomic IExpression.EvaluateValue(Store<string, IAtomic> store)
     {
         Dictionary<string, IExpression> evaluatedDefaultValues = [];
 
         foreach ((string key, IExpression expression) in DefaultValues)
         {
-            evaluatedDefaultValues[key] = expression.EvaluateValue();
+            evaluatedDefaultValues[key] = expression.EvaluateValue(store);
         }
 
         return new Parameters(ParamNames, evaluatedDefaultValues, NumPositionalOnlyParams, NumNameOnlyParams);

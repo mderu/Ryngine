@@ -1,8 +1,10 @@
-﻿namespace RynVM.Instructions.Expressions;
+﻿using RynVM.Script;
+
+namespace RynVM.Instructions.Expressions;
 
 public interface IExpression
 {
     // TODO:
     //IExpression EvaluateAddress();
-    IAtomic EvaluateValue();
+    IAtomic EvaluateValue(Store<string, IAtomic> store);
 }

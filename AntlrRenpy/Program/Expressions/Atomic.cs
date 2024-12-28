@@ -1,5 +1,6 @@
 ﻿using RynVM.Instructions;
 using RynVM.Instructions.Expressions;
+using RynVM.Script;
 
 namespace AntlrRenpy.Program.Expressions;
 
@@ -37,7 +38,7 @@ public abstract record class Atomic(object? InnerValue) : IAtomic
 {
     public abstract AtomicType Type { get; }
 
-    public IAtomic EvaluateValue()
+    IAtomic IExpression.EvaluateValue(Store<string, IAtomic> store)
     {
         return this;
     }
