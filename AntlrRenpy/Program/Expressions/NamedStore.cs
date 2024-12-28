@@ -8,6 +8,6 @@ public record class NamedStore(string StoreName) : IExpression
 {
     IAtomic IExpression.EvaluateValue(Store<string, IAtomic> store)
     {
-        throw new NotImplementedException("No idea how to implement this yet.");
+        return store[StoreName];
     }
 }

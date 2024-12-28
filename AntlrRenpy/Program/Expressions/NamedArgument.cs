@@ -8,6 +8,8 @@ public record class NamedArgument(string Name, IExpression Expression) : IExpres
 {
     IAtomic IExpression.EvaluateValue(Store<string, IAtomic> store)
     {
-        throw new NotImplementedException("No idea how to do this yet.");
+        IAtomic atomic = Expression.EvaluateValue(store);
+        store[Name] = atomic;
+        return atomic;
     }
 }

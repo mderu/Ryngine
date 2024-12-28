@@ -1,7 +1,6 @@
 ﻿using RynVM.Instructions;
 using RynVM.Instructions.Expressions;
 using RynVM.Script;
-using System.Collections.Generic;
 
 namespace AntlrRenpy.Program;
 
