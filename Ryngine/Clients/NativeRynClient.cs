@@ -16,7 +16,7 @@ namespace Ryngine.Clients
         [UnmanagedCallersOnly(EntryPoint = "PostDelta")]
         public static void PostDelta(IntPtr saveName, IntPtr delta) { }
 
-        [UnmanagedCallersOnly(EntryPoint = "PostDelta")]
+        [UnmanagedCallersOnly(EntryPoint = "RequestUndo")]
         public static IntPtr RequestUndo(IntPtr saveName) => 0;
 
         //============================================================================

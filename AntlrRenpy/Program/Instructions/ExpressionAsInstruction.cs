@@ -1,8 +1,7 @@
-﻿using AntlrRenpy.Program.Expressions;
+﻿using RynVM.Instructions.Expressions;
 
-namespace AntlrRenpy.Program.Instructions
+namespace AntlrRenpy.Program.Instructions;
+
+public record class ExpressionAsInstruction(IExpression Expression) : IInstruction
 {
-    public record class ExpressionAsInstruction(IExpression Expression) : IInstruction
-    {
-    }
 }

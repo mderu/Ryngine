@@ -1,6 +1,7 @@
 ﻿using AntlrRenpy.Program;
 using AntlrRenpy.Program.Expressions;
 using AntlrRenpy.Program.Instructions;
+using RynVM.Instructions.Expressions;
 using System.Diagnostics.CodeAnalysis;
 using static RenpyParser;
 

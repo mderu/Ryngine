@@ -1,4 +1,4 @@
-﻿using AntlrRenpy.Program.Expressions;
+﻿using RynVM.Instructions.Expressions;
 
 namespace AntlrRenpy.Program.Instructions
 {

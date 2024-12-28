@@ -1,7 +1,7 @@
-﻿using AntlrRenpy.Program.Expressions;
-using AntlrRenpy.Program;
+﻿using AntlrRenpy.Program;
 using static RenpyParser;
 using System.Diagnostics.CodeAnalysis;
+using RynVM.Instructions.Expressions;
 
 namespace AntlrRenpy.Listener
 {

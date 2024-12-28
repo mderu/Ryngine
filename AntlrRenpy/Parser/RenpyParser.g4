@@ -203,7 +203,9 @@ call
 
 // https://www.renpy.org/doc/html/screens.html#call-screen
 call_screen
-    : CALL SCREEN (NAME | EXPRESSION expression) (AS NAME)? (ONLAYER NUMBER)? (ZORDER NUMBER)? (NOPREDICT)? (WITH expression)?
+    : CALL SCREEN (NAME | EXPRESSION expression (PASS arguments)?)
+        // TODO: allow for arbitrary order of optional clauses.
+        ((AS NAME) | (ONLAYER NUMBER) | (ZORDER NUMBER) | (NOPREDICT) | (WITH expression))*
     ;
 
 // https://www.renpy.org/doc/html/screens.html#show-screen-statement

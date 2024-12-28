@@ -1,5 +1,5 @@
 ﻿using AntlrRenpy.Program.Expressions;
-using Ryngine.Utils;
+using RynVM.Instructions.Expressions;
 
 namespace AntlrRenpy.Program.Instructions
 {

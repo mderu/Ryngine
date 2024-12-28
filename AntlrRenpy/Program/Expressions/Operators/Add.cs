@@ -1,8 +1,28 @@
-﻿namespace AntlrRenpy.Program.Expressions.Operators
+﻿using RynVM.Instructions;
+using RynVM.Instructions.Expressions;
+
+namespace AntlrRenpy.Program.Expressions.Operators
 {
-    public class Add(IExpression a, IExpression b) : IExpression
+    public record class Add(IExpression Lhs, IExpression Rhs) : IExpression
     {
-        public IExpression A { get; } = a;
-        public IExpression B { get; } = b;
+        IAtomic IExpression.EvaluateValue()
+        {
+            IAtomic evaluatedA = Lhs.EvaluateValue();
+
+            if (Lhs is not Atomic atomicA)
+            {
+                throw new Exception($"Unable to add with operand {evaluatedA.GetType()} (evaluated from {Lhs.GetType()}).");
+            }
+
+            IAtomic evaluatedB = Rhs.EvaluateValue();
+
+            if (Rhs is not Atomic atomicB)
+            {
+                throw new Exception($"Unable to add with operand {evaluatedB.GetType()} (evaluated from {Rhs.GetType()}).");
+            }
+
+            return atomicA.Add(atomicB);
+        }
     }
 }
+ 

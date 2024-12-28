@@ -20,6 +20,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <CopyFileToFolders Include="..\Ryngine\bin\Release\net8.0\win-x64\native\Ryngine.dll" />
+    <CopyFileToFolders Include="..\Ryngine\bin\Release\net9.0\win-x64\native\Ryngine.dll" />
   </ItemGroup>
 </Project>

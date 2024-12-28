@@ -1,12 +1,14 @@
-﻿using AntlrRenpy.Program.Expressions;
+﻿
 
-namespace AntlrRenpy.Program.Instructions
+using AntlrRenpy.Program.Expressions;
+using RynVM.Instructions.Expressions;
+
+namespace AntlrRenpy.Program.Instructions;
+
+public record class Play(
+    string ChannelName,
+    IExpression WhatToPlay,
+    AtomicNumber? FadeIn,
+    AtomicNumber? FadeOut) : IInstruction
 {
-    public record class Play(
-        string ChannelName,
-        IExpression WhatToPlay,
-        ConstantNumber? FadeIn,
-        ConstantNumber? FadeOut) : IInstruction
-    {
-    }
 }

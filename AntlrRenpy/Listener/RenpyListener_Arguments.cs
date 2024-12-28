@@ -1,6 +1,7 @@
 ﻿using Antlr4.Runtime.Tree;
 using AntlrRenpy.Program.Expressions;
 using AntlrRenpy.Program.Expressions.Operators;
+using RynVM.Instructions.Expressions;
 using System.Diagnostics.CodeAnalysis;
 using static RenpyParser;
 
@@ -27,8 +28,8 @@ namespace AntlrRenpy.Listener
             }
 
             expressionStack.Push(new Arguments(
-                orderedArguments: [.. argStack, .. kwargs?.OrderedArguments ?? []],
-                keywordArguments: kwargs?.KeywordArguments));
+                OrderedArguments: [.. argStack, .. kwargs?.OrderedArguments ?? []],
+                KeywordArguments: kwargs?.KeywordArguments ?? []));
         }
 
         public override void ExitKwargs([NotNull] KwargsContext context)

@@ -1,8 +1,7 @@
-﻿using AntlrRenpy.Program.Expressions;
+﻿using RynVM.Instructions.Expressions;
 
-namespace AntlrRenpy.Program.ControlFlows
+namespace AntlrRenpy.Program.ControlFlows;
+
+public record class While(Block Block, IExpression Condition, Else? ElseStatement) : IInstruction
 {
-    public record class While(Block Block, IExpression Condition, Else? ElseStatement) : IInstruction
-    {
-    }
 }

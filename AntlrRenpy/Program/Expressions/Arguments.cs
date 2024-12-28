@@ -1,7 +1,23 @@
 ﻿using AntlrRenpy.Program.Expressions.Operators;
+using RynVM.Instructions;
+using RynVM.Instructions.Expressions;
 
 namespace AntlrRenpy.Program.Expressions
 {
+    /// <param name="OrderedArguments">
+    ///     <remarks>
+    ///     May include <see cref="UnaryStar"/> expressions that need to be expanded.
+    ///     </remarks>
+    /// </param>
+    /// 
+    /// <param name="KeywordArguments">
+    /// <remarks>
+    /// Order is preserved in Python 3.6+. 
+    /// May include <see cref="UnaryDoubleStar"/> expressions that need to be expanded. In the case
+    /// of <see cref="UnaryDoubleStar"/> expressions, the string may be empty or null.
+    /// </remarks>
+    /// </param>
+    /// 
     /// <remarks>
     /// Target edge case:
     /// 
@@ -18,20 +34,22 @@ namespace AntlrRenpy.Program.Expressions
     /// Keyword arguments can be anywhere, but their order relative to OrderedArguments/*args is ignored.
     /// </remarks>
     public record class Arguments(
-        IEnumerable<IExpression>? orderedArguments = null,
-        IEnumerable<IExpression>? keywordArguments = null)
-            : IExpression
+        IEnumerable<IExpression> OrderedArguments,
+        IEnumerable<IExpression> KeywordArguments)
+            : IAtomic
     {
-        /// <remarks>
-        /// May include <see cref="UnaryStar"/> expressions that need to be expanded.
-        /// </remarks>
-        public IEnumerable<IExpression> OrderedArguments { get; } = orderedArguments ?? [];
+        public IExpression EvaluateAddress()
+        {
+            throw new InvalidOperationException($"Cannot evaluate the address of {nameof(Arguments)}.");
+        }
 
-        /// <remarks>
-        /// Order is preserved in Python 3.6+. 
-        /// May include <see cref="UnaryDoubleStar"/> expressions that need to be expanded. In the case
-        /// of <see cref="UnaryDoubleStar"/> expressions, the string may be empty or null.
-        /// </remarks>
-        public IEnumerable<IExpression> KeywordArguments { get; } = keywordArguments ?? [];
+        public IAtomic EvaluateValue()
+        {
+            // https://docs.python.org/3/reference/expressions.html#evaluation-order
+            return new Arguments(
+                OrderedArguments: OrderedArguments.Select(expr => expr.EvaluateValue()),
+                KeywordArguments: KeywordArguments.Select(kwarg => kwarg.EvaluateValue())
+            );
+        }
     }
 }

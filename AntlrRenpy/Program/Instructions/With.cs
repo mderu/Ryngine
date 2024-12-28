@@ -1,13 +1,7 @@
-﻿using AntlrRenpy.Program.Expressions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using RynVM.Instructions.Expressions;
 
-namespace AntlrRenpy.Program.Instructions
+namespace AntlrRenpy.Program.Instructions;
+
+public record class With(IExpression expression) : IInstruction
 {
-    public record class With(IExpression expression) : IInstruction
-    {
-    }
 }

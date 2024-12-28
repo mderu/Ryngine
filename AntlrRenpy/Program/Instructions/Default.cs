@@ -1,8 +1,7 @@
-﻿using AntlrRenpy.Program.Expressions;
+﻿using RynVM.Instructions.Expressions;
 
-namespace AntlrRenpy.Program.Instructions
+namespace AntlrRenpy.Program.Instructions;
+
+public record class Default(IExpression Lhs, IExpression Rhs) : IInstruction
 {
-    public record class Default(IExpression Lhs, IExpression Rhs) : IInstruction
-    {
-    }
 }

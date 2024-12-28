@@ -8,6 +8,7 @@ using AntlrRenpy.Program.Clauses;
 using System.Text;
 using static RenpyParser;
 using Antlr4.Runtime;
+using RynVM.Instructions.Expressions;
 
 namespace AntlrRenpy.Listener
 {
@@ -75,7 +76,7 @@ namespace AntlrRenpy.Listener
             if (context.label_name() is not null)
             {
                 // TODO: Should this be a NamedStore instead?
-                Constant<string> labelName = new(context.label_name().GetText());
+                Atomic<string> labelName = new(context.label_name().GetText());
                 AppendInstruction(new Jump(labelName));
             }
             else if (context.EXPRESSION() is not null)
@@ -93,15 +94,15 @@ namespace AntlrRenpy.Listener
             string channelName = context.name().GetText();
             IExpression expression = expressionStack.Pop();
 
-            ConstantNumber? fadeInTime = null;
+            AtomicNumber? fadeInTime = null;
             if (context.FADEIN() is not null)
             {
-                fadeInTime = new ConstantNumber(context.NUMBER().First().GetText());
+                fadeInTime = new AtomicNumber(context.NUMBER().First().GetText());
             }
-            ConstantNumber? fadeOutTime = null;
+            AtomicNumber? fadeOutTime = null;
             if (context.FADEOUT() is not null)
             {
-                fadeOutTime = new ConstantNumber(context.NUMBER().Last().GetText());
+                fadeOutTime = new AtomicNumber(context.NUMBER().Last().GetText());
             }
 
             AppendInstruction(new Play(channelName, expression, fadeInTime, fadeOutTime));
@@ -111,7 +112,7 @@ namespace AntlrRenpy.Listener
         {
             Arguments arguments = context.arguments() is not null
                     ? (Arguments)expressionStack.Pop()
-                    : new();
+                    : new([], []);
             string labelName = context.label_name()[0].GetText();
 
             PushFrame pushFrame = new(labelName, arguments);
@@ -156,11 +157,11 @@ namespace AntlrRenpy.Listener
             }
             else if (context.TRUE() is not null)
             {
-                expressionStack.Push(new Constant<bool>(true));
+                expressionStack.Push(new Atomic<bool>(true));
             }
             else if (context.FALSE() is not null)
             {
-                expressionStack.Push(new Constant<bool>(false));
+                expressionStack.Push(new Atomic<bool>(false));
             }
             else if (context.NONE() is not null)
             {
@@ -169,7 +170,7 @@ namespace AntlrRenpy.Listener
             else if (context.NUMBER() is not null)
             {
                 // Claim type is decimal. Doesn't really matter for parsing.
-                expressionStack.Push(new ConstantNumber(context.NUMBER().GetText()));
+                expressionStack.Push(new AtomicNumber(context.NUMBER().GetText()));
             }
             else if (context.list() is not null)
             {
@@ -243,7 +244,7 @@ namespace AntlrRenpy.Listener
                 else
                 {
                     IExpression baseExpression = expressionStack.Pop();
-                    expressionStack.Push(new Call(baseExpression, new Arguments()));
+                    expressionStack.Push(new Call(baseExpression, new Arguments([], [])));
                 }
             }
             else if (context.slices() is not null)
@@ -303,7 +304,7 @@ namespace AntlrRenpy.Listener
             {
                 stringBuilder.Append(StringParser.Parse(str.GetText()));
             }
-            expressionStack.Push(new Constant<string>(stringBuilder.ToString()));
+            expressionStack.Push(new Atomic<string>(stringBuilder.ToString()));
         }
 
         public override void ExitSingle_target([NotNull] Single_targetContext context)

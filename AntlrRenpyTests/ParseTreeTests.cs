@@ -384,7 +384,7 @@ public class ParseTreeTests
                 AssertType(assignment.Lhs, out NamedStore namedStore);
                 Assert.Equal("a", namedStore.StoreName);
 
-                AssertType(assignment.Rhs, out Constant<bool> constantBool);
+                AssertType(assignment.Rhs, out Atomic<bool> constantBool);
                 Assert.True(constantBool.Value);
             },
             (item) =>
@@ -403,7 +403,7 @@ public class ParseTreeTests
                 AssertType(assignment.Lhs, out NamedStore namedStore);
                 Assert.Equal("name", namedStore.StoreName);
 
-                AssertType(assignment.Rhs, out Constant<string> constantString);
+                AssertType(assignment.Rhs, out Atomic<string> constantString);
                 Assert.Equal("Ryn", constantString.Value);
             },
             (item) =>
@@ -415,7 +415,7 @@ public class ParseTreeTests
                 AssertType(memberAccess.BaseExpression, out NamedStore namedStore);
                 Assert.Equal("persistent", namedStore.StoreName);
 
-                AssertType(assignment.Rhs, out ConstantNumber constantNumber);
+                AssertType(assignment.Rhs, out AtomicNumber constantNumber);
                 Assert.Equal("1.414", constantNumber.Value);
             }
         );
@@ -442,7 +442,7 @@ public class ParseTreeTests
                 AssertType(assignment.Lhs, out NamedStore namedStore);
                 Assert.Equal("a", namedStore.StoreName);
 
-                AssertType(assignment.Rhs, out ConstantNumber constNumber);
+                AssertType(assignment.Rhs, out AtomicNumber constNumber);
                 Assert.Equal("1", constNumber.Value);
             },
             (item) =>
@@ -452,7 +452,7 @@ public class ParseTreeTests
                 AssertType(assignment.Lhs, out NamedStore namedStore);
                 Assert.Equal("b", namedStore.StoreName);
 
-                AssertType(assignment.Rhs, out ConstantNumber constNumber);
+                AssertType(assignment.Rhs, out AtomicNumber constNumber);
                 Assert.Equal("2", constNumber.Value);
             },
             (item) =>
@@ -463,24 +463,24 @@ public class ParseTreeTests
                 Assert.Equal("c", namedStore.StoreName);
 
                 AssertType(assignment.Rhs, out Add firstAdd);
-                AssertType(firstAdd.B, out Negate firstNegate);
-                AssertType(firstNegate.ExpressionToNegate, out ConstantNumber firstConstant);
+                AssertType(firstAdd.Rhs, out Negate firstNegate);
+                AssertType(firstNegate.ExpressionToNegate, out AtomicNumber firstConstant);
                 Assert.Equal("0", firstConstant.Value);
 
-                AssertType(firstAdd.A, out Add secondAdd);
-                AssertType(secondAdd.B, out Negate secondNegate);
+                AssertType(firstAdd.Lhs, out Add secondAdd);
+                AssertType(secondAdd.Rhs, out Negate secondNegate);
                 AssertType(secondNegate.ExpressionToNegate, out NamedStore firstNamedStore);
                 Assert.Equal("a", firstNamedStore.StoreName);
 
-                AssertType(secondAdd.A, out Add thirdAdd);
-                AssertType(thirdAdd.B, out ConstantNumber secondConstant);
+                AssertType(secondAdd.Lhs, out Add thirdAdd);
+                AssertType(thirdAdd.Rhs, out AtomicNumber secondConstant);
                 Assert.Equal("3",  secondConstant.Value);
 
-                AssertType(thirdAdd.A, out Add fourthAdd);
-                AssertType(fourthAdd.B, out NamedStore secondNamedStore);
+                AssertType(thirdAdd.Lhs, out Add fourthAdd);
+                AssertType(fourthAdd.Rhs, out NamedStore secondNamedStore);
                 Assert.Equal("b", secondNamedStore.StoreName);
 
-                AssertType(fourthAdd.A, out NamedStore thirdNamedStore);
+                AssertType(fourthAdd.Lhs, out NamedStore thirdNamedStore);
                 Assert.Equal("a", thirdNamedStore.StoreName);
             }
         );
@@ -516,7 +516,7 @@ public class ParseTreeTests
                 Assert.Collection(pushFrame.Arguments.OrderedArguments,
                     (item) =>
                     {
-                        AssertType(item, out Constant<string> constant);
+                        AssertType(item, out Atomic<string> constant);
                         Assert.Equal("Hello World!", constant.Value);
                     }
                 );
@@ -563,21 +563,21 @@ public class ParseTreeTests
                 Assert.Collection(pushFrame.Arguments.OrderedArguments,
                     (item) =>
                     {
-                        Assert.Equal(new Constant<string>("A"), item);
+                        Assert.Equal(new Atomic<string>("A"), item);
                     },
                     (item) =>
                     {
                         AssertType(item, out UnaryStar unaryStar);
                         AssertType(unaryStar.InnerExpression, out ListDefinition listDefinition);
                         Assert.Single(listDefinition.InnerExpressions);
-                        Assert.Equal(new Constant<string>("B"), listDefinition.InnerExpressions.First());
+                        Assert.Equal(new Atomic<string>("B"), listDefinition.InnerExpressions.First());
                     }
                 );
 
                 Assert.Collection(pushFrame.Arguments.KeywordArguments,
                     (item) =>
                     {
-                        Assert.Equal(new NamedArgument("c", new Constant<string>("C")), item);
+                        Assert.Equal(new NamedArgument("c", new Atomic<string>("C")), item);
                     },
                     (item) =>
                     {
@@ -587,14 +587,14 @@ public class ParseTreeTests
                             (item) =>
                             {
                                 Assert.Equal(
-                                    new KeyValuePair(new Constant<string>("d"), new Constant<string>("D")),
+                                    new KeyValuePair(new Atomic<string>("d"), new Atomic<string>("D")),
                                     item
                                 );
                             },
                             (item) =>
                             {
                                 Assert.Equal(
-                                    new KeyValuePair(new Constant<string>("f"), new Constant<string>("F")),
+                                    new KeyValuePair(new Atomic<string>("f"), new Atomic<string>("F")),
                                     item
                                 );
                             }
@@ -602,7 +602,7 @@ public class ParseTreeTests
                     },
                     (item) =>
                     {
-                        Assert.Equal(new NamedArgument("e", new Constant<string>("E")), item);
+                        Assert.Equal(new NamedArgument("e", new Atomic<string>("E")), item);
                     }
                 );
             },
@@ -673,7 +673,7 @@ public class ParseTreeTests
                 AssertType(item, out Assignment assignment);
                 AssertType(assignment.Lhs, out NamedStore namedStore);
                 Assert.Equal("count", namedStore.StoreName);
-                Assert.Equal(new ConstantNumber("10"), assignment.Rhs);
+                Assert.Equal(new AtomicNumber("10"), assignment.Rhs);
             },
             (item) =>
             {
@@ -682,14 +682,14 @@ public class ParseTreeTests
                 AssertType(whileStatement.Condition, out Comparison comparison);
                 Assert.Equal(Comparison.Type.GreaterThan, comparison.ComparisonType);
                 Assert.Equal(new NamedStore("count"), comparison.Lhs);
-                Assert.Equal(new ConstantNumber("0"), comparison.Rhs);
+                Assert.Equal(new AtomicNumber("0"), comparison.Rhs);
 
                 Assert.Collection(whileStatement.Block.Instructions,
                     (item) => Assert.Equal(new Say("T-minus [count]."), item),
                     (item) => {
                         AssertType(item, out Assignment assignment);
                         Assert.Equal(new NamedStore("count"), assignment.Lhs);
-                        Assert.Equal(new ConstantNumber("1"), assignment.Rhs);
+                        Assert.Equal(new AtomicNumber("1"), assignment.Rhs);
                         Assert.Equal(Assignment.Type.MinEqual, assignment.AssignmentType);
                     }
                 );
@@ -743,7 +743,7 @@ public class ParseTreeTests
                 AssertType(define.Rhs, out Call call);
                 AssertType(call.Arguments, out Arguments arguments);
                 Assert.Collection(arguments.OrderedArguments,
-                    (item) => Assert.Equal(new Constant<string>("Eileen"), item)
+                    (item) => Assert.Equal(new Atomic<string>("Eileen"), item)
                 );
                 Assert.Equal(new NamedStore("Character"), call.Callee);
             },
@@ -755,7 +755,7 @@ public class ParseTreeTests
                 AssertType(assignment.Rhs, out ListDefinition listDefinition);
                 Assert.Collection(listDefinition.InnerExpressions,
                     (item) => Assert.Equal(
-                        new Constant<string>("Hey, this wasn't here before. What gives?"),
+                        new Atomic<string>("Hey, this wasn't here before. What gives?"),
                         item)
                 );
             },
@@ -764,7 +764,7 @@ public class ParseTreeTests
                 AssertType(item, out Assignment assignment);
                 Assert.Equal(Assignment.Type.Equal, assignment.AssignmentType);
                 Assert.Equal(new NamedStore("questions_asked"), assignment.Lhs);
-                Assert.Equal(new ConstantNumber("0"), assignment.Rhs);
+                Assert.Equal(new AtomicNumber("0"), assignment.Rhs);
             },
             (item) =>
             {
@@ -788,7 +788,7 @@ public class ParseTreeTests
                                 AssertType(item, out Assignment assignment);
                                 Assert.Equal(new NamedStore("questions_asked"), assignment.Lhs);
                                 Assert.Equal(Assignment.Type.PlusEqual, assignment.AssignmentType);
-                                Assert.Equal(new ConstantNumber("1"), assignment.Rhs);
+                                Assert.Equal(new AtomicNumber("1"), assignment.Rhs);
                             },
                             (item) =>
                             {
@@ -800,7 +800,7 @@ public class ParseTreeTests
                             (item) =>
                             {
                                 AssertType(item, out Jump jump);
-                                Assert.Equal(new Constant<string>("question_menu"), jump.Label);
+                                Assert.Equal(new Atomic<string>("question_menu"), jump.Label);
                             }
                         );
                     },
@@ -813,7 +813,7 @@ public class ParseTreeTests
                                 AssertType(item, out Assignment assignment);
                                 Assert.Equal(new NamedStore("questions_asked"), assignment.Lhs);
                                 Assert.Equal(Assignment.Type.PlusEqual, assignment.AssignmentType);
-                                Assert.Equal(new ConstantNumber("1"), assignment.Rhs);
+                                Assert.Equal(new AtomicNumber("1"), assignment.Rhs);
                             },
                             (item) =>
                             {
@@ -839,7 +839,7 @@ public class ParseTreeTests
                             (item) =>
                             {
                                 AssertType(item, out Jump jump);
-                                Assert.Equal(new Constant<string>("question_menu"), jump.Label);
+                                Assert.Equal(new Atomic<string>("question_menu"), jump.Label);
                             }
                         );
                     },
@@ -852,7 +852,7 @@ public class ParseTreeTests
                                 AssertType(item, out Assignment assignment);
                                 Assert.Equal(new NamedStore("questions_asked"), assignment.Lhs);
                                 Assert.Equal(Assignment.Type.PlusEqual, assignment.AssignmentType);
-                                Assert.Equal(new ConstantNumber("1"), assignment.Rhs);
+                                Assert.Equal(new AtomicNumber("1"), assignment.Rhs);
                             },
                             (item) =>
                             {
@@ -868,7 +868,7 @@ public class ParseTreeTests
                             (item) =>
                             {
                                 AssertType(item, out Jump jump);
-                                Assert.Equal(new Constant<string>("question_menu"), jump.Label);
+                                Assert.Equal(new Atomic<string>("question_menu"), jump.Label);
                             }
                         );
                     },
@@ -890,7 +890,7 @@ public class ParseTreeTests
                             {
                                 AssertType(item, out ExpressionAsInstruction instruction);
                                 AssertType(instruction.Expression, out Call call);
-                                Assert.Equal(new Arguments(), call.Arguments);
+                                Assert.Equal(new Arguments([], []), call.Arguments);
                                 AssertType(call.Callee, out MemberAccess memberAccess);
                                 Assert.Equal("clear", memberAccess.MemberName);
                                 Assert.Equal(new NamedStore("my_menuset"), memberAccess.BaseExpression);
@@ -898,7 +898,7 @@ public class ParseTreeTests
                             (item) =>
                             {
                                 AssertType(item, out Jump jump);
-                                Assert.Equal(new Constant<string>("question_menu"), jump.Label);
+                                Assert.Equal(new Atomic<string>("question_menu"), jump.Label);
                             }
                         );
                     },
@@ -918,7 +918,7 @@ public class ParseTreeTests
                 AssertType(ifStatement.Condition, out Comparison comparison);
                 Assert.Equal(new NamedStore("questions_asked"), comparison.Lhs);
                 Assert.Equal(Comparison.Type.IsEqualTo, comparison.ComparisonType);
-                Assert.Equal(new ConstantNumber("0"), comparison.Rhs);
+                Assert.Equal(new AtomicNumber("0"), comparison.Rhs);
 
                 Assert.Collection(ifStatement.IfBlock.Instructions,
                     (item) =>

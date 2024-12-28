@@ -1,10 +1,16 @@
-﻿namespace AntlrRenpy.Program.Expressions.Operators
+﻿using RynVM.Instructions;
+using RynVM.Instructions.Expressions;
+
+namespace AntlrRenpy.Program.Expressions.Operators;
+
+/// <summary>
+/// Expands the elements of an iterable into the parent iterable.
+/// </summary>
+public record class UnaryStar(IExpression InnerExpression) : IAtomic
 {
-    /// <summary>
-    /// Expands the elements of an iterable into the parent iterable.
-    /// </summary>
-    public class UnaryStar(IExpression innerExpression) : IExpression
+    IAtomic IExpression.EvaluateValue()
     {
-        public IExpression InnerExpression { get; } = innerExpression;
+        // The container (args, list definition, etc) needs to handle unpacking the values.
+        return new UnaryStar(InnerExpression.EvaluateValue());
     }
 }

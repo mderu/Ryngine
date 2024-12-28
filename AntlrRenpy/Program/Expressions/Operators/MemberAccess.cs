@@ -1,8 +1,12 @@
-﻿namespace AntlrRenpy.Program.Expressions.Operators
+﻿using RynVM.Instructions;
+using RynVM.Instructions.Expressions;
+
+namespace AntlrRenpy.Program.Expressions.Operators;
+
+public record class MemberAccess(IExpression BaseExpression, string MemberName) : IExpression
 {
-    public class MemberAccess(IExpression baseExpression, string memberName) : IExpression
+    IAtomic IExpression.EvaluateValue()
     {
-        public IExpression BaseExpression { get; } = baseExpression;
-        public string MemberName { get; } = memberName;
+        throw new NotImplementedException("Will implement when dict is fleshed out.");
     }
 }
