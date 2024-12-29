@@ -39,7 +39,7 @@ public class ParseTreeTests
         return;
     }
 
-    public (RenpyListener, ParserErrorListener) Parse(string testFile)
+    public static (RenpyListener, ParserErrorListener) Parse(string testFile)
     {
         if (Debugger.IsAttached)
         {
@@ -65,13 +65,6 @@ public class ParseTreeTests
         ParseTreeWalker.Default.Walk(renpyListener, parser.entire_tree());
 
         return (renpyListener, errorListener);
-    }
-
-    public class AssertTrue(bool condition) : IDisposable
-    {
-        bool Condition { get; } = condition;
-
-        public void Dispose() { }
     }
 
     public static bool AssertType<T1, T2>(T2 baseType, out T1 convertedType)
